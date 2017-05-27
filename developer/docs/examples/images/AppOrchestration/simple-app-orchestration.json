@@ -1,0 +1,120 @@
+{
+	"app_id": "app-simple-orchestration",
+	"app_version": "1.0",
+	"name": "SimpleCompositeApp",
+	"description": "my first composite App",
+	"app": [{
+		"app_id": "app-zkv33646",
+		"app_version": "1.0",
+		"name": "ZK",
+		"description": "my ZooKeeper App",
+		"order": 1,
+		"vxnet": "vxnet-p050mao",
+		"node": {
+			"container": {
+				"type": "kvm",
+				"image": "img-zookeeper",
+				"zone": "allinone"
+			},
+			"instance_class": 0,
+			"count": 3,
+			"cpu": 1,
+			"memory": 512,
+			"volume": {
+				"size": 3,
+				"mount_point": "/zk_data",
+				"filesystem": "xfs",
+				"class": 0
+			},
+			"server_id_upper_bound": 255,
+			"service": {
+				"start": {
+					"cmd": "/opt/zookeeper/bin/zkServer.sh start"
+				},
+				"stop": {
+					"cmd": "/opt/zookeeper/bin/zkServer.sh stop"
+				}
+			}
+		}
+	}, {
+		"app_id": "app-redis-standalone",
+		"app_version": "1.0",
+		"name": "My Redis App",
+		"description": "This is an example",
+		"order": 0,
+		"vxnet": "vxnet-p050mao",
+		"node": [{
+			"role": "master",
+			"container": {
+				"type": "kvm",
+				"image": "img-redis3-m",
+				"zone": "pek3a"
+			},
+			"count": 1,
+			"cpu": 1,
+			"memory": 512,
+			"volume": {
+				"size": 4
+			},
+			"service": {
+				"start": {
+					"order": 1,
+					"cmd": "mkdir -p /data/redis/logs; ulimit -n 65536; /opt/redis/bin/redis-server /opt/redis/redis.conf"
+				},
+				"stop": {
+					"cmd": "/opt/redis/bin/stop-redis-server.sh"
+				}
+			}
+		}, {
+			"role": "slave",
+			"container": {
+				"type": "kvm",
+				"image": "img-redis3-s",
+				"zone": "pek3a"
+			},
+			"count": 1,
+			"cpu": 1,
+			"memory": 512,
+			"volume": {
+				"size": 4
+			},
+			"service": {
+				"start": {
+					"order": 2,
+					"cmd": "mkdir -p /data/redis/logs; ulimit -n 65536; /opt/redis/bin/redis-server /opt/redis/redis.conf"
+				},
+				"stop": {
+					"cmd": "/opt/redis/bin/stop-redis-server.sh"
+				}
+			}
+		}],
+		"env": {
+			"activerehashing": "yes",
+			"appendonly": "yes",
+			"appendfsync": "everysec",
+			"hash-max-ziplist-entries": 512,
+			"hash-max-ziplist-value": 64,
+			"latency-monitor-threshold": 0,
+			"list-max-ziplist-entries": 512,
+			"list-max-ziplist-value": 64,
+			"maxclients": 65000,
+			"maxmemory-policy": "volatile-lru",
+			"maxmemory-samples": 3,
+			"min-slaves-max-lag": 10,
+			"min-slaves-to-write": 0,
+			"no-appendfsync-on-rewrite": "yes",
+			"notify-keyspace-events": "",
+			"port": 6379,
+			"repl-backlog-size": 1048576,
+			"repl-backlog-ttl": 3600,
+			"repl-timeout": 60,
+			"set-max-intset-entries": 512,
+			"slowlog-log-slower-than": -1,
+			"slowlog-max-len": 128,
+			"tcp-keepalive": 0,
+			"timeout": 0,
+			"zset-max-ziplist-entries": 128,
+			"zset-max-ziplist-value": 64
+		}
+	}]
+}

@@ -1,0 +1,56 @@
+本指南介绍如何制作 ZooKeeper 节点镜像制作过程
+
+1. 参考how_to_make_image安装confd及其它基础配置
+
+2. 创建/etc/confd/conf.d/zoo.cfg.toml
+    [template]
+	src = "zoo.cfg.tmpl"
+	dest = "/opt/zookeeper/conf/zoo.cfg"
+	  keys = [
+	    "/self/hosts",
+	]
+	reload_cmd = "/opt/zookeeper/bin/restart-server.sh"
+
+3. 创建/etc/confd/conf.d/myid.toml	
+	[template]
+	src = "myid.tmpl"
+	dest = "/zk_data/zookeeper/myid"
+	  keys = [
+	    "/self/host",
+	]
+	
+4. 创建/etc/confd/templates/zoo.cfg.tmpl
+	tickTime=2000
+	initLimit=10
+	syncLimit=5
+	dataDir=/zk_data/zookeeper
+	dataLogDir=/zk_data_log/zookeeper
+	clientPort=2181
+	maxClientCnxns=1000
+	{{range $dir := lsdir "/self/hosts"}}{{$sid := printf "/self/hosts/%s/sid" $dir}}
+	{{$ip := printf "/self/hosts/%s/ip" $dir}}server.{{getv $sid}}={{getv $ip}}:2888:3888{{end}}
+	
+5. 创建/etc/confd/templates/myid.tmpl
+   {{getv "/self/host/sid"}}
+   
+6. 创建 /opt/zookeeper/bin/restart-server.sh
+	#!/bin/bash
+	
+	/opt/zookeeper/bin/zkServer.sh status
+	
+	# Restart zk server
+	if [ $? -eq 0 ]; then
+	    /opt/zookeeper/bin/zkServer.sh restart
+	    if [ $? -eq 0 ]; then
+	        echo "Restart zk server successful"
+		    exit 0
+		else
+		    echo "Failed to restart zk server" 1>&2
+		    exit 1
+		fi
+	else
+	    echo "zk server is not running" 1>&2
+	    exit 0
+	fi
+	
+Note: change zkEnv.sh for logging path

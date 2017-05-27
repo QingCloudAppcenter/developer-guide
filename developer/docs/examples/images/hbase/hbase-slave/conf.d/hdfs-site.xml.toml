@@ -1,0 +1,6 @@
+[template]
+src = "hdfs-site.xml.tmpl"
+dest = "/opt/hadoop/etc/hadoop/hdfs-site.xml"
+keys = [
+  "/",
+]

@@ -1,0 +1,4 @@
+[template]
+src = "exclude.tmpl"
+dest = "/opt/hadoop/etc/hadoop/exclude"
+keys = ["/",]

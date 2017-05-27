@@ -1,0 +1,2 @@
+{{range $dir := lsdir "/hosts/hbase-slave/"}}{{$ip := printf "/hosts/hbase-slave/%s/ip" $dir}}
+{{getv $ip}}{{end}}

@@ -1,0 +1,2 @@
+{{range $dir := lsdir "/deleting-hosts/worker/"}}{{$ip := printf "/deleting-hosts/worker/%s/ip" $dir}}
+{{getv $ip}}{{end}}

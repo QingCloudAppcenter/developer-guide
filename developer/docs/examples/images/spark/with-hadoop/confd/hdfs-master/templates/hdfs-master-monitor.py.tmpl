@@ -1,0 +1,56 @@
+import sys
+import urllib2
+import json
+import re
+
+SPARK_DFS_ROLE_MASTER = "spark-hdfs-master"
+SPARK_DFS_ROLE_SLAVE = "spark-hdfs-slave"
+
+def parse_spark_dfs_stat(role, hjson, stats):    
+    if "beans" not in hjson:
+        return
+    if role == SPARK_DFS_ROLE_MASTER:
+        for sub_dict in hjson["beans"]:
+            if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=NameNode,name=NameNodeActivity":
+                stats["FilesCreated"] = sub_dict["FilesCreated"]
+                stats["FilesAppended"] = sub_dict["FilesAppended"]
+		stats["FilesRenamed"] = sub_dict["FilesRenamed"]
+                stats["FilesDeleted"] = sub_dict["FilesDeleted"]
+	    if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=NameNode,name=FSNamesystem":
+		stats["CapacityTotalGB"] = sub_dict["CapacityTotalGB"]
+		stats["UsedGB"] = sub_dict["CapacityUsedGB"]
+		stats["RemainingGB"] = sub_dict["CapacityRemainingGB"]
+		stats["FilesTotal"] = sub_dict["FilesTotal"]
+	    if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=NameNode,name=FSNamesystemState":
+		stats["LiveNodes"] = sub_dict["NumLiveDataNodes"]
+		stats["DeadNodes"] = sub_dict["NumDeadDataNodes"]
+		stats["DecomLiveNodes"] = sub_dict["NumDecomLiveDataNodes"]
+		stats["DecomDeadNodes"] = sub_dict["NumDecomDeadDataNodes"]
+		stats["DecommissioningNodes"] = sub_dict["NumDecommissioningDataNodes"]
+		stats["StaleNodes"] = sub_dict["NumStaleDataNodes"]
+		stats["StaleStorages"] = sub_dict["NumStaleStorages"]
+            if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=NameNode,name=NameNodeInfo":
+                stats["PercentUsed"] = sub_dict["PercentUsed"]
+		stats["PercentRemaining"] = sub_dict["PercentRemaining"]                
+    elif role == SPARK_DFS_ROLE_SLAVE:
+	for sub_dict in hjson["beans"]:
+	    if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=DataNode,name=FSDatasetState-null":
+		stats["RemainingGB"] = sub_dict["Remaining"] / (1024*1024*1024)
+		stats["DfsUsedGB"] = sub_dict["DfsUsed"] / (1024*1024*1024)
+	    if "name" in sub_dict and re.match(r'Hadoop:service=DataNode,name=DataNodeActivity-.*', sub_dict["name"]):
+		stats["BlocksWritten"] = sub_dict["BlocksWritten"]
+		stats["BlocksRead"] = sub_dict["BlocksRead"]
+	    if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=DataNode,name=JvmMetrics":
+		stats["GcCount"] = sub_dict["GcCount"]
+		stats["GcNumWarnThresholdExceeded"] = sub_dict["GcNumWarnThresholdExceeded"]
+
+
+if __name__ == '__main__':
+    ip = '{{getv "/host/ip"}}'
+    stats = {}
+    role = SPARK_DFS_ROLE_MASTER
+    port = "50070"
+    res = urllib2.urlopen("http://%s:%s/jmx?qry=Hadoop:service=NameNode,name=*" % (ip, port))
+    pjson = json.loads(res.read())
+    parse_spark_dfs_stat(role, pjson, stats)
+    print json.dumps(stats)

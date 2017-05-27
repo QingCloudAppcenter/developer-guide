@@ -1,0 +1,7 @@
+[template]
+src = "hbase-site.xml.tmpl"
+dest = "/opt/hbase/conf/hbase-site.xml"
+keys = [
+  "/",
+]
+reload_cmd = "/opt/hbase/bin/restart-hbase.sh"

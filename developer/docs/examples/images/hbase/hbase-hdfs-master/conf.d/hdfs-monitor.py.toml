@@ -1,0 +1,6 @@
+[template]
+src = "hbase-monitor.py.tmpl"
+dest = "/opt/hadoop/sbin/hdfs-monitor.py"
+keys = [
+  "/",
+]

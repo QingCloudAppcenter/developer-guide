@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+# Copyright (C) 2016 Yunify Inc.
+#
+# Script to manage confd service for Fedora
+
+### BEGIN INIT INFO
+# Provides:        confd
+# Required-Start:  $network $remote_fs $syslog
+# Required-Stop:   $network $remote_fs $syslog
+# Default-Start:   2 3 4 5
+# Default-Stop:    1
+# Short-Description: manage confd daemon
+### END INIT INFO
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+RETVAL=0
+PROG="confd"
+PROG_PATH=/opt/qingcloud/app-agent
+PROG_BIN=$PROG_PATH/bin/$PROG
+LOCKFILE=$PROG_PATH/run/$PROG.lock
+PIDFILE=$PROG_PATH/run/$PROG.pid
+
+[ -f $PROG_BIN ] || { 
+    [ "$1" = "status" ] && exit 4 || exit 6 
+}
+
+start() {
+  [ -x $PROG_BIN ] || exit 5
+  echo -n $"Starting $PROG server: "
+  daemon --pidfile=$PIDFILE $PROG_BIN >> $PROG_PATH/log/$PROG.log 2>&1 &
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && touch $LOCKFILE
+}
+
+stop() {
+  echo -n $"Stopping $PROG server: "
+  if [ -n "`pidfileofproc $PROG_BIN`" ]; then
+    killproc $PROG_BIN
+    RETVAL=3
+  else
+    failure $"Stopping $PROG"
+  fi
+  RETVAL=$?
+  echo
+  [ $RETVAL -eq 0 ] && rm -f $LOCKFILE && rm $PIDFILE
+}
+
+restart() {
+    stop
+    start
+}
+
+rh_status() {
+    status -p $PIDFILE $PROG_BIN
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+case "$1" in
+  start)  
+        rh_status_q && exit 0
+        $1
+        ;;
+  stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+  restart) 
+        $1
+        ;;
+  status)
+        rh_status
+        ;;
+  *)       echo "Usage: $0 {start|stop|restart|status}"
+           RETVAL=2;;
+esac
+exit $RETVAL

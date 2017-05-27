@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    {{range $dir := lsdir "/hosts/hadoop-master/"}}{{$ip := printf "/hosts/hadoop-master/%s/ip" $dir}}
+     <value>hdfs://{{getv $ip}}:9000</value>{{end}}
+  </property>
+  <property>
+    <name>hadoop.proxyuser.yunify.hosts</name>
+    <value>*</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.yunify.groups</name>
+    <value>*</value>
+  </property>
+  {{if ne (getv "/env/hadoop.proxyuser") ""}}
+  <property>
+    <name>hadoop.proxyuser.{{getv "/env/hadoop.proxyuser"}}.hosts</name>
+    <value>{{getv "/env/hadoop.proxyuser.hosts"}}</value>
+  </property>
+  <property>
+    <name>hadoop.proxyuser.{{getv "/env/hadoop.proxyuser"}}.groups</name>
+    <value>{{getv "/env/hadoop.proxyuser.groups"}}</value>
+  </property>
+  {{end}}
+</configuration>

@@ -1,0 +1,6 @@
+[template]
+src = "health-action.sh.tmpl"
+dest = "/opt/hbase/bin/health-action.sh"
+keys = [
+  "/",
+]

@@ -1,0 +1,6 @@
+{{range $dir := lsdir "/hosts/spark-master/"}}{{$ip := printf "/hosts/spark-master/%s/ip" $dir}}
+{{getv $ip}} {{$dir}}{{end}}
+{{range $dir := lsdir "/hosts/hadoop-master/"}}{{$ip := printf "/hosts/hadoop-master/%s/ip" $dir}}
+{{getv $ip}} {{$dir}}{{end}}
+{{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
+{{getv $ip}} {{$dir}}{{end}}

@@ -1,0 +1,354 @@
+    {
+        "name": {{cluster.name}},
+        "description": {{cluster.description}},
+        "vxnet": {{cluster.vxnet}},
+        "nodes": [
+            {
+                "role": "spark-master",
+                "container": {
+                    "type": "kvm",
+                    "zone": "sh1a",
+                    "image": "img-3ro2c8uj"
+                },
+                "instance_class": {{cluster.spark-master.instance_class}},
+                "count": {{cluster.spark-master.count}},
+                "cpu": {{cluster.spark-master.cpu}},
+                "memory": {{cluster.spark-master.memory}},
+                "volume": {
+                    "size": {{cluster.spark-master.volume_size}},
+                    "mount_point": "/bigdata1",
+                    "filesystem": "ext4",
+                    "class": {{cluster.spark-master.volume_class}}
+                },
+                "passphraseless":"ssh-rsa",
+                "services": {
+                    "start": {
+			"order": 0,
+                        "cmd": "USER=root /opt/spark/sbin/start-all.sh;/opt/livy/bin/livy-server start"
+                    },
+                    "stop": {
+                        "cmd": "USER=root /opt/spark/sbin/stop-all.sh;/opt/livy/bin/livy-server stop"
+                    }
+                },
+        	"health_check": {
+                    "enable": true,
+                    "interval_sec": 60,
+                    "timeout_sec": 10,
+                    "action_timeout_sec": 30,
+                    "healthy_threshold": 2,
+                    "unhealthy_threshold": 2,
+                    "check_cmd": "/opt/spark/sbin/check-spark-master.sh",
+                    "action_cmd": "/opt/spark/sbin/action-spark-master.sh"
+	        },
+		"monitor": {
+	 	    "enable": true,
+            	    "cmd": "/usr/bin/python /opt/spark/sbin/spark-master-monitor.py",
+            	    "items": {
+			"WorkersTotal": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	},
+	            	"WorkersAlive": {
+        	    		"unit": "",
+	                	"value_type": "int",
+		                "statistics_type": "latest"
+        	    	},
+			"Running": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	},
+			"Waiting": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	}
+	            },
+	            "groups": {        	        
+        	        "Workers": ["WorkersTotal", "WorkersAlive"],
+			"Applications": ["Running", "Waiting"]
+        	    },
+        	    "display": ["Workers", "Applications"]
+	        }
+            },
+            {
+                "role": "hadoop-master",
+                "container": {
+                    "type": "kvm",
+                    "zone": "sh1a",
+                    "image": "img-k5dtjd8b"
+                },
+                "instance_class": {{cluster.hadoop-master.instance_class}},
+                "count": {{cluster.hadoop-master.count}},
+                "cpu": {{cluster.hadoop-master.cpu}},
+                "memory": {{cluster.hadoop-master.memory}},
+                "volume": {
+                    "size": {{cluster.hadoop-master.volume_size}},
+                    "mount_point": "/bigdata1",
+                    "filesystem": "ext4",
+                    "class": {{cluster.hadoop-master.volume_class}}
+                },
+                "passphraseless":"ssh-rsa",
+                "services": {
+                    "init": {
+                        "cmd": "USER=root mkdir -p /bigdata1/hadoop;/opt/hadoop/bin/hdfs namenode -format -force"
+                    },
+                    "start": {
+			"order": 0,
+                        "cmd": "USER=root /opt/hadoop/sbin/start-dfs.sh"
+                    },
+                    "stop": {
+                        "cmd": "USER=root /opt/hadoop/sbin/stop-dfs.sh"
+                    },
+                    "scale_in": {
+                        "cmd": "USER=root /opt/hadoop/sbin/exclude-node.sh"
+                    }
+                },
+        	"health_check": {
+                    "enable": true,
+                    "interval_sec": 60,
+                    "timeout_sec": 10,
+                    "action_timeout_sec": 30,
+                    "healthy_threshold": 2,
+                    "unhealthy_threshold": 2,
+                    "check_cmd": "/opt/hadoop/sbin/check-hdfs-master.sh",
+                    "action_cmd": "/opt/hadoop/sbin/action-hdfs-master.sh"
+	        },
+		"monitor": {
+	 	    "enable": true,
+            	    "cmd": "/usr/bin/python /opt/hadoop/sbin/hdfs-master-monitor.py",
+            	    "items": {
+			"FilesTotal": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	},
+	            	"FilesCreated": {
+        	    		"unit": "",
+	                	"value_type": "int",
+		                "statistics_type": "delta"
+        	    	},
+			"FilesAppended": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "delta"
+        	    	},
+			"FilesRenamed": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "delta"
+        	    	}, 
+			"FilesDeleted": {
+        		         "unit": "",
+                		 "value_type": "int",
+	        	         "statistics_type": "delta"
+        	    	 }, 
+			"RemainingGB": {
+        		        "unit": "GB",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	}, 
+			"PercentUsed": {
+        		        "unit": "%",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	}, 
+			"LiveNodes": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	}, 
+			"DeadNodes": {
+        		         "unit": "",
+                		 "value_type": "int",
+	        	         "statistics_type": "latest"
+        	    	 }, 
+			"DecomLiveNodes": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	},
+			"DecomDeadNodes": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	}, 
+			"DecommissioningNodes": {
+        		         "unit": "",
+                		 "value_type": "int",
+	        	         "statistics_type": "latest"
+        	    	 }
+	            },
+	            "groups": {
+        	        "DFS Files": ["FilesTotal", "FilesCreated", "FilesAppended", "FilesRenamed", "FilesDeleted"],
+        	        "DFS Percentage": ["PercentUsed"],
+			"DFS Capacity": ["RemainingGB"],
+			"Data Nodes": ["LiveNodes", "DeadNodes", "DecomLiveNodes", "DecomDeadNodes", "DecommissioningNodes"]
+        	    },
+        	    "display": ["DFS Files", "DFS Percentage", "DFS Capacity", "Data Nodes"]
+	        }
+            },
+            {
+                "role": "worker",
+                "container": {
+                    "type": "kvm",
+                    "zone": "sh1a",
+                    "image": "img-uc6ldzi0"
+                },
+                "instance_class": {{cluster.worker.instance_class}},
+                "count": {{cluster.worker.count}},
+                "cpu": {{cluster.worker.cpu}},
+                "memory": {{cluster.worker.memory}},
+                "volume": {
+                    "size": {{cluster.worker.volume_size}},
+                    "mount_point": ["/bigdata1", "/bigdata2", "/bigdata3"],
+                    "filesystem": "ext4",
+                    "class": {{cluster.worker.volume_class}}
+                },
+		"services": {
+                    "start": {
+			"order": 1,
+                        "cmd": "USER=root /opt/spark/sbin/action-slave.sh"
+                    },
+		    "destroy": {
+                	"nodes_to_execute_on": 1,
+                	"cmd": "USER=root /opt/spark/sbin/stop-slave.sh"
+           	    }
+                },
+	        "health_check": {
+                    "enable": true,
+                    "interval_sec": 60,
+                    "timeout_sec": 10,
+                    "action_timeout_sec": 30,
+                    "healthy_threshold": 2,
+                    "unhealthy_threshold": 2,
+                    "check_cmd": "/opt/spark/sbin/check-slave.sh",
+                    "action_cmd": "/opt/spark/sbin/action-slave.sh"
+	        },
+		"monitor": {
+	 	    "enable": true,
+            	    "cmd": "/usr/bin/python /opt/spark/sbin/spark-slave-monitor.py",
+            	    "items": {
+			"RemainingGB": {
+        		        "unit": "GB",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	},
+	            	"BlocksWritten": {
+        	    		"unit": "",
+	                	"value_type": "int",
+		                "statistics_type": "delta"
+        	    	},
+			"BlocksRead": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "delta"
+        	    	},			
+			"GcCount": {
+        		         "unit": "",
+                		 "value_type": "int",
+	        	         "statistics_type": "delta"
+        	    	 }, 
+			"GcNumWarnThresholdExceeded": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "delta"
+        	    	},
+	            	"CoresFree": {
+        	    		"unit": "",
+	                	"value_type": "int",
+		                "statistics_type": "latest"
+        	    	},
+			"CoresUsed": {
+        		        "unit": "",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	},
+			"Executors": {
+        		         "unit": "",
+                		 "value_type": "int",
+	        	         "statistics_type": "latest"
+        	    	 }, 
+	            	"MemFreeMB": {
+        	    		"unit": "MB",
+	                	"value_type": "int",
+		                "statistics_type": "latest"
+        	    	},
+			"MemUsedMB": {
+        		        "unit": "MB",
+                		"value_type": "int",
+	        	        "statistics_type": "latest"
+        	    	}
+	            },
+	            "groups": {        	                	  
+			"Compute": ["CoresFree", "CoresUsed", "Executors"],  
+			"Memory": ["MemUsedMB", "MemFreeMB"],			    
+			"Storage": ["RemainingGB"],	
+			"Blocks": ["BlocksRead", "BlocksWritten"],
+			"Gc": ["GcCount", "GcNumWarnThresholdExceeded"]
+        	    },
+        	    "display": ["Compute", "Memory", "Storage", "Blocks", "Gc"]
+	        }
+            },
+	    {
+                "role": "spark-client",
+                "container": {
+                    "type": "kvm",
+                    "zone": "sh1a",
+                    "image": "img-7ho0w9rz"
+                },
+                "instance_class": {{cluster.spark-client.instance_class}},
+                "count": {{cluster.spark-client.count}},
+                "cpu": {{cluster.spark-client.cpu}},
+                "memory": {{cluster.spark-client.memory}},
+                "volume": {
+                    "size": {{cluster.spark-client.volume_size}},
+                    "mount_point": "/bigdata1",
+                    "filesystem": "ext4",
+                    "class": {{cluster.spark-client.volume_class}}
+                },
+		"user_access": true,
+                "passphraseless":"ssh-rsa"
+            }
+        ],
+        "env": {
+	    "spark.worker.cleanup.enabled": {{env.spark_worker_cleanup_enabled}},
+	    "spark.worker.cleanup.interval": {{env.spark_worker_cleanup_interval}},
+	    "spark.worker.cleanup.appDataTtl": {{env.spark_worker_cleanup_appDataTtl}},
+	    "hadoop.proxyuser": {{env.hadoop_proxyuser}},
+	    "hadoop.proxyuser.hosts": {{env.hadoop_proxyuser_hosts}},
+	    "hadoop.proxyuser.groups": {{env.hadoop_proxyuser_groups}},
+            "dfs.datanode.handler.count": {{env.dfs_datanode_handler_count}},
+            "dfs.namenode.handler.count": {{env.dfs_namenode_handler_count}},
+            "dfs.replication":{{env.dfs_replication}},
+            "fs.trash.interval": {{env.fs_trash_interval}}
+        },
+        "advanced_actions": ["change_vxnet", "scale_horizontal"],
+        "endpoints": {
+            "hdfs.client_port": {
+                "port":9000,
+                "protocol": "tcp"
+            },
+            "hdfs.monitor_port": {
+                "port":50070,
+                "protocol": "http"
+            },
+            "spark.client_port": {
+                "port":7077,
+                "protocol": "tcp"
+            },
+            "spark.monitor_port": {
+                "port":8080,
+                "protocol": "http"
+            },
+            "spark.driver_port": {
+                "port":4040,
+                "protocol": "http"
+            },
+            "livy.port": {
+                "port":8998,
+                "protocol": "tcp"
+            }
+        }
+    }

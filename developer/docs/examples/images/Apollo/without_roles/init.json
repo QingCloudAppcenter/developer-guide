@@ -1,0 +1,52 @@
+{
+  "app_id": "app-apollo-init",
+  "app_version": "1.0",
+  "vxnet": "vxnet-p050mao",
+  "node": [
+  {
+     "role": "rocket",
+     "container": {
+        "type": "kvm",
+        "image": "pimg-apollo-rocket",
+        "zone": "pek3a"
+     },
+     "count": 3,
+     "cpu": 1,
+     "memory": 512,
+     "volume": {
+         "size": 4
+     },
+     "instance_class": 0,
+     "service": {
+     	"init": {
+     	    "nodes_to_execute_on": 1,
+     		"cmd": "mkdir -p /data/apollo/logs; /opt/apollo/bin/ignite-rockets.sh"
+     	},
+        "start": {
+           "order": 1,
+           "cmd": "kdir -p /data/apollo/logs; /opt/apollo/bin/launch-rockets.sh"
+        },
+        "stop": {
+           "cmd": "/opt/apollo/bin/shutdown-rockets.sh"
+        },
+        "scale_in": {
+           "nodes_to_execute_on": 1,
+           "cmd": "/opt/apollo/bin/drop-rockets.sh"
+        },
+        "scale_out": {
+           "nodes_to_execute_on": 2,
+           "cmd": "/opt/apollo/bin/add-rockets.sh"
+        }
+     },
+     "env": {
+        "rocket-engine-type": "ChangZheng No. 11",
+        "rocket-engine": 3
+  	 }
+  }],
+  "env": {
+     "common-param1": "value1",
+     "common-param2": "value2",
+     "common-param3": "value3",
+     "common-param4": "value4"
+  }
+}

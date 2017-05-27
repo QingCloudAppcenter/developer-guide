@@ -1,0 +1,4 @@
+{{range $dir := lsdir "/hosts/hbase-master/"}}{{$pub_key := printf "/hosts/hbase-master/%s/pub_key" $dir}}
+{{getv $pub_key}}{{end}}
+{{range $dir := lsdir "/hosts/hbase-hdfs-master/"}}{{$pub_key := printf "/hosts/hbase-hdfs-master/%s/pub_key" $dir}}
+{{getv $pub_key}}{{end}}

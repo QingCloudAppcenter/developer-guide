@@ -1,0 +1,7 @@
+[template]
+src = "hive-site.xml.tmpl"
+dest = "/usr/local/hive/conf/hive-site.xml"
+keys = [
+    "/",
+]
+reload_cmd = "/usr/local/hive/hive_shell.sh restart"

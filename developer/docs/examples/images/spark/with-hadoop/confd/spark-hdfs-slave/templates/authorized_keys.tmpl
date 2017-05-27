@@ -1,0 +1,4 @@
+{{range $dir := lsdir "/hosts/spark-master/"}}{{$pub_key := printf "/hosts/spark-master/%s/pub_key" $dir}}
+{{getv $pub_key}}{{end}} 
+{{range $dir := lsdir "/hosts/hadoop-master/"}}{{$pub_key := printf "/hosts/hadoop-master/%s/pub_key" $dir}}
+{{getv $pub_key}}{{end}}

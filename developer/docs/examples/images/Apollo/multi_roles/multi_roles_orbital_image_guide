@@ -1,0 +1,62 @@
+本指南介绍如何制作 Apollo 镜像过程
+
+1. 参考how_to_make_image安装基础配置
+
+2. 创建/etc/confd/conf.d/apollo.conf.toml
+    # apollo.conf.toml, DO NOT copy this line!
+	[template]
+	src = "apollo.conf.tmpl"
+	dest = "/opt/apollo/apollo.conf"
+	  keys = [
+	    "/",
+	]
+	reload_cmd = "/opt/apollo/bin/reset-orbital-module.sh"
+	
+3. 创建/etc/confd/templates/apollo.conf.tmpl
+    # apollo.conf.tmpl, DO NOT copy this line!
+    fixed-orbital-param1 value1
+    fixed-orbital-param2 value2          
+	{{range gets "/env/*"}}{{$v := .Value}}{{ if gt ( len ( $v ) ) 0 }}
+	{{base .Key}}    {{.Value}}{{end}}{{end}}
+    
+4. 创建/opt/apollo/bin/open-orbital-module.sh
+   　# open-orbital-module.sh, DO NOT copy this line!
+	#!/bin/bash
+	
+	echo `date +"%Y-%m-%d %H:%M:%S"` ": Open Apollo orbital module" >> /data/apollo/logs/apollo.log 2>&1
+	if [ $? -eq 0 ]; then
+		echo `date +"%Y-%m-%d %H:%M:%S"` ": Open Apollo orbital module successful" >> /data/apollo/logs/apollo.log 2>&1
+		exit 0
+	else
+		echo `date +"%Y-%m-%d %H:%M:%S"` ": Failed to open Apollo orbital module" >> /data/apollo/logs/apollo.log 2>&1
+		exit 1
+	fi
+	done
+	
+5. 创建/opt/apollo/bin/close-orbital-module.sh
+   　# stop-slave-server.sh, DO NOT copy this line!
+	#!/bin/bash
+	
+	echo `date +"%Y-%m-%d %H:%M:%S"` ": Close Apollo orbital module" >> /data/apollo/logs/apollo.log 2>&1
+	if [ $? -eq 0 ]; then
+		echo `date +"%Y-%m-%d %H:%M:%S"` ": Close Apollo orbital module successful" >> /data/apollo/logs/apollo.log 2>&1
+		exit 0
+	else
+		echo `date +"%Y-%m-%d %H:%M:%S"` ": Failed to close Apollo orbital module" >> /data/apollo/logs/apollo.log 2>&1
+		exit 1
+	fi
+	done
+	
+6.创建/opt/apollo/bin/reset-orbital-module.sh
+    # reset-orbital-module.sh, DO NOT copy this line!
+	#!/bin/bash
+
+	echo `date +"%Y-%m-%d %H:%M:%S"` ": Reset Apollo orbital module" >> /data/apollo/logs/apollo.log 2>&1
+	if [ $? -eq 0 ]; then
+	    echo `date +"%Y-%m-%d %H:%M:%S"` ": Reset Apollo orbital module successful" >> /data/apollo/logs/apollo.log 2>&1
+	    exit 0
+	else
+	    echo `date +"%Y-%m-%d %H:%M:%S"` ": Failed to reset Apollo orbital module" >> /data/apollo/logs/apollo.log 2>&1
+	    exit 1
+	fi
+	done

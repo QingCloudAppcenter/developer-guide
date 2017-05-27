@@ -1,0 +1,7 @@
+[template]
+src = "config.ini.tmpl"
+dest = "/usr/local/hive/conf/config.ini"
+keys = [
+    "/",
+]
+reload_cmd = "/usr/local/hive/hive_shell.sh restart"

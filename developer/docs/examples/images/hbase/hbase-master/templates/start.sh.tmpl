@@ -1,0 +1,66 @@
+#!/bin/sh
+
+retry=60
+while [ $retry -gt 60 ];do
+  USER=root /opt/hadoop/bin/hdfs dfsadmin -safemode leave
+  if [ $? -ne 0 ];then
+    sleep 5
+    retry=$(( $retry - 1 ))
+  else
+    break
+  fi
+done
+
+if [ $retry -le 0 ];then
+  echo "Leave HDFS safemode failed"
+  exit 1
+fi
+
+USER=root /opt/hbase/bin/start-hbase.sh
+if [ $? -ne 0 ];then
+  echo "Start HBase failed"
+  exit 1
+fi
+
+{{range $i, $host := ls (printf "/hosts/hbase-master")}}
+  {{if eq $i 0}}
+    {{$ip := printf "/hosts/hbase-master/%s/ip" $host}}
+    {{$ip := getv $ip}}
+    {{$local_ip := getv "/host/ip"}}
+    {{if eq $ip $local_ip}}
+      USER=root /opt/hbase/bin/hbase-daemon.sh start rest -p 8000
+      if [ $? -ne 0 ];then
+        echo "Start Rest failed"
+        exit 1
+      fi
+
+      USER=root /opt/hbase/bin/hbase-daemon.sh start thrift2
+      if [ $? -ne 0 ];then
+        echo "Start HBase ThriftServer failed"
+        exit 1
+      fi
+
+      USER=root echo balance_switch true | /opt/hbase/bin/hbase shell
+      if [ $? -ne 0 ];then
+        # do not exit 1
+        echo "Start HBase balance_switch failed"
+      fi
+
+      {{if exists "/env/qingcloud.phoenix.on.hbase.enable"}}
+        phoenix={{getv "/env/qingcloud.phoenix.on.hbase.enable" "false"}}
+        {{if exists "/env/phoenix.transactions.enabled"}}
+          transactions={{getv "/env/phoenix.transactions.enabled" "false"}}
+          if [ "$phoenix" = "true" ];then
+            if [ "$transactions" = "true" ];then
+              USER=root /opt/hbase/bin/tephra start
+              if [ $? -ne 0 ];then
+                echo "Start HBase phoenix tephra failed"
+                exit 1
+              fi
+            fi
+          fi
+        {{end}}
+      {{end}}
+    {{end}}
+  {{end}}
+{{end}}

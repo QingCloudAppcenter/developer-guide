@@ -1,0 +1,37 @@
+    {
+        "name": {{cluster.name}},
+        "description": {{cluster.description}},
+        "vxnet": {{cluster.vxnet}},
+        "links": {
+            "zk_service": {{cluster.zk_service}}
+        },
+        "node": [
+            {
+                "container": {
+                   "zone": "pek3",
+                   "type": "kvm",
+                   "image": "img-kafka821"
+                },
+                "instance_class": {{cluster.nodes.instance_class}},
+                "count": 1,
+                "cpu": {{cluster.nodes.cpu}},
+                "memory": {{cluster.nodes.memory}},
+                "volume": {
+                    "size": {{cluster.nodes.volume_size}},
+                    "mount_point": "/data",
+                    "filesystem": "xfs"
+                },
+                "service": {
+                    "start": {
+                        "cmd": "/usr/local/hue/build/env/bin/hue runcpserver"
+                    },
+                    "stop": {
+                        "cmd": "/usr/local/hue/build/env/bin/hue runcpserver"
+                    }
+                }
+            }
+        ],
+        "env": {
+            "secret_key": {{env.secret_key}},
+        }
+    }

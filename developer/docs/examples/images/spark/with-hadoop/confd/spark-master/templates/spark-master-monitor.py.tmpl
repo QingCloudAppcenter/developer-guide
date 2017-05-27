@@ -1,0 +1,32 @@
+import sys
+import urllib2
+import json
+import re
+
+SPARK_ROLE_MASTER = "spark-master"
+SPARK_ROLE_WORKER = "spark-worker"
+
+def parse_spark_stat(role, hjson, stats):    
+    if "gauges" not in hjson:
+        return	
+    if role == SPARK_ROLE_MASTER:
+	stats["WorkersTotal"] = hjson["gauges"]["master.workers"]["value"]
+	stats["WorkersAlive"] = hjson["gauges"]["master.aliveWorkers"]["value"]
+	stats["Running"] = hjson["gauges"]["master.apps"]["value"]
+	stats["Waiting"] = hjson["gauges"]["master.waitingApps"]["value"]
+    elif role == SPARK_ROLE_WORKER:
+	stats["CoresFree"] = hjson["gauges"]["worker.coresFree"]["value"]
+	stats["CoresUsed"] = hjson["gauges"]["worker.coresUsed"]["value"]
+	stats["Executors"] = hjson["gauges"]["worker.executors"]["value"]
+	stats["MemFreeMB"] = hjson["gauges"]["worker.memFree_MB"]["value"]
+	stats["MemUsedMB"] = hjson["gauges"]["worker.memUsed_MB"]["value"]
+
+if __name__ == '__main__':
+    ip = '{{getv "/host/ip"}}'
+    stats = {}
+    role = SPARK_ROLE_MASTER
+    port = "8080"
+    res = urllib2.urlopen("http://%s:%s/metrics/master/json/" % (ip, port))
+    pjson = json.loads(res.read())
+    parse_spark_stat(role, pjson, stats)
+    print json.dumps(stats)

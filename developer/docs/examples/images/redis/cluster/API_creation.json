@@ -1,0 +1,79 @@
+{
+  "app_id": "app-redis-cl",
+  "app_version": "1.0",
+  "vxnet": "vxnet-p050mao",
+  "node": [
+  {
+     "role": "master",
+     "container": {
+        "type": "kvm",
+        "image": "img-redis3-c"
+     },
+     "count": 3,
+     "cpu": 1,
+     "memory": 512,
+     "volume": {
+         "size": 4,
+         "mount_point": "/data",
+         "filesystem": "xfs",
+         "class": 0
+     },
+     "replica": 1,
+     "instance_class": 0,
+     "service": {
+     	"init": {
+     	    "nodes_to_execute_on": 1,
+     	    "post_start_service": "true",
+     	    "cmd": "/opt/redis/bin/init_cluster.sh"
+     	},
+        "start": {
+           "cmd": "mkdir -p /data/redis/logs; ulimit -n 65536; /opt/redis/bin/redis-server /opt/redis/redis.conf"
+        },
+        "stop": {
+           "cmd": "/opt/redis/bin/stop-redis-server.sh"
+        },
+        "scale_in": {
+           "nodes_to_execute_on": 1,
+           "cmd": "/opt/redis/bin/scaling-in.sh"
+        },
+        "scale_out": {
+           "nodes_to_execute_on": 1,
+           "cmd": "/opt/redis/bin/scaling-out.sh"
+        }
+     }
+  }],
+  "env": {
+     "activerehashing": "yes",
+     "appendonly": "yes",
+     "appendfsync": "everysec",
+     "hash-max-ziplist-entries": 512,
+     "hash-max-ziplist-value": 64,
+     "latency-monitor-threshold": 0,
+     "list-max-ziplist-entries": 512,
+     "list-max-ziplist-value": 64,
+     "maxclients": 65000,
+     "maxmemory-policy": "volatile-lru",
+     "maxmemory-samples": 3,
+     "min-slaves-max-lag": 10,
+     "min-slaves-to-write": 0,
+     "no-appendfsync-on-rewrite": "yes",
+     "notify-keyspace-events": "",
+     "repl-backlog-size": 1048576,
+     "repl-backlog-ttl": 3600,
+     "repl-timeout": 60,
+     "set-max-intset-entries": 512,
+     "slowlog-log-slower-than": -1,
+     "slowlog-max-len": 128,
+     "tcp-keepalive": 0,
+     "timeout": 0,
+     "zset-max-ziplist-entries": 128,
+     "zset-max-ziplist-value": 64
+  },
+  "advanced_actions": ["scale_horizontal"],
+  "endpoints": {
+    "client": {
+      "port":6379,
+      "protocol": "tcp"
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "app_id": "app-apollo-roles",
+  "app_version": "1.0",
+  "vxnet": "vxnet-p050mao",
+  "node": [
+  {
+     "role": "rocket",
+     "container": {
+        "type": "kvm",
+        "image": "img-apollo-rocket"
+     },
+     "count": 3,
+     "cpu": 1,
+     "memory": 512,
+     "volume": {
+         "size": 4,
+         "mount_point": "/data",
+         "filesystem": "ext4",
+         "type": 0
+     },
+     "instance_class": 0,
+     "replica": 1,
+     "service": {
+     	"init": {
+     	    "nodes_to_execute_on": 1,
+ 	    "cmd": "mkdir -p /data/apollo/logs; /opt/apollo/bin/ignite-rockets.sh"
+     	},
+        "start": {
+           "order": 1,
+           "cmd": "mkdir -p /data/apollo/logs; /opt/apollo/bin/launch-rockets.sh"
+        },
+        "stop": {
+           "cmd": "/opt/apollo/bin/shutdown-rockets.sh"
+        },
+        "scale_in": {
+           "nodes_to_execute_on": 1,
+           "cmd": "/opt/apollo/bin/drop-rockets.sh"
+        },
+        "scale_out": {
+           "nodes_to_execute_on": 2,
+           "cmd": "/opt/apollo/bin/add-rockets.sh"
+        }
+     },
+     "env": {
+        "rocket-engine-type": "ChangZheng No. 11",
+        "rocket-engine": 3
+     }
+  },
+  {
+     "role": "shuttle",
+     "container": {
+        "type": "lxc",
+        "image": "img-apollo-shuttle"
+     },
+     "count": 1,
+     "cpu": 1,
+     "memory": 512,
+     "volume": {
+         "size": 4,
+         "mount_point": "/data",
+         "filesystem": "xfs",
+         "type": 0
+     },
+     "instance_class": 0,
+     "service": {
+     	"init": {
+     	    "post_start_service": "true",
+     	    "cmd": "/opt/apollo/bin/init-shuttle.sh"
+     	},
+        "start": {
+           "order": 0,
+           "cmd": "mkdir -p /data/apollo/logs; /opt/apollo/bin/launch-shuttle.sh"
+        },
+        "stop": {
+           "cmd": "/opt/apollo/bin/shutdown-shuttle.sh"
+        }
+     }
+  },
+  {
+     "role": "crew_module",
+     "container": {
+        "type": "lxc",
+        "image": "img-apollo-crew"
+     },
+     "count": 1,
+     "cpu": 1,
+     "memory": 512,
+     "instance_class": 0,
+     "service": {
+        "start": {
+           "order": 0,
+           "cmd": "mkdir -p /data/apollo/logs; /opt/apollo/bin/open-crew-module.sh"
+        },
+        "stop": {
+           "cmd": "/opt/apollo/bin/close-crew-module.sh"
+        }
+     }
+  },
+  {
+     "role": "orbital_module",
+     "container": {
+        "type": "kvm",
+        "image": "img-apollo-orbital"
+     },
+     "count": 2,
+     "cpu": 1,
+     "memory": 512,
+     "volume": {
+         "size": 3,
+         "mount_point": "/data",
+         "filesystem": "xfs",
+         "type": 0
+     },
+     "service": {
+        "start": {
+           "order": 2,
+           "cmd": "mkdir -p /data/apollo/logs; /opt/apollo/bin/open-orbital-module.sh"
+        },
+        "stop": {
+           "cmd": "/opt/apollo/bin/close-orbital-module.sh"
+        }
+     },
+     "env": {
+        "orbital-type": "ShenZhou No. 9",
+        "orbital-height": 30,
+        "orbital-weight": 100
+     }
+  }],
+  "env": {
+     "apollo-name": "Apollo No. 11",
+     "apollo-modules": 4,
+     "apollo-lifespan": 5,
+     "apollo-manpower": 6
+  }
+}

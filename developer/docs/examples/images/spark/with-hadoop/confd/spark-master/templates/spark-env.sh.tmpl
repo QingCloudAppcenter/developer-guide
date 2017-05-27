@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+export SPARK_LOG_DIR=/bigdata1/spark/logs
+export SPARK_WORKER_DIR=/bigdata1/spark/work
+export SPARK_WORKER_OPTS="-Dspark.worker.cleanup.enabled={{getv "/env/spark.worker.cleanup.enabled"}} -Dspark.worker.cleanup.interval={{getv "/env/spark.worker.cleanup.interval"}} -Dspark.worker.cleanup.appDataTtl="{{getv "/env/spark.worker.cleanup.appDataTtl"}}"
+export SPARK_PID_DIR=/bigdata1/spark/pids
+export SPARK_LOCAL_DIRS=/bigdata1/spark
+export HADOOP_HOME=/opt/hadoop/etc/hadoop
+{{range $dir := lsdir "/hosts/spark-master/"}}{{$ip := printf "/hosts/spark-master/%s/ip" $dir}}
+export SPARK_MASTER_IP={{getv $ip}}{{end}}

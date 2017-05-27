@@ -1,0 +1,103 @@
+    {
+        "type": "object",
+        "properties": [
+            {
+                "key": "cluster",
+                "description": "Hue cluster properties",
+                "type": "array",
+                "properties": [
+                    {
+                        "key": "name",
+                        "label": "name",
+                        "description": "The name of the Hue service",
+                        "type": "string",
+                        "default": "Hue",
+                        "required": "no"
+                    },
+                    {
+                        "key": "description",
+                        "label": "description",
+                        "description": "The description of the Hue service",
+                        "type": "string",
+                        "default": "",
+                        "required": "no"
+                    },
+                    {
+                        "key": "vxnet",
+                        "label": "VxNet",
+                        "description": "Choose a vxnet to join",
+                        "type": "string",
+                        "default": "",
+                        "required": "yes"
+                    },
+                    {
+                        "key": "zk_service_1",
+                        "label": "ZooKeeper",
+                        "description": "Choose a ZooKeeper to use",
+                        "type": "service",
+                        "tag": ["ZK", "ZooKeeper"],
+                        "default": "",
+                        "required": "no"
+                    },
+                    {
+                        "key": "nodes",
+                        "description": "Hue node properties",
+                        "type": "array",
+                        "properties": [
+                            {
+                                "key": "cpu",
+                                "label": "CPU",
+                                "description": "CPUs of each node",
+                                "type": "integer",
+                                "default": 1,
+                                "range": [1,2,4,8,12,16],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "memory",
+                                "label": "Memory",
+                                "description": "memory of each node (in MiB)",
+                                "type": "integer",
+                                "default": 2048,
+                                "range": [1024,2048,4096,8192,16384,32768],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "instance_class",
+                                "label": "instance class",
+                                "description":"The instance type for the cluster to run, such as high performance, high performance plus",
+                                "type":"integer",
+                                "default":0,
+                                "range": [0,1],
+                                "required":"yes"
+                            },
+                            {
+                                "key": "volume_size",
+                                "label": "volume size",
+                                "description":"The volume size for each instance",
+                                "type":"integer",
+                                "default":10,
+                                "required":"yes"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "env",
+                "description": "application configuration properties",
+                "type": "array",
+                "properties": [
+                    {
+                        "key": "secret_key",
+                        "label": "secret keys",
+                        "description": "The common.param1 for all nodes",
+                        "type": "string",
+                        "default": "value1",
+                        "range": ["value1", "value11"],
+                        "required": "yes"
+                    }
+                ]
+            }
+        ]
+    }

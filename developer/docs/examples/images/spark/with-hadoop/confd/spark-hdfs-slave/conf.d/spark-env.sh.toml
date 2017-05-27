@@ -1,0 +1,5 @@
+[template]
+src = "spark-env.sh.tmpl"
+dest = "/opt/spark/conf/spark-env.sh"
+keys = ["/",]
+reload_cmd = "/opt/spark/sbin/restart-slave.sh"

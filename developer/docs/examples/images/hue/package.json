@@ -1,0 +1,5 @@
+    {
+    	"name": "Hue Service",
+        "version": "hue - 3.11.0 - qingcloud",
+        "description": "Hue is a Web interface for analyzing data with Apache Hadoop."
+    }

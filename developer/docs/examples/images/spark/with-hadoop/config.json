@@ -1,0 +1,379 @@
+    {
+        "type": "array",
+        "properties": [
+            {
+                "key": "cluster",
+                "description": "Spark cluster properties",
+                "type": "array",
+                "properties": [
+                    {
+                        "key": "name",
+                        "label": "name",
+                        "description": "The name of the Spark service",
+                        "type": "string",
+                        "default": "Spark",
+                        "required": "no"
+                    },
+                    {
+                        "key": "description",
+                        "label": "description",
+                        "description": "The description of the Spark service",
+                        "type": "string",
+                        "default": "",
+                        "required": "no"
+                    },
+                    {
+                        "key": "vxnet",
+                        "label": "VxNet",
+                        "description": "Choose a vxnet to join",
+                        "type": "string",
+                        "default": "",
+                        "required": "yes"
+                    },
+                    {
+                        "key": "spark-master",
+			"label": "Spark master",
+                        "description": "Spark master properties",
+                        "type": "array",
+                        "properties": [
+                            {
+                                "key": "cpu",
+                                "label": "CPU",
+                                "description": "CPUs of each node",
+                                "type": "integer",
+                                "default": 2,
+                                "range": [1,2,4,8,12,16],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "memory",
+                                "label": "Memory",
+                                "description": "memory of each node (in MB)",
+                                "type": "integer",
+                                "default": 4096,
+                                "range": [2048,4096,6144,8192,12288,16384,24576,32768,40960,49152,65536],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "count",
+                                "label": "count",
+                                "description": "Number of nodes for the cluster to create",
+                                "type": "integer",
+                                "default": 1,
+                                "range": [1],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "instance_class",
+                                "label": "instance class",
+                                "description":"The instance type for the cluster to run, such as high performance, high performance plus",
+                                "type":"integer",
+                                "default":0,
+                                "range": [0,1],
+                                "required":"yes"
+                            },
+                            {
+                                "key": "volume_class",
+                                "label": "volume class",
+                                "description":"The volume type for each instance, such as high performance, high performance plus",
+                                "type":"integer",
+                                "default":0,
+                                "range": [0,3],
+                                "required":"yes"
+                            },
+                            {
+                                "key": "volume_size",
+                                "label": "volume size",
+                                "description":"The volume size for each instance",
+                                "type":"integer",
+				"step": 10,
+                                "default":10,
+				"min":	10,
+				"max":	1000,
+                                "required":"yes"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "hadoop-master",
+			"label": "HDFS master",
+                        "description": "HDFS master properties",
+                        "type": "array",
+                        "properties": [
+                            {
+                                "key": "cpu",
+                                "label": "CPU",
+                                "description": "CPUs of each node",
+                                "type": "integer",
+                                "default": 1,
+                                "range": [1,2,4,8,12,16],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "memory",
+                                "label": "Memory",
+                                "description": "memory of each node (in MB)",
+                                "type": "integer",
+                                "default": 2048,
+                                "range": [2048,4096,6144,8192,12288,16384,24576,32768,40960,49152,65536],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "count",
+                                "label": "count",
+                                "description": "Number of nodes for the cluster to create",
+                                "type": "integer",
+                                "default": 1,
+                                "range": [1],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "instance_class",
+                                "label": "instance class",
+                                "description": "The instance type for the cluster to run, such as high performance, high performance plus",
+                                "type": "integer",
+                                "default": 0,
+                                "range": [0,1],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "volume_class",
+                                "label": "volume class",
+                                "description": "The volume type for each instance, such as high performance, high performance plus",
+                                "type": "integer",
+                                "default": 0,
+                                "range": [0,3],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "volume_size",
+                                "label": "volume size",
+                                "description": "The volume size for each instance",
+                                "type": "integer",
+				"step": 10,
+                                "default": 10,
+				"min":	10,
+				"max":	1000,
+                                "required": "yes"
+                            }
+                        ]
+                    },
+                    {
+                        "key": "worker",
+			"label": "worker",
+                        "description": "Spark worker properties",
+                        "type": "array",
+                        "properties": [
+                            {
+                                "key": "cpu",
+                                "label": "CPU",
+                                "description": "CPUs of each node",
+                                "type": "integer",
+                                "default": 2,
+                                "range": [1,2,4,8,12,16],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "memory",
+                                "label": "Memory",
+                                "description": "memory of each node (in MB)",
+                                "type": "integer",
+                                "default": 8192,
+                                "range": [2048,4096,6144,8192,12288,16384,24576,32768,40960,49152,65536],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "count",
+                                "label": "count",
+                                "description": "Number of nodes for the cluster to create",
+                                "type": "integer",
+                                "default": 3,
+                                "required": "yes"
+                            },
+                            {
+                                "key": "instance_class",
+                                "label": "instance class",
+                                "description": "The instance type for the cluster to run, such as high performance, high performance plus",
+                                "type": "integer",
+                                "default": 0,
+                                "range": [0,1],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "volume_class",
+                                "label": "volume class",
+                                "description": "The volume type for each instance, such as high performance, high performance plus",
+                                "type": "integer",
+                                "default": 0,
+                                "range": [0,3],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "volume_size",
+                                "label": "volume size",
+                                "description": "The volume size for each instance",
+                                "type": "integer",
+                                "step": 30,
+                                "default": 30,
+				"min":	30,
+				"max":	3000,
+                                "required": "yes"
+                            }
+                        ]
+                    },
+		    {
+                        "key": "spark-client",
+			"label": "Spark client",
+                        "description": "Spark client properties",
+                        "type": "array",
+                        "properties": [
+                            {
+                                "key": "cpu",
+                                "label": "CPU",
+                                "description": "CPUs of each node",
+                                "type": "integer",
+                                "default": 1,
+                                "range": [1,2,4,8,12,16],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "memory",
+                                "label": "Memory",
+                                "description": "memory of each node (in MB)",
+                                "type": "integer",
+                                "default": 2048,
+                                "range": [2048,4096,6144,8192,12288,16384,24576,32768,40960,49152,65536],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "count",
+                                "label": "count",
+                                "description": "Number of nodes for the cluster to create",
+                                "type": "integer",
+                                "default": 1,
+                                "range": [0,1],
+                                "required": "yes"
+                            },
+                            {
+                                "key": "instance_class",
+                                "label": "instance class",
+                                "description":"The instance type for the cluster to run, such as high performance, high performance plus",
+                                "type":"integer",
+                                "default":0,
+                                "range": [0,1],
+                                "required":"yes"
+                            },
+                            {
+                                "key": "volume_class",
+                                "label": "volume class",
+                                "description":"The volume type for each instance, such as high performance, high performance plus",
+                                "type":"integer",
+                                "default":0,
+                                "range": [0,3],
+                                "required":"yes"
+                            },
+                            {
+                                "key": "volume_size",
+                                "label": "volume size",
+                                "description":"The volume size for each instance",
+                                "type":"integer",
+				"step": 10,
+                                "default":10,
+				"min":	10,
+				"max":	1000,
+                                "required":"yes"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "key": "env",
+                "description": "Spark service properties",
+                "type": "array",
+                "properties": [
+                    {
+                        "key": "spark_worker_cleanup_enabled",
+                        "label": "spark.worker.cleanup.enabled",
+                        "description": "Enable periodic cleanup of worker/application directories. Only the directories of stopped applications are cleaned up",
+                        "type": "string",
+                        "default": "true",
+			"range": ["true","false"],
+                        "required":"yes"
+                    },
+                    {
+                        "key": "spark_worker_cleanup_interval",
+                        "label": "spark.worker.cleanup.interval",
+                        "description": "Controls the interval, in seconds, at which the worker cleans up old application work dirs on the local machine, default to 28800 seconds(8 hours)",
+                        "type": "integer",
+                        "default": 28800,
+                        "required":"yes"
+                    },
+                    {
+                        "key": "spark_worker_cleanup_appDataTtl",
+                        "label": "spark.worker.cleanup.appDataTtl",
+                        "description": "The number of seconds to retain application work directories on each worker, default to 86400 seconds(24 hours)",
+                        "type": "integer",
+                        "default": 86400,
+                        "required":"yes"
+                    },
+                    {
+                        "key": "hadoop_proxyuser",
+                        "label": "hadoop.proxyuser",
+                        "description": "Hadoop proxy user",
+                        "type": "string",
+                        "default": "",
+                        "required": "no"
+                    },
+                    {
+                        "key": "hadoop_proxyuser_hosts",
+                        "label": "hadoop.proxyuser.[hadoop_proxyuser].hosts",
+                        "description": "Hosts the proxyuser can represent",
+                        "type": "string",
+                        "default": "*",
+                        "required": "no"
+                    },
+                    {
+                        "key": "hadoop_proxyuser_groups",
+                        "label": "hadoop.proxyuser.[hadoop_proxyuser].groups",
+                        "description": "Groups in hosts the proxyuser can represent",
+                        "type": "string",
+                        "default": "*",
+                        "required": "no"
+                    },
+                    {
+                        "key": "dfs_datanode_handler_count",
+                        "label": "dfs.datanode.handler.count",
+                        "description": "The number of server threads for the data node",
+                        "type": "integer",
+                        "default": 10,
+                        "required":"yes"
+                    },
+                    {
+                        "key": "dfs_namenode_handler_count",
+                        "label": "dfs.namenode.handler.count",
+                        "description": "The number of server threads for the name node",
+                        "type": "integer",
+                        "default": 10,
+                        "required": "yes"
+                    },
+                    {
+                        "key": "dfs_replication",
+                        "label": "dfs.replication",
+                        "description": "The replication factor in HDFS",
+                        "type": "integer",
+                        "default": 2,
+                        "required": "yes"
+                    },
+                    {
+                        "key": "fs_trash_interval",
+                        "label": "fs.trash.interval",
+                        "description": "It controls the number of minutes after which a trash checkpoint directory is deleted",
+                        "type": "integer",
+                        "default": 1440,
+                        "required": "yes"
+                    }
+                ]
+            }
+        ]
+    }

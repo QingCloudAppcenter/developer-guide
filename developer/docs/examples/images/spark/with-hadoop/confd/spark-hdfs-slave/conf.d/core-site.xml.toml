@@ -1,0 +1,5 @@
+[template]
+src = "core-site.xml.tmpl"
+dest = "/opt/hadoop/etc/hadoop/core-site.xml"
+keys = ["/",]
+reload_cmd = "/opt/hadoop/sbin/restart-slave.sh"
