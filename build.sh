@@ -1,10 +1,11 @@
 #!/bin/bash
-cd developer
-npm install -g gitbook-cli
+if not type "gitbook" >/dev/null 2>/dev/null; then
 
+npm install -g gitbook-cli
+fi
 gitbook install
 
-FILENAME="../_book/qingcloud-appcenter-developer-guide"
+FILENAME="_book/qingcloud-appcenter-developer-guide"
 gitbook build . $FILENAME
 gitbook pdf . $FILENAME.pdf
 gitbook epub . $FILENAME.epub
