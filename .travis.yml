@@ -1,0 +1,25 @@
+sudo: required
+
+language: node_js
+
+node_js:
+- 'node'
+
+cache:
+  directories:
+    - "node_modules"
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_4812bbd1d0bc_key -iv $encrypted_4812bbd1d0bc_iv -in config.yaml.enc -out config.yaml -d
+install:
+- npm install -g gitbook-cli
+- npm install -g markdownlint-cli
+- sudo pip install qsctl
+
+before_script:
+  - export FILENAME="_book/qingcloud-appcenter-developer-guide"
+
+script:
+- gitbook install
+- gitbook build . $FILENAME
+- 'if [ "$TRAVIS_BRANCH" = "master" ]; then qsctl sync ../_book/qingcloud-appcenter-developer-guide/ qs://appcenter-docs/developer-guide/ --config ../config.yaml; fi'

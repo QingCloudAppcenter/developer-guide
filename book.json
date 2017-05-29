@@ -1,4 +1,5 @@
 {
+  "root":"developer",
   "title": "QingCloud AppCenter 2.0 Developer Guide",
   "structure.readme": "docs/introduction/README.md",
   "gitbook":">=3.2.2",
