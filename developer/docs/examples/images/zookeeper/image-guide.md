@@ -100,7 +100,7 @@ apt-get install openjdk-7-jre-headless
 	export JVMFLAGS="-Xmx${total_free}m"
 	```
 
-	+ 更新日志路径，修改文件 /opt/zookeeper/bin/zkEnv.sh
+	+ 更新日志路径，修改文件 /opt/zookeeper/bin/zkEnv.sh，把默认路径修改成如下路径：
     ```
-    ZOO_LOG_DIR_"/data/zookeeper/logs"
+    ZOO_LOG_DIR＝"/data/zookeeper/logs"
     ```
