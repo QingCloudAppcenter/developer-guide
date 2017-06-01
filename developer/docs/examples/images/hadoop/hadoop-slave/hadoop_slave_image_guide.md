@@ -22,9 +22,9 @@
             	"/",
             ]
             reload_cmd = "/opt/hadoop/sbin/start-hdfs-slave.sh"
-  
+
   + 创建/etc/confd/conf.d/yarn-site.xml.toml
-  
+
 			  [template]
 			  src = "yarn-site.xml.tmpl"
 			  dest = "/opt/hadoop/etc/hadoop/yarn-site.xml"
@@ -32,16 +32,16 @@
 			    "/",
 			  ]
 			  reload_cmd = "/opt/hadoop/sbin/start-yarn-slave.sh"
-            
+
   + 创建/etc/confd/conf.d/capacity-scheduler.xml.toml
-            
+
             [template]
 			 src = "capacity-scheduler.xml.tmpl"
 			 dest = "/opt/hadoop/etc/hadoop/capacity-scheduler.xml"
 			 keys = [
 			    "/",
 			 ]
-            
+
   + 创建/etc/confd/conf.d/mapred-site.xml.toml
 
 			[template]
@@ -68,12 +68,13 @@
             keys = [
             	"/",
             ]
-            
+
 
 * 创建tmpl文件
 
   + 创建/etc/confd/templates/core-site.xml.tmpl
 
+```
               <?xml version="1.0" encoding="UTF-8"?>
 				<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 				<configuration>
@@ -107,10 +108,11 @@
 				    <value>*</value>
 				  </property>
 				</configuration>
-
+```
 
   + 创建/etc/confd/templates/hdfs-site.xml.tmpl
 
+```
               <?xml version="1.0" encoding="UTF-8"?>
 				<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 				<configuration>
@@ -151,8 +153,10 @@
 				    <value>{{getv "/env/dfs.datanode.handler.count" "10"}}</value>
 				  </property>
 				</configuration>
+```
+
   + 创建/etc/confd/templates/yarn-site.xml.tmpl
-  
+```
 				<?xml version="1.0" encoding="UTF-8"?>
 				<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 				<configuration>
@@ -202,10 +206,11 @@
 				        <value>{{getv "/env/yarn.nodemanager.vmem-pmem-ratio" "2.1"}}</value>
 				    </property>
 				</configuration>
+```
 
-  
   + 创建/etc/confd/templates/capacity-scheduler.xml.tmpl
 
+```
 				<?xml version="1.0" encoding="UTF-8"?>
 				<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 				<configuration>
@@ -262,10 +267,11 @@
 				        <value>false</value>
 				      </property>
 				</configuration>
+```
 
-  
   + 创建/etc/confd/templates/mapred-site.xml.tmpl
-  
+
+```
 				<?xml version="1.0" encoding="UTF-8"?>
 				<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 				<configuration>
@@ -283,22 +289,23 @@
 				        <value>{{$ip_address}}:19888</value>{{end}}
 				    </property>
 				</configuration>
-
+```
 
   + 创建/etc/confd/templates/authorized_keys.tmpl
 
+```
             {{range $dir := lsdir "/hosts/yarn-master/"}}{{$pub_key := printf "/hosts/yarn-master/%s/pub_key" $dir}}
-			 {{getv $pub_key}}{{end}} 
+			 {{getv $pub_key}}{{end}}
 			 {{range $dir := lsdir "/hosts/hdfs-master/"}}{{$pub_key := printf "/hosts/hdfs-master/%s/pub_key" $dir}}
 			 {{getv $pub_key}}{{end}}
-	
- 
-  + 创建/etc/confd/templates/hosts.tmpl
+```
 
+  + 创建/etc/confd/templates/hosts.tmpl
+```
             {{range $dir := lsdir "/hosts/yarn-master/"}}{{$ip := printf "/hosts/yarn-master/%s/ip" $dir}}
 			 {{getv $ip}} {{$dir}}{{end}}
 			 {{range $dir := lsdir "/hosts/hdfs-master/"}}{{$ip := printf "/hosts/hdfs-master/%s/ip" $dir}}
 			 {{getv $ip}} {{$dir}}{{end}}
 			 {{range $dir := lsdir "/hosts/hadoop-slave/"}}{{$ip := printf "/hosts/hadoop-slave/%s/ip" $dir}}
 			 {{getv $ip}} {{$dir}}{{end}}
-
+```

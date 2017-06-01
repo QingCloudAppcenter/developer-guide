@@ -306,7 +306,7 @@
 ```
 
 
-**cluster.json.mustache**<a id="cluster"></a>
+**cluster.json.mustache**
 {% raw %}
 ```json
 {
@@ -396,5 +396,5 @@
         }
     }
 }
-``` 
+```
 {% endraw %}

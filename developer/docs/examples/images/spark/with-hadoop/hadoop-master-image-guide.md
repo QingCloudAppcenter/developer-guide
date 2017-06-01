@@ -6,6 +6,7 @@
 * 创建 toml 文件
 
   + 创建 /etc/confd/conf.d/core-site.xml.toml
+
   ```toml
   [template]
   src = "core-site.xml.tmpl"
@@ -17,6 +18,7 @@
   ```
 
   + 创建 /etc/confd/conf.d/hdfs-site.xml.toml
+
   ```toml
   [template]
   src = "hdfs-site.xml.tmpl"
@@ -28,6 +30,7 @@
   ```
 
   + 创建 /etc/confd/conf.d/slaves.toml
+
   ```toml
   [template]
   src = "slaves.tmpl"
@@ -39,6 +42,7 @@
   ```
 
   + 创建 /etc/confd/conf.d/authorized_keys.toml
+
   ```toml
   [template]
   src = "authorized_keys.tmpl"
@@ -49,6 +53,7 @@
   ```
 
   + 创建 /etc/confd/conf.d/hosts.toml
+
   ```toml
   [template]
   src = "hosts.tmpl"
@@ -59,6 +64,7 @@
   ```
 
   + 创建 /etc/confd/conf.d/exclude.toml
+
   ```toml
   [template]
   src = "exclude.tmpl"
@@ -69,9 +75,11 @@
   ```
 
 * 创建 tmpl 文件
+
   + 创建 /etc/confd/templates/core-site.xml.tmpl    
-    ```xml
-    {% raw  %}
+
+   ```xml
+    {% raw %}
     <?xml version="1.0" encoding="UTF-8"?>
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
     <configuration>
@@ -98,11 +106,12 @@
       </property>
     </configuration>
     {% endraw %}
-    ```
-         
+   ```
+
   + 创建 /etc/confd/templates/hdfs-site.xml.tmpl
-    ```xml
-    {% raw  %}
+
+   ```xml
+    {% raw %}
     <?xml version="1.0" encoding="UTF-8"?>
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
     <configuration>
@@ -152,29 +161,32 @@
       </property>
     </configuration>
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/slaves.tmpl
-    ```
-    {% raw  %}
+
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
     {{getv $ip}}{{end}}
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/authorized_keys.tmpl
-    ```
-    {% raw  %}
+
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/spark-master/"}}{{$pub_key := printf "/hosts/spark-master/%s/pub_key" $dir}}
-    {{getv $pub_key}}{{end}} 
+    {{getv $pub_key}}{{end}}
     {{range $dir := lsdir "/hosts/hadoop-master/"}}{{$pub_key := printf "/hosts/hadoop-master/%s/pub_key" $dir}}
     {{getv $pub_key}}{{end}}
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/hosts.tmpl
-    ```
-    {% raw  %}
+
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/spark-master/"}}{{$ip := printf "/hosts/spark-master/%s/ip" $dir}}
     {{getv $ip}} {{$dir}}{{end}}
     {{range $dir := lsdir "/hosts/hadoop-master/"}}{{$ip := printf "/hosts/hadoop-master/%s/ip" $dir}}
@@ -182,15 +194,18 @@
     {{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
     {{getv $ip}} {{$dir}}{{end}}
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/exclude.tmpl
-    ```
-    {% raw  %}
+
+   ```
+    {% raw %}
     {{range $dir := lsdir "/deleting-hosts/worker/"}}{{$ip := printf "/deleting-hosts/worker/%s/ip" $dir}}
     {{getv $ip}}{{end}}
     {% endraw %}
-    ```
-       
+   ```
+
 * 在 Hadoop master image 上
+  ```
     touch /opt/hadoop/etc/hadoop/exclude
+  ```

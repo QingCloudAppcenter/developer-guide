@@ -10,6 +10,7 @@ apt-get install openjdk-7-jre-headless
 ```
 
 * 创建 toml 文件
+
 	+ 创建 /etc/confd/conf.d/zoo.cfg.toml
 
 		```toml
@@ -22,7 +23,7 @@ apt-get install openjdk-7-jre-headless
 		reload_cmd = "/opt/zookeeper/bin/restart-server.sh"
 		```
 
-	+ 创建 /etc/confd/conf.d/myid.toml	
+	+ 创建 /etc/confd/conf.d/myid.toml
 
 		```toml
 		[template]
@@ -34,8 +35,11 @@ apt-get install openjdk-7-jre-headless
 		```
 
 * 创建 tmpl 文件
+
 	+ 创建 /etc/confd/templates/zoo.cfg.tmpl
 
+		```
+		{% raw %}
 			tickTime=2000
 			initLimit=10
 			syncLimit=5
@@ -45,21 +49,27 @@ apt-get install openjdk-7-jre-headless
 			maxClientCnxns=1000
 			{{range $dir := lsdir "/hosts"}}{{$sid := printf "/hosts/%s/sid" $dir}}
 			{{$ip := printf "/hosts/%s/ip" $dir}}server.{{getv $sid}}={{getv $ip}}:2888:3888{{end}}
+		{% endraw %}
+  	```
 
 	+ 创建 /etc/confd/templates/myid.tmpl
 
+  	```
+  	{% raw %}
 			{{getv "/host/sid"}}
+  	{% endraw %}
+  	```
 
 * ZooKeeper 相关改动
 
 	+ 补充脚本，创建 /opt/zookeeper/bin/restart-server.sh
 
-	```bash
+		```bash
 	#! /bin/bash
 
 	# Restart zk server
 	/opt/zookeeper/bin/zkServer.sh restart
-		
+
 	sleep 3
 
 	i=0
@@ -98,7 +108,7 @@ apt-get install openjdk-7-jre-headless
 	fi
 
 	export JVMFLAGS="-Xmx${total_free}m"
-	```
+		```
 
 	+ 更新日志路径，修改文件 /opt/zookeeper/bin/zkEnv.sh，把默认路径修改成如下路径：
     ```

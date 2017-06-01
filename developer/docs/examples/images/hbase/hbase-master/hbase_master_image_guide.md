@@ -372,18 +372,18 @@
               hour_max=`expr $hour_min + 1`
               if [ $HM -ge $hour_min ] && [ $HM -lt $hour_max ];then
                 result=`echo "list" | /opt/hbase/bin/hbase shell`
-                tables=`echo $result | awk '{a=index($0,\"[\");b=index($0,\"]\");print substr($0,a+1,b-a-1)}'`
-                for item in `echo $tables | awk -F',' '{for( i=1;i<=NF; i++ ) print $i}'`
+                tables=`echo $result | awk '\{a=index($0,\"[\");b=index($0,\"]\");print substr($0,a+1,b-a-1)\}'`
+                for item in `echo $tables | awk -F',' '\{for( i=1;i<=NF; i++ ) print $i\}'`
                 do
-                  {
+                  \{
                   echo \"major_compact $item\" | /opt/hbase/bin/hbase shell
-                  }&
+                  \}&
                 done
               fi
             fi
 
 
-            pid=`ps aux | grep java | grep HMaster | grep -v grep| awk '{print $1}'`
+            pid=`ps aux | grep java | grep HMaster | grep -v grep| awk '\{print $1\}'`
             if [ "x$pid" = "x" ]
             then
              echo "HMaster is not running"
@@ -396,14 +396,14 @@
                 {{$ip := getv $ip}}
                 {{$local_ip := getv "/host/ip"}}
                 {{if eq $ip $local_ip}}
-                    pid=`ps aux | grep java | grep RESTServer | grep -v grep| awk '{print $1}'`
+                    pid=`ps aux | grep java | grep RESTServer | grep -v grep| awk '\{print $1\}'`
                     if [ "x$pid" = "x" ]
                     then
                      echo "RESTServer is not running"
                      exit 1
                     fi
 
-                    pid=`ps aux | grep java | grep ThriftServer | grep -v grep| awk '{print $1}'`
+                    pid=`ps aux | grep java | grep ThriftServer | grep -v grep| awk '\{print $1\}'`
                     if [ "x$pid" = "x" ]
                     then
                       echo "RESTServer is not running"
@@ -416,7 +416,7 @@
                         transactions={{getv "/env/phoenix.transactions.enabled" "false"}}
                         if [ "$phoenix" = "true" ];then
                           if [ "$transactions" = "true" ];then
-                            pid=`ps aux | grep java | grep -v grep | grep -v HMaster | grep RESTServer | grep -v ThriftServer | awk '{print $1}'`
+                            pid=`ps aux | grep java | grep -v grep | grep -v HMaster | grep RESTServer | grep -v ThriftServer | awk '\{print $1\}'`
                             if [ "x$pid" = "x" ]
                             then
                               echo "Tephra is not running"
@@ -434,7 +434,7 @@
 
             #!/bin/sh
 
-            pid=`ps aux | grep java | grep HMaster | grep -v grep| awk '{print $1}'`
+            pid=`ps aux | grep java | grep HMaster | grep -v grep| awk '\{print $1\}'`
             if [ "x$pid" = "x" ]
             then
              echo "HMaster is not running"
@@ -447,14 +447,14 @@
                 {{$ip := getv $ip}}
                 {{$local_ip := getv "/host/ip"}}
                 {{if eq $ip $local_ip}}
-                    pid=`ps aux | grep java | grep RESTServer | grep -v grep| awk '{print $1}'`
+                    pid=`ps aux | grep java | grep RESTServer | grep -v grep| awk '\{print $1\}'`
                     if [ "x$pid" = "x" ]
                     then
                      echo "RESTServer is not running"
                      USER=root /opt/hbase/bin/hbase-daemon.sh start rest -p 8000
                     fi
 
-                    pid=`ps aux | grep java | grep ThriftServer | grep -v grep| awk '{print $1}'`
+                    pid=`ps aux | grep java | grep ThriftServer | grep -v grep| awk '\{print $1\}'`
                     if [ "x$pid" = "x" ]
                     then
                       echo "ThriftServer is not running"
@@ -467,7 +467,7 @@
                         transactions={{getv "/env/phoenix.transactions.enabled" "false"}}
                         if [ "$phoenix" = "true" ];then
                           if [ "$transactions" = "true" ];then
-                            pid=`ps aux | grep java | grep -v grep | grep -v HMaster | grep RESTServer | grep -v ThriftServer | awk '{print $1}'`
+                            pid=`ps aux | grep java | grep -v grep | grep -v HMaster | grep RESTServer | grep -v ThriftServer | awk '\{print $1\}'`
                             if [ "x$pid" = "x" ]
                             then
                               echo "Tephra is not running"
@@ -495,7 +495,7 @@
             def parse_hbase_stat(role, hjson):
                 if "beans" not in hjson:
                     return
-                stats = {}
+                stats = \{\}
                 if role == HBASE_ROLE_MASTER:
                     for sub_dict in hjson["beans"]:
                         if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=HBase,name=Master,sub=AssignmentManger":
