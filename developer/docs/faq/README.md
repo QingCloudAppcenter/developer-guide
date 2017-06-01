@@ -53,7 +53,7 @@
 
     请确保在制作镜像时正常关机，保证磁盘正常卸载。
 
-* 使用说明和服务条款的 Markdown 语法说明<a id="tos_and_usage_desc"></a>
+* 使用说明和服务条款的 Markdown 语法说明
     * 支持标准的 [Markdown 语法](http://wowubuntu.com/markdown/)，同时你也可以直接使用 HTML 代码
     * Markdown 转换后的内容是没有样式，如果你想再添加样式，可以将下面的 HTML 代码添加到你输入的内容之前：
     ```html

@@ -56,7 +56,7 @@
                 </ul>
               <li style="list-style-type:none;">/<b><i>reserved_ips</i></b></li>
                 <ul>
-                  <li style="list-style-type:none;">/<b>[reserved IP name such as vip]*</b></li> 
+                  <li style="list-style-type:none;">/<b>[reserved IP name such as vip]*</b></li>
                     <ul>
                       <li style="list-style-type:none;">/<b>value</b> [reserved ip address]</li>
                     </ul>
@@ -112,7 +112,8 @@
 
 元数据结构中根节点 self 表示发送请求的那个节点，metadata server 接到请求后返回该节点的相关信息，具体信息如下：
 
-* hosts<a id="hosts"></a> <br>
+* hosts
+
   hosts 分角色保存节点信息，如果没有角色，就直接保存在 hosts 之下。角色名称的定义来自 [应用开发模版规范-完整版](specifications/specifications.md) 里的定义。节点信息是一组以主机 ID (通常情况也是主机名，即以 i- 开头的字符串)为子目录组成，每个子目录下是此主机以 key-value 形式保存的详细信息。
   + ip <br>
     节点私有 IP 地址
@@ -140,7 +141,7 @@
     节点 passphraseless ssh 公钥
   + token <br>
     节点通过开发者自定义脚本在该主机里运行结果，详情参见[应用开发模版规范-完整版](specifications/specifications.md)。
-  
+
   例：通过 /self/hosts/i-abcd2xyz/ip 可获取发起请求的节点所在集群中主机 ID 为 i-abcd2xyz 的 IP 地址；或通过 /self/hosts/master/i-abcd2xyz/ip 可获取发起请求的节点所在集群中主机 ID 为 i-abcd2xyz 的 IP 地址，而此节点是一个 master 节点。
 
 > 在制作镜像的时候由于 confd 会默认配置 prefix 为 /self，所以在镜像里获取信息时可以省略 /self，比如上例可以直接通过 /hosts/i-abcd2xyz/ip 来获取这个节点的 IP 地址。如果在[创建应用版本配置包](app-version-mgmt/create-app-config.md)里定义 [metadata_root_access](specifications/specifications.md) 为 true，则 confd 会配置 prefix为 /，这个时候需要通过 /self/hosts/i-abcd2xyz/ip 来获取这个节点的 IP 地址。
@@ -172,7 +173,7 @@
     本节点 passphraseless ssh 公钥
   + token <br>
     本节点通过开发者自定义脚本在本主机里运行结果
-  
+
   例：通过 /self/host/ip 可获取自身节点的 IP 地址
 
 * cluster <br>
@@ -200,7 +201,7 @@
 * deleting-hosts <br>
   deleting-hosts 临时保存即将删除的节点信息，当 scale in (删除节点)操作完成之后这个子目录下的信息会随之消失。主机信息参见 [hosts](#hosts)。
 
-* links<a id="links"></a> <br>
+* links <br>
   外部服务依赖定义，有些应用依赖于另外一个服务才能正常工作，如 Kafka 依赖于 ZooKeeper，因此此处需指定被依赖集群的 ID，service name 可在[应用开发模版-完整版](specifications/specifications.md)中任意定义。
 
 * cmd <br>

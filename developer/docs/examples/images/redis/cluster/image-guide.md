@@ -4,9 +4,9 @@
 下载青云提供的 app agent [Linux 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-linux-amd64.tar.gz), [Windows 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-windows-386.zip)，解压后运行 ./install.sh (Windows 下双击 install.bat)
 
 * 创建 toml 文件
-   	
+
 	+ 创建 /etc/confd/conf.d/redis.conf.toml
-		
+
 	```toml
 	[template]
 	src = "redis.conf.tmpl"
@@ -18,7 +18,7 @@
 	```
 
 	+ 创建 /etc/confd/conf.d/nodes.info.toml
-	
+
 	```toml
 	[template]
 	src = "nodes.info.tmpl"
@@ -54,16 +54,18 @@
 
 	+ 创建 /etc/confd/templates/redis.conf.tmpl
 
-		    aof-rewrite-incremental-fsync yes 
-			appendfilename appendonly.aof 
+		```
+		{% raw %}
+		    aof-rewrite-incremental-fsync yes
+			appendfilename appendonly.aof
 			auto-aof-rewrite-percentage 10
-			auto-aof-rewrite-min-size 64mb 
+			auto-aof-rewrite-min-size 64mb
 			bind 0.0.0.0
 			client-output-buffer-limit normal 0 0 0
 			client-output-buffer-limit pubsub 32mb 8mb 60
-			client-output-buffer-limit slave 256mb 64mb 60 
+			client-output-buffer-limit slave 256mb 64mb 60
 			daemonize yes
-			databases 16 
+			databases 16
 			dbfilename dump.rdb
 			dir /data/redis
 			hll-sparse-max-bytes 3000
@@ -75,13 +77,13 @@
 			repl-disable-tcp-nodelay no  
 			rdbchecksum yes
 			rdbcompression yes
-			save "" 
+			save ""
 			slave-priority 0
-			slave-read-only yes 
-			slave-serve-stale-data yes 
-			slowlog-max-len 128 
+			slave-read-only yes
+			slave-serve-stale-data yes
+			slowlog-max-len 128
 			stop-writes-on-bgsave-error yes
-			tcp-backlog 511 
+			tcp-backlog 511
 			cluster-enabled yes
 		    cluster-config-file /data/redis/nodes-6379.conf
 		    cluster-node-timeout 5000
@@ -91,29 +93,42 @@
 			{{range gets "/env/*"}}{{$v := .Value}}{{ if gt ( len ( $v ) ) 0 }}{{base .Key}} {{.Value}}
 			{{ else }}{{base .Key}} ""
 			{{end}}{{end}}
+		{% endraw %}
+		```
 
 	+ 创建 /etc/confd/templates/nodes.info.tmpl
 
+		```
+		{% raw %}
 			{{range $dir := lsdir "/hosts/master/"}}{{$ip := printf "/hosts/master/%s/ip" $dir}}
 			M:{{getv $ip}}{{end}}     
 		    {{range $dir := lsdir "/hosts/master-replica/"}}{{$ip := printf "/hosts/master-replica/%s/ip" $dir}}
 			S:{{getv $ip}}{{end}}
-
+		{% endraw %}
+		```
 	<table><tr style="background-color:rgb(240,240,240)"><td><b>注：</b>在 lsdir 里的 master 后面必须跟斜杠号(/)</td></tr></table>
 
 	+ 创建 /etc/confd/templates/scaling-out.info.tmpl
 
+		```
+			{% raw %}
 			{{range $dir := lsdir "/adding-hosts/master/"}}{{$ip := printf "/adding-hosts/master/%s/ip" $dir}}
 		    master {{getv $ip}}{{end}}
 		    {{range $dir := lsdir "/adding-hosts/master-replica/"}}{{$ip := printf "/adding-hosts/master-replica/%s/ip" $dir}}
 		    master-replica {{getv $ip}}{{end}}
+			{% endraw %}
+		```
 
 	+ 创建 /etc/confd/templates/scaling-in.info.tmpl
 
+		```
+		{% raw %}
 			{{range $dir := lsdir "/deleting-hosts/master/"}}{{$ip := printf "/deleting-hosts/master/%s/ip" $dir}}
 		    {{getv $ip}}{{end}}
 		    {{range $dir := lsdir "/deleting-hosts/master-replica/"}}{{$ip := printf "/deleting-hosts/master-replica/%s/ip" $dir}}
 		    {{getv $ip}}{{end}}		    `
+		{% endraw %}
+		```
 
 * 补充脚本
 
@@ -123,7 +138,7 @@
 	#! /bin/bash
 	#
 	# The file /opt/redis/nodes.info contains the < master IPs > < replicate IPs >
-	
+
 	nodes="/opt/redis/nodes.info"
 	masters=""
 	slaves=""
@@ -136,22 +151,22 @@
 	  ip=`echo $line | cut -d ":" -f 2`
 	  if [ "$role" = "M" ]
 	  then
-	    masters="${masters} $ip:6379"
+	    masters="$\{masters\} $ip:6379"
 	  else
-	    slaves="${slaves} $ip:6379"
+	    slaves="$\{slaves\} $ip:6379"
 	  fi
 	done < "$nodes"
-	
+
 	# Get replica number       
-	masters_num=`echo $masters | awk '{print NF}'`
-	slaves_num=`echo $slaves | awk '{print NF}'`
+	masters_num=`echo $masters | awk '\{print NF\}'`
+	slaves_num=`echo $slaves | awk '\{print NF\}'`
 	mod=`expr $slaves_num % $masters_num`
 	if [ $mod -gt 0 ]
 	then
 	  echo "The number of nodes are not correct"
 	  exit 1
 	fi
-	
+
 	replicas=`expr $slaves_num / $masters_num`
     echo yes | /opt/redis/bin/redis-trib.rb create --replicas $replicas $masters $slaves > /var/log/init_redis.log 2>&1
 	if [ $? -eq 0 ]; then
@@ -171,16 +186,16 @@
 	# Copyright (C) 2015 Yunify Inc.
 	#
 	# Script to stop redis-server.
-	
+
 	PID=$(pidof redis-server)
 	if [ -z "$PID" ]; then
 	    echo "redis-server is not running"
 	    exit 0
 	fi
-	
+
 	# Try to terminate redis-server
 	kill -SIGTERM $PID
-	
+
 	# Check if redis-server is terminated
 	for i in $(seq 0 2); do
 	   if ! ps -ef | grep ^stop-redis-server > /dev/null; then
@@ -189,7 +204,7 @@
 	   fi
 	   sleep 1
 	done
-	
+
 	#　Not terminated yet, now I am being rude!
 	#　In case of a new redis-server process is somebody else (unlikely though),
 	#　we get the pid again here.
@@ -207,16 +222,16 @@
 
 	```bash
 	#! /bin/bash
-	
+
 	PID=$(pidof redis-server)
 	if [ -z "$PID" ]; then
 	    echo "redis-server is not running"
 	    exit 0
 	fi
-	
+
 	# Stop redis server
 	/opt/redis/bin/stop-redis-server.sh
-	
+
 	# Start redis server
 	if [ $? -eq 0 ]; then
 	    /opt/redis/bin/redis-server /opt/redis/redis.conf

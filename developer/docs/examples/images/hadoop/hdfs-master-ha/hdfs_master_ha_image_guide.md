@@ -413,7 +413,7 @@
 				
 				# Format zookeeper
 				
-				cd ${HADOOP_HOME};USER=root bin/hdfs zkfc -formatZK
+				cd $\{HADOOP_HOME\};USER=root bin/hdfs zkfc -formatZK
 				
 				if [ $? -eq 0 ]; then
 				    echo "Format zookeeper successfully."
@@ -479,7 +479,7 @@
 				    {{$ip_value := getv $ip}}
 				    {{$local_ip := getv "/host/ip"}}
 				    {{if ne $localip $ip_value }} 
-					cd ${HADOOP_TMP_PATH};USER=root scp -r dfs {{$ip_value}}:${HADOOP_TMP_PATH}
+					cd $\{HADOOP_TMP_PATH\};USER=root scp -r dfs {{$ip_value}}:$\{HADOOP_TMP_PATH\}
 				    {{end}}
 				{{end}}
 				

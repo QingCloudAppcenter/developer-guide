@@ -15,9 +15,9 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 * locale/zh-cn.json
   中文翻译文件
 
-具体的翻译文件格式，请参考 [国际化](#globalization)
+具体的翻译文件格式，请参考 [国际化](#国际化)
 
->注：以上文件不支持 "UTF-8 Unicode (with BOM) text" 文本格式，windows下的编辑器编辑文件默认是此格式，可通过 "格式-> 以utf-8无BOM格式编码" 进行转换。 
+>注：以上文件不支持 "UTF-8 Unicode (with BOM) text" 文本格式，windows下的编辑器编辑文件默认是此格式，可通过 "格式-> 以utf-8无BOM格式编码" 进行转换。
 
 ### 规范
 
@@ -26,7 +26,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 这些信息有集群级别的全局设置，也有基于角色节点级别的信息设置。下面是对每个参数详细的解释：
 
 >注：role_name,	common.param名称自定义，右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。cluster 的 name 和 description 不需要自定义。另外，env 表示集群的环境变量，每一个变量的 key 会作为配置名直接展示给用户(key不能包含空格)，它的 label 属性可以是空字符串 ""。
-	
+
 ```json
 {
 	"type": "array",
@@ -199,18 +199,18 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 		}]
 	}]
 }
-```	
+```
 
 json 配置项中的每一项，都是一个含有 key、label、description、type、range 等参数的 object。配置项支持嵌套，若 type 为 array，则该项的 properties 填写一个有序列表，在用户部署应用的时候填写配置使用，因此需要注意配置项的顺序。配置项中各参数的解释如下：
 
 * key <br>
-  对应 [cluster.json.mustache](#cluster) 文件索引的值，例如 {% raw %}{{cluster.name}}{% endraw %} 表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
+  对应 [cluster.json.mustache](#cluster.json.mustache) 文件索引的值，例如 {% raw %}{{cluster.name}}{% endraw %} 表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
 * label <br>
   用户部署应用时，填写配置项的名称。如果提供了国际化的配置文件，会进行国际化。
 * description <br>
   用户部署应用时，填写配置项的描述。如果提供了国际化的配置文件，会进行国际化。
 * type <br>
-  该配置项的类型，请参考 [数据类型](#datatype)。
+  该配置项的类型，请参考 [数据类型](#数据类型)。
 * changeable <br>
   如果为 false 表示该项用户在创建应用实例时候需要赋值，创建完毕以后则不能修改，比如数据库实例用户名和密码等类型的参数，默认值为 true。
 * range <br>
@@ -247,7 +247,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
   此应用依赖外部应用信息，名称可以任意定义，即可以命名为 zk_service 表示依赖 ZooKeeper，用户可以选择在同一 VPC 中满足 limits 限定条件的集群作为此应用依赖的服务。limits 限定条件可以指定应用所依赖服务的 app id 及 app version。
 
 
-##### cluster.json.mustache<a id="cluster"></a>
+##### cluster.json.mustache
 该文件是在用户创建应用时需要传给青云 API 的参数，这些信息的具体值是来自用户在 UI 上根据 config.json 定义的变量的输入，每个字段的具体描述如下：
 
 >注： 右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。advanced_actions 的内容可以添加在国际化中，在控制台用户操作时展示。
@@ -454,7 +454,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
         + filesystem <br>
           数据盘文件系统类型。如果 image 是基于 Linux 操作系统，目前支持 ext4 和 xfs，默认为 ext4; 如果 image 是基于 Windows 操作系统，目前支持 ntfs, 默认为 ntfs。
         + class <br>
-          数据盘类型，支持0、2、3，其中0表示性能盘，3表示超高性能盘，2表示容量盘。可选项，如果不写此项，数据盘类型和主机类型一样，即性能主机挂载性能硬盘，超高性能主机挂载超高性能硬盘。容量盘可以挂载在不同类型主机上，但容量盘是通过网络协议挂载的，所以性能相对来说比较差，通常来说如果不是提供必须基于容量盘的服务，最好去掉这个选项，大容量存储可以考虑[对象存储 QingStor](https://docs.qingcloud.com/qingstor/index.html)。 
+          数据盘类型，支持0、2、3，其中0表示性能盘，3表示超高性能盘，2表示容量盘。可选项，如果不写此项，数据盘类型和主机类型一样，即性能主机挂载性能硬盘，超高性能主机挂载超高性能硬盘。容量盘可以挂载在不同类型主机上，但容量盘是通过网络协议挂载的，所以性能相对来说比较差，通常来说如果不是提供必须基于容量盘的服务，最好去掉这个选项，大容量存储可以考虑[对象存储 QingStor](https://docs.qingcloud.com/qingstor/index.html)。
     -   passphraseless　<br>
         生成密钥信息，即提供此类节点能无密码登录其它节点的可能性，但青云调度系统只负责把此信息注册到 metadata service 中，开发者自行去获取密钥配置主机。目前支持 ssh-dsa, ssh-rsa，非必填项。
     -   vertical\_scaling\_policy <br>
@@ -471,7 +471,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           初始化命令，在创建集群或者新加节点时会触发该命令的执行。
           * nodes\_to\_execute_on　<br>
             控制此命令在此类角色节点上某几个节点上执行，如果需要在所有此类节点上执行该命令可不填此项。
-          * post\_start\_service<a id="post-start-service"></a>　<br>
+          * post\_start\_service
               控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
           * order　<br>
             控制不同角色节点之间执行此命令顺序。比如主从节点，有时候需要主节点先启动服务，从节点后启动服务，非必填项。
@@ -479,9 +479,11 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
             具体需执行的命令，必填项。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本，且脚本需通过变量 %ERRORLEVEL% 设定返回值。
           * timeout　<br>
             执行该命令 timeout 时间(单位秒)，系统默认10分钟，由于某些命令可能需要迁移数据而耗时比较长，这种情况下需要计算出最长可能时间，最大值是86400，非必填项。
-        + start<a id="start"></a>　<br>
+        + start
+
           服务启动命令，具体参数参考初始化命令 init。
-        + stop<a id="stop"></a>　<br>
+
+        + stop　<br>
           停止服务命令，具体参数参考初始化命令 init。
         + scale\_out　<br>
           加节点时在非新加节点上需执行的命令，具体参数参考初始化命令 init。
@@ -495,7 +497,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
             控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
 
         这几个服务都是系统定义的；除了 post\_start\_service 是 init 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
-          
+
         + backup <br>
           用户自定义命令，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
           * type <br>
@@ -567,7 +569,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     {{end}}
     ```
     {% endraw %}
-*   health_check<a id="health_check"></a> <br>
+*   health_check
+
     应用可以配置健康检查，详细的配置参数如下：
     - enable <br>
       是否开启健康检查，默认值为 false。
@@ -618,7 +621,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
             取监控项在统计区间内采集数据的中位数
           - latest <br>
             取监控项在统计区间内采集数据的最新值
-            
+
           值类型为 "int" (整型)的监控数据，支持以上所有类型的统计方式，默认的统计方式为 "avg"。
           值类型为 "str" (字符串型)的监控数据，只支持 "mode" 和 "latest" 两种统计方式，默认的统计方式为 "latest"。
         - enums <br>
@@ -634,7 +637,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 
   	应用节点会继承应用的监控配置，当应用节点配置了相同的监控参数时，优先使用节点的配置。注明：前端在创建集群之后需要等５分钟监控项才会展现出来。
 
-### 数据类型<a id="datatype"></a>
+### 数据类型
 config.json 文件里对每个变量需要定义其类型、取值范围、默认值等，其中类型和默认值为必填项。
 
 * type
@@ -654,7 +657,7 @@ config.json 文件里对每个变量需要定义其类型、取值范围、默�
 * default <br>
 变量默认值
 
-### 国际化<a id="globalization"></a>
+### 国际化
 config.json 中的 label 和 description 在控制台呈现时，默认使用配置文件中定义的内容。另外，一些自定义的服务、监控项也会直接展示到集群使用者的操作界面上。控制台的用户切换语言时，不改变该描述。如果您想让不同语言场景的用户能看到该语言的描述，请在提交的包中添加 locale 文件夹，并根据您希望国际化的语言提供翻译文件。
 
 翻译文件是“语言名称.json”这样的格式，如 locale/en.json，locale/zh-cn.json。例如简体中文的翻译文件 zh-cn.json 内容示例如下：
