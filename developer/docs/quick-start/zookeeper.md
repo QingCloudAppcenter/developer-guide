@@ -8,7 +8,7 @@ ZooKeeper 是一个高可用的分布式数据管理与系统协调软件，它�
 
 <table><tr style="background-color:rgb(240,240,240);color:red"><td><b>如果有持久化数据必须用挂盘，不能保存到系统盘，切记！</b></td></tr></table>
 
-##### 创建应用模版<a id="CreateApp"></a>
+##### 创建应用模版
 应用开发者在开发应用供最终用户使用时需要按照青云提供的规范来定义应用，然后上传到 AppCenter，这样用户才能在 AppCenter 使用此应用。用户在部署您的应用时，填写完必要参数之后点击创建，青云系统就会根据用户提交的信息
 创建 ZooKeeper 集群。
 

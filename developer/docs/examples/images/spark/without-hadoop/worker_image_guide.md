@@ -32,7 +32,7 @@
             	"/",
             ]
 
-  + 创建/etc/confd/conf.d/{hosts.toml
+  + 创建/etc/confd/conf.d/\{hosts.toml
 
             [template]
             src = "hosts.tmpl"
@@ -58,7 +58,7 @@
   + 创建/etc/confd/templates/workers.tmpl
 
             {{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
-            {{getv $ip}}{{end}}}
+            {{getv $ip}}{{end}}\}
 
   + 创建/etc/confd/templates/authorized_keys.tmpl
 

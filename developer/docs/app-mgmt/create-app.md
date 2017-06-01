@@ -1,13 +1,13 @@
 ### 基本介绍
 创建一个应用的基本流程：
 
-* [创建一个应用](#create_app_name)
+* [创建一个应用](#创建应用)
 * [创建该应用的第一个版本](../app-version-mgmt/create-app-version.md)
-* [完善应用的详细信息](#complete_app_details)
+* [完善应用的详细信息](#应用信息)
 * [提交应用版本审核](../app-version-mgmt/submit-app-version.md)或直接发布到个人应用中心(内部使用的应用)
 
 
-### 创建应用<a id="create_app_name"></a>
+### 创建应用
 首先登录[应用管理平台](https://appcenter.qingcloud.com/developer)，点击“应用”部分的“+”号按钮，开始创建第一个应用。
 
 ![创建应用](../../images/home_create_app.png)
@@ -18,7 +18,7 @@
 
 点击“创建应用”按钮，您的第一个应用便创建成功，成功之后将直接进入[应用版本](../app-version-mgmt/create-app-version.md)中创建该应用的第一个版本，完善应用详细信息的步骤可暂时跳过。
 
-### 应用信息<a id="complete_app_details"></a>
+### 应用信息
 
 用户在浏览、搜索和查看应用时是通过基本信息来了解应用的各个方面的，主要包括以下几种信息：
 

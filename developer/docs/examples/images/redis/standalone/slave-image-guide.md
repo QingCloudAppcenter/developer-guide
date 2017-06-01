@@ -16,19 +16,19 @@
 	```
 
 * 创建 /etc/confd/templates/redis.conf.tmpl
- 
+
 	```
-	{% raw  %}
-	aof-rewrite-incremental-fsync yes 
-	appendfilename appendonly.aof 
+	{% raw %}
+	aof-rewrite-incremental-fsync yes
+	appendfilename appendonly.aof
 	auto-aof-rewrite-percentage 10
-	auto-aof-rewrite-min-size 64mb 
+	auto-aof-rewrite-min-size 64mb
 	bind 0.0.0.0
 	client-output-buffer-limit normal 0 0 0
 	client-output-buffer-limit pubsub 32mb 8mb 60
-	client-output-buffer-limit slave 256mb 64mb 60 
+	client-output-buffer-limit slave 256mb 64mb 60
 	daemonize yes
-	databases 16 
+	databases 16
 	dbfilename dump.rdb
 	dir /data/redis
 	hll-sparse-max-bytes 3000
@@ -40,13 +40,13 @@
 	repl-disable-tcp-nodelay no  
 	rdbchecksum yes
 	rdbcompression yes
-	save "" 
+	save ""
 	slave-priority 0
-	slave-read-only yes 
-	slave-serve-stale-data yes 
-	slowlog-max-len 128 
+	slave-read-only yes
+	slave-serve-stale-data yes
+	slowlog-max-len 128
 	stop-writes-on-bgsave-error yes
-	tcp-backlog 511 
+	tcp-backlog 511
 	{{range gets "/env/*"}}{{$v := .Value}}{{ if gt ( len ( $v ) ) 0 }}{{base .Key}} {{.Value}}
 	{{ else }}{{base .Key}} ""
 	{{end}}{{end}}

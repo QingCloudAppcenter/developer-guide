@@ -1,11 +1,14 @@
 ### Spark(Hadoop) worker节点镜像制作
 
-* 安装 agent <br>
+* 安装 agent
+
 下载青云提供的 app agent [Linux 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-linux-amd64.tar.gz), [Windows 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-windows-386.zip)，解压后运行 ./install.sh (Windows 下双击 install.bat)
 
 * 创建 toml 文件
+
   + 创建 /etc/confd/conf.d/spark-env.sh.toml
-  ```toml
+
+   ```toml
   [template]
   src = "spark-env.sh.tmpl"
   dest = "/opt/spark/conf/spark-env.sh"
@@ -13,20 +16,22 @@
       "/",
   ]
   reload_cmd = "/opt/spark/sbin/restart-slave.sh"
-  ```
+   ```
 
   + 创建 /etc/confd/conf.d/workers.toml
-  ```toml
+
+   ```toml
   [template]
   src = "workers.tmpl"
   dest = "/opt/spark/conf/slaves"
   keys = [
       "/",
   ]
-  ```
+   ```
 
   + 创建 /etc/confd/conf.d/core-site.xml.toml
-  ```toml
+
+   ```toml
   [template]
   src = "core-site.xml.tmpl"
   dest = "/opt/hadoop/etc/hadoop/core-site.xml"
@@ -34,10 +39,11 @@
       "/",
   ]
   reload_cmd = "/opt/hadoop/sbin/restart-slave.sh"
-  ```
+   ```
 
   + 创建 /etc/confd/conf.d/hdfs-site.xml.toml
-  ```toml
+
+   ```toml
 	[template]
 	src = "hdfs-site.xml.tmpl"
 	dest = "/opt/hadoop/etc/hadoop/hdfs-site.xml"
@@ -45,45 +51,48 @@
 	    "/",
 	]
   reload_cmd = "/opt/hadoop/sbin/restart-slave.sh"
-  ```
+   ```
 
   + 创建 /etc/confd/conf.d/slaves.toml
-  ```toml
+
+   ```toml
   [template]
   src = "slaves.tmpl"
   dest = "/opt/hadoop/etc/hadoop/slaves"
   keys = [
       "/",
   ]
-  ```
+   ```
 
   + 创建 /etc/confd/conf.d/authorized_keys.toml
-  ```toml
+
+   ```toml
   [template]
   src = "authorized_keys.tmpl"
   dest = "/root/.ssh/authorized_keys"
   keys = [
       "/",
   ]
-  ```
+   ```
 
   + 创建 /etc/confd/conf.d/hosts.toml
-  ```toml
+
+   ```toml
   [template]
   src = "hosts.tmpl"
   dest = "/etc/hosts"
   keys = [,
       "/",
   ]
-  ```
+   ```
 
 * 创建 tmpl 文件
+
   + 创建 /etc/confd/templates/spark-env.sh.tmpl    
 
     ```bash
-    {% raw  %}
+    {% raw %}
     #! /usr/bin/env bash
-
     export SPARK_LOG_DIR=/bigdata1/spark/logs
     export SPARK_WORKER_DIR=/bigdata1/spark/work
     export SPARK_WORKER_OPTS="-Dspark.worker.cleanup.enabled=true -Dspark.worker.cleanup.interval=28800 -Dspark.worker.cleanup.appDataTtl=86400"
@@ -93,21 +102,21 @@
     {{range $dir := lsdir "/hosts/spark-master/"}}{{$ip := printf "/hosts/spark-master/%s/ip" $dir}}
     export SPARK_MASTER_IP={{getv $ip}}{{end}}
     {% endraw %}
-    ```
+   ```
         　　　　
   + 创建 /etc/confd/templates/workers.tmpl
 
-    ```
-    {% raw  %}
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
   	{{getv $ip}}{{end}}
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/core-site.xml.tmpl
 
-    ```xml
-    {% raw  %}
+   ```xml
+    {% raw %}
     <?xml version="1.0" encoding="UTF-8"?>
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
     <configuration>
@@ -134,12 +143,12 @@
       </property>
     </configuration>
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/hdfs-site.xml.tmpl
 
-    ```xml
-    {% raw  %}
+   ```xml
+    {% raw %}
     <?xml version="1.0" encoding="UTF-8"?>
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
     <configuration>
@@ -189,32 +198,32 @@
       </property>
     </configuration>
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/slaves.tmpl
 
-    ```
-    {% raw  %}
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
   	{{getv $ip}}{{end}}
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/authorized_keys.tmpl
 
-    ```
-    {% raw  %}
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/spark-master/"}}{{$pub_key := printf "/hosts/spark-master/%s/pub_key" $dir}}
-  	{{getv $pub_key}}{{end}} 
+  	{{getv $pub_key}}{{end}}
   	{{range $dir := lsdir "/hosts/hadoop-master/"}}{{$pub_key := printf "/hosts/hadoop-master/%s/pub_key" $dir}}
   	{{getv $pub_key}}{{end}}
     {% endraw %}
-    ```
+   ```
 
   + 创建 /etc/confd/templates/hosts.tmpl
 
-    ```
-    {% raw  %}
+   ```
+    {% raw %}
     {{range $dir := lsdir "/hosts/spark-master/"}}{{$ip := printf "/hosts/spark-master/%s/ip" $dir}}
   	{{getv $ip}} {{$dir}}{{end}}
   	{{range $dir := lsdir "/hosts/hadoop-master/"}}{{$ip := printf "/hosts/hadoop-master/%s/ip" $dir}}
@@ -222,14 +231,13 @@
   	{{range $dir := lsdir "/hosts/worker/"}}{{$ip := printf "/hosts/worker/%s/ip" $dir}}
   	{{getv $ip}} {{$dir}}{{end}}
     {% endraw %}
-    ```
+   ```
 
 * 补充脚本
   + 创建　/opt/spark/sbin/restart-slave.sh
 
-    ```bash
+   ```bash
   	#! /bin/sh
-  	
   	loop=60
   	find=0
   	master_ip=""
@@ -245,14 +253,14 @@
   	    break
   	  fi
   	done
-  	
+
   	if [ "$find" -eq 0 ]
   	then
   	  echo "Failed to find spark master IP" 1>&2
   	  exit 1
   	fi
-  	
-  	pid=`ps ax | grep java | grep org.apache.spark.deploy.worker.Worker | grep -v grep| awk '{print $1}'`
+
+  	pid=`ps ax | grep java | grep org.apache.spark.deploy.worker.Worker | grep -v grep| awk '\{print $1\}'`
   	if [ "x$pid" = "x" ]
   	then
   	  /opt/spark/sbin/start-slave.sh spark://$master_ip:7077
@@ -260,12 +268,12 @@
   	else
   	  /opt/spark/sbin/stop-slave.sh
   	fi
-  	
+
   	loop=60
   	force=1
   	while [ "$loop" -gt 0 ]
   	do
-  	  pid=`ps ax | grep java | grep org.apache.spark.deploy.worker.Worker | grep -v grep| awk '{print $1}'`
+  	  pid=`ps ax | grep java | grep org.apache.spark.deploy.worker.Worker | grep -v grep| awk '\{print $1\}'`
   	  if [ "x$pid" = "x" ]
   	  then
   	    force=0
@@ -279,16 +287,15 @@
   	then
   	  kill -9 $pid
   	fi
-  	    
+
    	/opt/spark/sbin/start-slave.sh spark://$master_ip:7077
-    ```
-	        
+   ```
+
   + 创建　/opt/hadoop/sbin/restart-slave.sh
-    
-    ```bash
+
+   ```bash
   	#! /bin/sh
-  	
-  	pid=`ps ax | grep java | grep datanode | grep -v grep| awk '{print $1}'`
+  	pid=`ps ax | grep java | grep datanode | grep -v grep| awk '\{print $1\}'`
   	if [ "x$pid" = "x" ]
   	then
   	  USER=root /opt/hadoop/sbin/hadoop-daemon.sh start datanode
@@ -296,12 +303,12 @@
   	else
   	  USER=root /opt/hadoop/sbin/hadoop-daemon.sh stop datanode
   	fi
-  	
+
   	loop=60
   	force=1
   	while [ "$loop" -gt 0 ]
   	do
-  	  pid=`ps ax | grep java | grep datanode | grep -v grep| awk '{print $1}'`
+  	  pid=`ps ax | grep java | grep datanode | grep -v grep| awk '\{print $1\}'`
   	  if [ "x$pid" = "x" ]
   	  then
   	    force=0
@@ -315,9 +322,11 @@
   	then
   	  kill -9 $pid
   	fi
-  	    
+
   	USER=root /opt/hadoop/sbin/hadoop-daemon.sh start datanode
-    ```
+   ```
 
 * 在 worker image 上
-  touch /opt/hadoop/etc/hadoop/exclude
+  ```
+   touch /opt/hadoop/etc/hadoop/exclude
+  ```

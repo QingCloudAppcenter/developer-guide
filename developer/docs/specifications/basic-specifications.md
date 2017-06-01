@@ -113,7 +113,7 @@
 json 配置项中的每一项，都是一个含有 key、label、description、type、range 等参数的 object。配置项支持嵌套，若 type 为 array，则该项的 properties 填写一个有序列表，在用户部署应用的时候填写配置使用，因此需要注意配置项的顺序。配置项中各参数的解释如下：
 
 * key <br>
-  对应 [cluster.json.mustache](#cluster) 文件索引的值，例如 {% raw %}{{cluster.name}}{% endraw %} 表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
+  对应 [cluster.json.mustache](#cluster.json.mustache) 文件索引的值，例如 {% raw %}{{cluster.name}}{% endraw %} 表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
 * label <br>
   用户部署应用时，填写配置项的名称。
 * description <br>
@@ -143,7 +143,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
   创建应用时所在网络ID
 
 
-### cluster.json.mustache<a id="cluster"></a>
+### cluster.json.mustache
 该文件是在用户创建应用时需要传给青云 API 的参数，这些信息的具体值是来自用户在 UI 上根据 config.json 定义的变量的输入，每个字段的具体描述如下：
 
 >注：role, vloume, services, env 和 advanced_actions 为可选项，如果不定义 role 则意味着这是个单角色的应用；不定义 volume 则表示该节点没有挂盘，只有系统盘；右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。
@@ -194,7 +194,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 	},
 	"advanced_actions": ["change_vxnet", "scale_horizontal"]
 }
-```	
+```
 
 *   name <br>
     新建应用的名称，必填项，但值可以为空。
@@ -242,7 +242,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           删除节点时在非删除节点上需执行的命令，在节点 stop 服务之前执行，具体参数参考初始化命令 init。
         + destroy <br>
           销毁命令，在删除集群或者节点时会触发该命令的执行，默认在节点 stop 服务或 scale_in 服务之前执行，通常用作删除资源之前检查安全性，具体参数参考初始化命令 init。
-         
+
         这些命令在集群的生命周期中流程请见 [应用实例生命周期](lifecycle.md)。
 *   env <br>
     应用参数配置，比如 ZooKeeper 的 zoo.cfg 里的参数配置等。

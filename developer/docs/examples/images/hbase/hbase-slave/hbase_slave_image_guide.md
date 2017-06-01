@@ -340,7 +340,7 @@
             def parse_hbase_stat(role, hjson):
                 if "beans" not in hjson:
                     return
-                stats = {}
+                stats = \{\}
                 if role == HBASE_ROLE_MASTER:
                     for sub_dict in hjson["beans"]:
                         if "name" in sub_dict and sub_dict["name"] == "Hadoop:service=HBase,name=Master,sub=AssignmentManger":
