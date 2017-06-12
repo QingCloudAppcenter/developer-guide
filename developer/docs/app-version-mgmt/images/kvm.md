@@ -30,13 +30,13 @@
 	+ /etc/confd/conf.d/zoo.cfg.toml
 
   ```ini
-	[template]
-	src = "zoo.cfg.tmpl"
-	dest = "/opt/zookeeper/conf/zoo.cfg"
-	keys = [
-	    "/",
-	]
-	reload_cmd = "/opt/zookeeper/bin/restart-server.sh"
+[template]
+src = "zoo.cfg.tmpl"
+dest = "/opt/zookeeper/conf/zoo.cfg"
+keys = [
+    "/",
+]
+reload_cmd = "/opt/zookeeper/bin/restart-server.sh"
 	```
 
   toml 文件中 src 代表模版文件名，dest 即应用的配置文件，这个配置文件会根据 src 模版刷新 dest 内容，keys 即进程 confd 监控青云 metadata service 关于该节点所在集群信息的更新，有变化则更新，如果模版中需要用到某个 key 的信息，则需要监听这个 key，也可以直接监听根目录"/"。reload_cmd 则是配置文件被刷新后的操作，脚本开发者自行提供脚本，如果不需要触发动作可以去掉 reload_cmd 这一行。toml 文件里可加上权限控制 比如 uid，gid，mode 等，详情请见 [confd](https://github.com/yunify/confd/blob/master/docs/quick-start-guide.md)
@@ -44,22 +44,22 @@
 	+  /etc/confd/templates/zoo.cfg.tmpl
 
   ```
-{% raw %}
-    tickTime=2000
-    initLimit=10
-    syncLimit=5
-    dataDir=/zk\_data/zookeeper
-    clientPort=2181
-    maxClientCnxns=1000
-    {{range $dir := lsdir "/hosts"}}{{$sid := printf "/hosts/%s/sid" $dir}}
-    {{$ip := printf "/hosts/%s/ip" $dir}}server.{{getv $sid}}={{getv $ip}}:2888:3888{{end}}
-{% endraw %}
+  tickTime=2000
+  initLimit=10
+  syncLimit=5
+  dataDir=/zk\_data/zookeeper
+  clientPort=2181
+  maxClientCnxns=1000
+  {{range $dir := lsdir "/hosts"}}{{$sid := printf "/hosts/%s/sid" $dir}}
+  {{$ip := printf "/hosts/%s/ip" $dir}}server.{{getv $sid}}={{getv $ip}}:2888:3888{{end}}
   ```
 
   tmpl 模版文件决定应用配置文件内容，confd 读取青云 metadata service 刷新这些变量的值，如此例 range 这一行是读取该节点所在集群节点的 IP 和 server ID 信息，然后刷新为如下信息：
 
-			server.1=192.168.100.2:2888:3888
-			server.2=192.168.100.3:2888:3888
-			server.3=192.168.100.4:2888:3888
+  ```
+server.1=192.168.100.2:2888:3888
+server.2=192.168.100.3:2888:3888
+server.3=192.168.100.4:2888:3888
+  ```
 
   更多模版语法参见 [confd templates](https://github.com/kelseyhightower/confd/blob/master/docs/templates.md)，注意的是青云的 confd 在开源基础上增加了一些对算术的支持，如 add,div,mul,sub,eq,ne,gt,ge,lt,le,mod 等。
