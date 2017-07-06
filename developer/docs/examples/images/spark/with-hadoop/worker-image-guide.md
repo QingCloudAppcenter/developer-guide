@@ -81,7 +81,7 @@
   [template]
   src = "hosts.tmpl"
   dest = "/etc/hosts"
-  keys = [,
+  keys = [
       "/",
   ]
    ```
