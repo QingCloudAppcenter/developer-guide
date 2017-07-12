@@ -508,7 +508,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           升级集群后执行的命令，具体参数参考初始化命令 init。
           > 注：必须先关机集群后才能升级，升级后再开启集群将会以<strong>新版本的镜像</strong>启动并执行升级命令。如果升级命令执行失败，用户可以关闭集群后降级回老版本。<br> 对于 user\_access 为 true 的节点也会使用新的镜像启动，请在使用说明中提醒用户自行备份 user\_access 为 true 节点上的数据。
 
-        这几个服务都是系统定义的；除了 post\_start\_service 是 init,upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
+        这几个服务都是系统定义的；除了 post\_start\_service 是 init, upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
 
         + backup <br>
           用户自定义命令，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
