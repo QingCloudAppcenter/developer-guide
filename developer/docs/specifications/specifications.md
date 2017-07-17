@@ -261,6 +261,10 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		"external_service"***: {{cluster.external_service}}
 	},
 	"add_links": ["external_service"***],
+	"upgrade_policy": [
+			"appv-xxxxxxxx",
+			"appv-yyyyyyyy"
+	],
 	"nodes": [{***
 		"role": "role_name",
 		"loadbalancer": {{cluster.role_name.loadbalancer}},
@@ -311,6 +315,9 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 				"nodes_to_execute_on": 1,
 				"post_stop_service": true,
 				"cmd": "/opt/myapp/sbin/destroy-server.sh"
+			},
+			"upgrade": {
+				"cmd": "/opt/myapp/sbin/upgrade.sh"
 			},
 			"backup"***: {
 				"type": "custom",
@@ -421,6 +428,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     新建应用可能会依赖外部应用，比如 Kafka 依赖 ZooKeeper，依赖名称可以任意命名，不一定是 external\_service，比如命名为 zk\_service；可以依赖多个外部应用，非必填项。
 *   add\_links <br>
     允许增加的外部应用列表，定义在列表中的依赖名称，如 zk\_service，用户部署集群后可以新加以该名字为前缀的依赖如：zk\_service2，这样在定义多种外部依赖时，可以通过匹配前缀信息来得知用户配置的当前 link 属于哪个种类。
+*   upgrade\_policy <br>
+    定义当前应用的哪些版本可以升级到当前版本，新老版本之间 role 必须相同，数据盘挂载位置必须一致。由于升级后会替换集群的镜像，所以在开发阶段**请仔细测试升级功能**。
 *   nodes <br>
     新建应用节点信息，必填项。一个应用的节点可能是无角色区分的，这个时候 nodes 只有一种角色的信息；也可能是多角色组成的复杂应用，这个时候 nodes 就是这些角色节点信息组成的一个数组。
     -   role <br>
@@ -495,8 +504,11 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           销毁命令，在删除集群或者节点时会触发该命令的执行，通常用作删除资源之前检查安全性，具体参数参考初始化命令 init。
           * post\_stop\_service　<br>
             控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
+        + upgrade <br>
+          升级集群后执行的命令，具体参数参考初始化命令 init。
+          > 注：必须先关机集群后才能升级，升级后再开启集群将会以<strong>新版本的镜像</strong>启动并执行升级命令。如果升级命令执行失败，用户可以关闭集群后降级回老版本。<br> 对于 user\_access 为 true 的节点也会使用新的镜像启动，请在使用说明中提醒用户自行备份 user\_access 为 true 节点上的数据。
 
-        这几个服务都是系统定义的；除了 post\_start\_service 是 init 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
+        这几个服务都是系统定义的；除了 post\_start\_service 是 init, upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
 
         + backup <br>
           用户自定义命令，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
