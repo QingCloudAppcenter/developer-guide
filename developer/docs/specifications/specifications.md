@@ -260,7 +260,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 	"links": {
 		"external_service"***: {{cluster.external_service}}
 	},
-	"add_links": ["external_service"***],
+	"backup_policy": "device",
+	"incremental_backup_supported": false,
 	"upgrade_policy": [
 			"appv-xxxxxxxx",
 			"appv-yyyyyyyy"
@@ -319,9 +320,36 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 			"upgrade": {
 				"cmd": "/opt/myapp/sbin/upgrade.sh"
 			},
-			"backup"***: {
-				"type": "custom",
+			"backup": {
 				"cmd": "/opt/myapp/sbin/backup.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400
+			},
+			"restore": {
+				"cmd": "/opt/myapp/sbin/restore.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400,
+			},
+			"delete_snapshot": {
+				"cmd": "/opt/myapp/sbin/delete_snapshot.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400
+			},
+			"custom_service"***: {
+				"type": "custom",
+				"cmd": "/opt/myapp/sbin/custom_service.sh",
 				"timeout": 86400,
 				"service_params": {
 					"service_param"***: {{service_params.role_name.param}}
@@ -426,8 +454,10 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     新建应用所在网络 ID，必填项。
 *   links <br>
     新建应用可能会依赖外部应用，比如 Kafka 依赖 ZooKeeper，依赖名称可以任意命名，不一定是 external\_service，比如命名为 zk\_service；可以依赖多个外部应用，非必填项。
-*   add\_links <br>
-    允许增加的外部应用列表，定义在列表中的依赖名称，如 zk\_service，用户部署集群后可以新加以该名字为前缀的依赖如：zk\_service2，这样在定义多种外部依赖时，可以通过匹配前缀信息来得知用户配置的当前 link 属于哪个种类。
+*   backup_policy <br>
+    定义应用的备份策略，支持 "device" 和 "custom" 两种类型。"device" 表示对节点的挂盘做snapshot；"custom" 则是使用自定义的备份命令进行备份操作，比如备份到某个目录，或拷贝到某个节点。非必填项。
+*   incremental_backup_supported <br>
+    定义应用是否支持增量备份。备份分为全量备份和增量备份，全量备份每次创建新的备份链，而增量备份会在原有备份链上基于上一个备份点创建新的备份点，删除备份链上某一备份点后，其后的所有备份点都会被相应删除。默认值为 false 表示只支持全量备份，非必填项。
 *   upgrade\_policy <br>
     定义当前应用的哪些版本可以升级到当前版本，新老版本之间 role 必须相同，数据盘挂载位置必须一致。由于升级后会替换集群的镜像，所以在开发阶段**请仔细测试升级功能**。
 *   nodes <br>
@@ -508,15 +538,27 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           升级集群后执行的命令，具体参数参考初始化命令 init。
           > 注：必须先关机集群后才能升级，升级后再开启集群将会以<strong>新版本的镜像</strong>启动并执行升级命令。如果升级命令执行失败，用户可以关闭集群后降级回老版本。<br> 对于 user\_access 为 true 的节点也会使用新的镜像启动，请在使用说明中提醒用户自行备份 user\_access 为 true 节点上的数据。
 
-        这几个服务都是系统定义的；除了 post\_start\_service 是 init, upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
-
         + backup <br>
-          用户自定义命令，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
-          * type <br>
-            type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 backup) 开发者自行定义。
+          定义该角色的备份操作，若不定义表示该角色不支持备份。若 "backup_policy" 定义为 "custom" 则必须定义 cmd；若 "backup_policy" 定义为 "device" 可不定义 cmd，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
           * service\_params <br>
             service\_params 中定义这个 cmd 所需要传的参数，json 格式，非必须项，参数具体定义在 config.json 里，可参考 env 的定义方式。
-          > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key，如 backup。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
+          > 注：提供手动备份的同时也会提供 "定时自动备份" 支持，手动备份时会以 json 形式传入用户填入具体 "service\_params" 到 backup 的 cmd，而 "定时自动备份" 操作时不会传入参数。
+
+        + restore <br>
+          定义该角色的备份恢复操作。若该角色定义该服务，恢复时使用 restore 进行恢复；若该角色未定义该服务，恢复时使用 start 进行恢复。具体参数参考备份命令 backup。
+          > 注：若 "backup_policy" 定义为 "custom"，备份恢复操作会在当前集群完成；若 "backup_policy" 定义为 "device"，备份恢复操作会使用挂盘的 snapshot 创建一个新的集群。
+
+        + delete_snapshot <br>
+          定义备份删除操作。若 "backup_policy" 定义为 "custom" 则必须定义 cmd；若 "backup_policy" 定义为 "device" 可不定义 cmd。具体参数参考备份命令 backup。
+
+        这几个服务都是系统定义的；除了 post\_start\_service 是 init, upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
+
+        + custom_service <br>
+          用户自定义命令，具体参数参考备份命令 backup，除此之外自定义的服务参数还有：
+          * type <br>
+            type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 custom_service) 开发者自行定义。
+          > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
+          
     -   env <br>
         特定角色节点的应用参数配置，每类应用有自身特有的可配置应用参数，每类节点也会有不同于应用全局级别的可配置参数。注意：节点之间或节点与集群全局之间的参数没有任何关系，都是独立的。
     -   agent\_installed <br>
