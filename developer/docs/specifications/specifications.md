@@ -321,32 +321,32 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 				"cmd": "/opt/myapp/sbin/upgrade.sh"
 			},
 			"backup": {
-              "cmd": "/opt/myapp/sbin/backup.sh",
-              "nodes_to_execute_on": 1,
-              "order": 1,
-              "service_params": {
-                "service_param"***: {{service_params.role_name.param}}
-              },
-              "timeout": 86400
-            },
-            "restore": {
-              "cmd": "/opt/myapp/sbin/restore.sh",
-              "nodes_to_execute_on": 1,
-              "order": 1,
-              "service_params": {
-                "service_param"***: {{service_params.role_name.param}}
-              },
-              "timeout": 86400,
-            },
-            "delete_snapshot": {
-              "cmd": "/opt/myapp/sbin/delete_snapshot.sh",
-              "nodes_to_execute_on": 1,
-              "order": 1,
-              "service_params": {
-                "service_param"***: {{service_params.role_name.param}}
-              },
-              "timeout": 86400
-            },
+				"cmd": "/opt/myapp/sbin/backup.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400
+			},
+			"restore": {
+				"cmd": "/opt/myapp/sbin/restore.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400,
+			},
+			"delete_snapshot": {
+				"cmd": "/opt/myapp/sbin/delete_snapshot.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400
+			},
 			"custom_service"***: {
 				"type": "custom",
 				"cmd": "/opt/myapp/sbin/custom_service.sh",
