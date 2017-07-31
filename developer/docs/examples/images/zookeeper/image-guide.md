@@ -38,27 +38,23 @@ apt-get install openjdk-7-jre-headless
 
 	+ 创建 /etc/confd/templates/zoo.cfg.tmpl
 
-		```
-		{% raw %}
-			tickTime=2000
-			initLimit=10
-			syncLimit=5
-			dataDir=/data/zookeeper
-			{{if exists "/cluster/endpoints/client/port"}}{{$port := getv "/cluster/endpoints/client/port"}}
-		    clientPort={{$port}}{{else}}clientPort=2181{{end}}
-			maxClientCnxns=1000
-			{{range $dir := lsdir "/hosts"}}{{$sid := printf "/hosts/%s/sid" $dir}}
-			{{$ip := printf "/hosts/%s/ip" $dir}}server.{{getv $sid}}={{getv $ip}}:2888:3888{{end}}
-		{% endraw %}
-  	```
+	```
+	tickTime=2000
+	initLimit=10
+	syncLimit=5
+	dataDir=/data/zookeeper
+	{{if exists "/cluster/endpoints/client/port"}}{{$port := getv "/cluster/endpoints/client/port"}}
+	clientPort={{$port}}{{else}}clientPort=2181{{end}}
+	maxClientCnxns=1000
+	{{range $dir := lsdir "/hosts"}}{{$sid := printf "/hosts/%s/sid" $dir}}
+	{{$ip := printf "/hosts/%s/ip" $dir}}server.{{getv $sid}}={{getv $ip}}:2888:3888{{end}}
+  ```
 
 	+ 创建 /etc/confd/templates/myid.tmpl
 
-  	```
-  	{% raw %}
-			{{getv "/host/sid"}}
-  	{% endraw %}
-  	```
+	```
+  {% raw %}{{getv "/host/sid"}}{% endraw %}
+  ```
 
 * ZooKeeper 相关改动
 

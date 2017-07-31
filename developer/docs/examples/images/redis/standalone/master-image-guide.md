@@ -19,7 +19,6 @@
 * 创建 /etc/confd/templates/redis.conf.tmpl
 
 	```
-		{% raw %}
 	  aof-rewrite-incremental-fsync yes
 		appendfilename appendonly.aof
 		auto-aof-rewrite-percentage 10
@@ -51,7 +50,6 @@
 		{{range gets "/env/*"}}{{$v := .Value}}{{ if gt ( len ( $v ) ) 0 }}{{base .Key}} {{.Value}}
 		{{ else }}{{base .Key}} ""
 		{{end}}{{end}}
-		{% endraw %}
 	```
 
 >最后 range 部分是 confd (已通过前面安装 agent 的方式部署到镜像里)这个服务读取青云提供的 [metadata](../../../../metadata-service.md) 服务来更新应用的配置，

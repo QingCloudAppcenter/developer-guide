@@ -55,8 +55,7 @@
 	+ 创建 /etc/confd/templates/redis.conf.tmpl
 
 		```
-		{% raw %}
-		    aof-rewrite-incremental-fsync yes
+		  aof-rewrite-incremental-fsync yes
 			appendfilename appendonly.aof
 			auto-aof-rewrite-percentage 10
 			auto-aof-rewrite-min-size 64mb
@@ -93,41 +92,34 @@
 			{{range gets "/env/*"}}{{$v := .Value}}{{ if gt ( len ( $v ) ) 0 }}{{base .Key}} {{.Value}}
 			{{ else }}{{base .Key}} ""
 			{{end}}{{end}}
-		{% endraw %}
 		```
 
 	+ 创建 /etc/confd/templates/nodes.info.tmpl
 
 		```
-		{% raw %}
 			{{range $dir := lsdir "/hosts/master/"}}{{$ip := printf "/hosts/master/%s/ip" $dir}}
 			M:{{getv $ip}}{{end}}     
 		    {{range $dir := lsdir "/hosts/master-replica/"}}{{$ip := printf "/hosts/master-replica/%s/ip" $dir}}
 			S:{{getv $ip}}{{end}}
-		{% endraw %}
 		```
 	<table><tr style="background-color:rgb(240,240,240)"><td><b>注：</b>在 lsdir 里的 master 后面必须跟斜杠号(/)</td></tr></table>
 
 	+ 创建 /etc/confd/templates/scaling-out.info.tmpl
 
 		```
-			{% raw %}
 			{{range $dir := lsdir "/adding-hosts/master/"}}{{$ip := printf "/adding-hosts/master/%s/ip" $dir}}
 		    master {{getv $ip}}{{end}}
 		    {{range $dir := lsdir "/adding-hosts/master-replica/"}}{{$ip := printf "/adding-hosts/master-replica/%s/ip" $dir}}
 		    master-replica {{getv $ip}}{{end}}
-			{% endraw %}
 		```
 
 	+ 创建 /etc/confd/templates/scaling-in.info.tmpl
 
 		```
-		{% raw %}
 			{{range $dir := lsdir "/deleting-hosts/master/"}}{{$ip := printf "/deleting-hosts/master/%s/ip" $dir}}
 		    {{getv $ip}}{{end}}
 		    {{range $dir := lsdir "/deleting-hosts/master-replica/"}}{{$ip := printf "/deleting-hosts/master-replica/%s/ip" $dir}}
 		    {{getv $ip}}{{end}}		    `
-		{% endraw %}
 		```
 
 * 补充脚本

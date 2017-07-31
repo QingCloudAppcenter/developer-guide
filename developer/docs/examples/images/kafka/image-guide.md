@@ -18,7 +18,6 @@
 * 创建 /etc/confd/templates/server.properties.tmpl
 
 	```
-		{% raw %}
 		# fixed params
 		log.segment.bytes=1073741824
 		socket.send.buffer.bytes=202400
@@ -49,7 +48,6 @@
 		host.name={{getv "/host/ip"}}
 		broker.id={{getv "/host/sid"}}
 		{{$ahost := getv "/env/advertised.host.name"}}{{ if le ( len ( $ahost ) ) 0 }}advertised.host.name={{getv "/host/ip"}}{{end}}
-		{% endraw %}
 	```
 
 * 创建 /opt/kafka/bin/kafka-server-restart.sh
