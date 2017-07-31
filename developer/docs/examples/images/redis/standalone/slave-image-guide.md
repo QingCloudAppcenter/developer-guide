@@ -18,7 +18,6 @@
 * 创建 /etc/confd/templates/redis.conf.tmpl
 
 	```
-	{% raw %}
 	aof-rewrite-incremental-fsync yes
 	appendfilename appendonly.aof
 	auto-aof-rewrite-percentage 10
@@ -52,7 +51,6 @@
 	{{end}}{{end}}
 	{{range $dir := lsdir "/hosts/master"}}{{$ip := printf "/hosts/master/%s/ip" $dir}}
 	slaveof {{getv $ip}} {{getv "/env/port"}}{{end}}
-	{% endraw %}
 	```
 
 > 最后一个 range 部分是获取本节点所在集群的主节点信息，包括 IP 和端口号。
