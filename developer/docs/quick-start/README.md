@@ -14,3 +14,7 @@
 
 * [ZooKeeper 示例](zookeeper.md)
 * [Redis Standalone 示例](redis-standalone.md)
+
+可以参考视频教程--[这里](https://drive.yunify.com/s/Nzm9xZjz7DEeqRL/)
+更过青云制作的应用可以在[这里](https://github.com/qingCloudAppcenter/)找到．
+常见的问题请参考－－[常见问题](../faq/README.md)
