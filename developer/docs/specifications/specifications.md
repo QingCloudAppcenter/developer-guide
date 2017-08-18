@@ -699,7 +699,7 @@ config.json 文件里对每个变量需要定义其类型、取值范围、默�
     - service <br>
       新应用可能会依赖外部应用，比如 Kafka 依赖 ZooKeeper，应用使用该类型表示。
     - loadbalancer <br>
-      新应用如需使用负载均衡器，可以使用该类型表示，定义时需要同时定义负载均衡器后端服务端口参数：port，比如搭建的 HTTP 的 web server，可以指定 port 为80。
+      新应用如需使用负载均衡器，可以使用该类型表示，定义时需要同时定义负载均衡器后端服务端口参数：port，比如搭建的 HTTP 的 web server，可以指定 port 为 80，如需定义多个后端服务端口，可将 port 定义为一个列表，如：[80, 8080]。
     - password <br>
       可在 env 或 service_params 变量中使用，界面会用密码形式显示输入。
 * range <br>
