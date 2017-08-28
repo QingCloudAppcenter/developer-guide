@@ -15,8 +15,9 @@
 * [ZooKeeper 示例](zookeeper.md)
 * [Redis Standalone 示例](redis-standalone.md)
 
-* 可以参考视频教程 
-    * [AppCenter 架构及 Zookeeper 开发示例](https://drive.yunify.com/s/Nzm9xZjz7DEeqRL)
-    * [Tomcat 集群开发示例](https://drive.yunify.com/s/Pqc6vGnBiv94a0J)
+* 可以参考视频教程
+
+<embed height="600" width="787" quality="high" allowfullscreen="true" type="application/x-shockwave-flash" src="//static.hdslb.com/miniloader.swf" flashvars="aid=13504916&page=1" pluginspage="//www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"></embed>
+
 * 更多青云制作的应用可以在[这里](https://github.com/qingCloudAppcenter/)找到．
 * 常见的问题请参考－－[常见问题](../faq/README.md)
