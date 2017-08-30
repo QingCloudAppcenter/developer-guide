@@ -64,7 +64,7 @@
             </ul>
         </ul>
       <li style="list-style-type:none;">/<b>env</b>/[parameter key]* [parameter value]</li>
-      <li style="list-style-type:none;">/<b>adding-hosts</b>/[instance_id]*</li>
+      <li style="list-style-type:none;">/<b>adding-hosts</b>/<i>[role name]</i>/[instance_id]*</li>
         <ul>
           <li style="list-style-type:none;">/<b>ip</b> [IP address]</li>
           <li style="list-style-type:none;">/<b>mac</b> [MAC address]</li>
@@ -80,7 +80,7 @@
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
           <li style="list-style-type:none;">/<b><i>token</i></b> [token string]</li>
         </ul>
-      <li style="list-style-type:none;">/<b>deleting-hosts</b>/[instance_id]*</li>
+      <li style="list-style-type:none;">/<b>deleting-hosts</b>/<i>[role name]</i>/[instance_id]*</li>
         <ul>
           <li style="list-style-type:none;">/<b>ip</b> [IP address]</li>
           <li style="list-style-type:none;">/<b>mac</b> [MAC address]</li>
