@@ -21,7 +21,7 @@
 
 * 安装 agent
 
-  下载青云提供的 app agent [Linux 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-linux-amd64.tar.gz), [Windows 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-windows-386.zip)，解压后运行 ./install.sh (Windows 下双击 install.bat)。此 agent 中包含了自动配置文件程序 confd，该程序是在开源 [confd](https://github.com/kelseyhightower/confd/blob/master/docs/quick-start-guide.md) 的基础上修改了一些 bug 并且增加了一些算术功能，详情见 [QingCloud confd](https://github.com/yunify/confd/releases/tag/v0.13.7)。
+  下载青云提供的 app agent [Linux 版本](http://appcenter-docs.qingcloud.com/developer-guide/scripts/app-agent-linux-amd64.tar.gz), [Windows 版本](http://appcenter-docs.qingcloud.com/developer-guide/scripts/app-agent-windows-386.zip)，解压后运行 ./install.sh (Windows 下双击 install.bat)。此 agent 中包含了自动配置文件程序 confd，该程序是在开源 [confd](https://github.com/kelseyhightower/confd/blob/master/docs/quick-start-guide.md) 的基础上修改了一些 bug 并且增加了一些算术功能，详情见 [QingCloud confd](https://github.com/yunify/confd/releases/tag/v0.13.7)。
 
 * 创建模版文件
 
