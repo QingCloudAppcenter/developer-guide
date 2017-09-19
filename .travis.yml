@@ -9,6 +9,7 @@ install:
 - npm install -g gitbook-cli
 - npm install -g markdownlint-cli
 - sudo pip install -U requests
+- sudo pip install -U futures
 - sudo pip install -U qsctl
 before_script:
 - export FILENAME="_book/qingcloud-appcenter-developer-guide"
