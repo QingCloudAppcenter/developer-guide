@@ -1,6 +1,0 @@
-[template]
-src = "hue.ini.init.tmpl"
-dest = "/usr/local/hue/desktop/conf/hue.ini.init"
-keys = [
-    "/",
-]

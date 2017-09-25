@@ -1,7 +1,0 @@
-[template]
-src = "hostname.tmpl"
-dest = "/tmp/hostname"
-keys = [
-  "/",
-]
-reload_cmd = "hostname `cat /tmp/hostname`"

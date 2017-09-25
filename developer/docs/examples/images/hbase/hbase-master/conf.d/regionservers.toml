@@ -1,6 +1,0 @@
-[template]
-src = "regionservers.tmpl"
-dest = "/opt/hbase/conf/regionservers"
-keys = [
-  "/",
-]

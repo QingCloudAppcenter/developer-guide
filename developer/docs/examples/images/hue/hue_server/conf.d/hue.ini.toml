@@ -1,7 +1,0 @@
-[template]
-src = "hue.ini.tmpl"
-dest = "/usr/local/hue/desktop/conf/hue.ini"
-keys = [
-    "/",
-]
-reload_cmd = "/usr/local/hue/hue_shell.sh restart"
