@@ -25,7 +25,7 @@
 
 * 创建模版文件
 
-  开发一些必须的模版文件，这些文件会监听青云 metadata service 的变化从而更新自己应用的配置文件。这些文件后缀名为 toml 和 tmpl，例如，ZooKeeper 有两个配置文件 zoo.cfg 和 myid，每个配置文件需要一套相应的 toml 和 tmpl 模版对应，详情请见[配置 ZooKeeper 镜像](../../examples/images/zookeeper/image-guide.md)。
+  开发一些必须的模版文件，这些文件会监听青云 metadata service 的变化从而更新自己应用的配置文件。这些文件后缀名为 toml 和 tmpl，例如，ZooKeeper 有两个配置文件 zoo.cfg 和 myid，每个配置文件需要一套相应的 toml 和 tmpl 模版对应，详情请见[范例](https://github.com/QingCloudAppcenter/)中的应用。
 
 	+ /etc/confd/conf.d/zoo.cfg.toml
 
