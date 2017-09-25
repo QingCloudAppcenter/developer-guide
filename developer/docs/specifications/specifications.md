@@ -95,6 +95,14 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 				"range": [2048, 8192, 16384, 32768, 49152],
 				"required": "yes"
 			}, {
+				"key": "gpu",
+				"label": "GPU",
+				"description": "GPUs of each node",
+				"type": "integer",
+				"default": 1,
+				"range": [0, 1, 2],
+				"required": "yes"
+			}, {
 				"key": "count",
 				"label": "Count",
 				"description": "Number of nodes for the cluster to create",
@@ -110,6 +118,14 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 				"type": "integer",
 				"default": 0,
 				"range": [0, 1],
+				"required": "yes"
+			}, {
+				"key": "gpu_class",
+				"label": "GPU Class",
+				"description": "The gpu type for the cluster to run，such as high performance",
+				"type": "integer",
+				"default": 0,
+				"range": [0],
 				"required": "yes"
 			}, {
 				"key": "volume_class",
@@ -275,9 +291,11 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 			"zone": "pek3a"
 		},
 		"instance_class": {{cluster.role_name.instance_class}},
+		"gpu_class": {{cluster.role_name.gpu_class}},
 		"count": {{cluster.role_name.count}},
 		"cpu": {{cluster.role_name.cpu}},
 		"memory": {{cluster.role_name.memory}},
+		"gpu": {{cluster.role_name.gpu}},
 		"volume": {
 			"size": {{cluster.role_name.volume_size}},
 			"mount_point": "/data",
@@ -476,12 +494,16 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           镜像制作时所属区域 (如果是 docker 镜像，则无需填写该字段)
     -   instance\_class <br>
         节点类型，支持 0 和 1， 其中0表示性能主机，1表示超高性能主机。可选项，默认值为0。
+    -   gpu\_class <br>
+        节点 gpu 类型，支持 0 表示性能主机。可选项，默认值为0。
     -   count <br>
         节点个数，必填项，可以为0，但集群节点总数必须大于0。
     -   cpu <br>
         每个节点 cpu 个数，可选值范围：1, 2, 4, 8, 12, 16。
     -   memory <br>
         每个节点内存大小，单位 MiB。可选值范围：1024, 2048, 4096, 6144, 8192, 12288, 16384, 24576, 32768, 40960, 49152, 65536, 131072。
+    -   gpu <br>
+        每个节点 gpu 个数，可选值范围：0, 1, 2。目前仅在北京3区(pek3a)可创建带 gpu 的集群, 具体使用方式参考[GPU 主机](https://docs.qingcloud.com/guide/compute_network/gpu_instance.html)
     -   volume <br>
         每个节点数据盘信息，如果此类节点不需要数据盘，不需要填写此项。
         + size <br>

@@ -18,7 +18,11 @@
           <li style="list-style-type:none;">/<b>node_id</b> [node ID]</li>
           <li style="list-style-type:none;">/<b>instance_id</b> [instance ID]</li>
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
+          <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
+          <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
+          <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
           <li style="list-style-type:none;">/<b>physical_machine</b> [ID of the physical machine that hosts the instance]</li>
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
@@ -34,7 +38,11 @@
           <li style="list-style-type:none;">/<b>node_id</b> [node ID]</li>
           <li style="list-style-type:none;">/<b>instance_id</b> [instance ID]</li>
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
+          <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
+          <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
+          <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
           <li style="list-style-type:none;">/<b>physical_machine</b> [ID of the physical machine that hosts the instance]</li>
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
@@ -44,6 +52,7 @@
         <ul>
           <li style="list-style-type:none;">/<b>app_id</b> [application ID]</li>
           <li style="list-style-type:none;">/<b>cluster_id</b> [cluster ID]</li>
+          <li style="list-style-type:none;">/<b>user_id</b> [application ID]</li>
           <li style="list-style-type:none;">/<b>global_uuid</b> [global UUID]</li>
           <li style="list-style-type:none;">/<b>vxnet</b> [VxNet ID]</li>
           <li style="list-style-type:none;">/<b>zone</b> [Zone ID]</li>
@@ -62,6 +71,12 @@
                     </ul>
                 </ul>
             </ul>
+          <li style="list-style-type:none;">/<b><i>api_server</i></b></li>
+            <ul>
+              <li style="list-style-type:none;">/<b><i>host</i></b> [host of api server]</li>
+              <li style="list-style-type:none;">/<b><i>port</i></b> [port of api server]</li>
+              <li style="list-style-type:none;">/<b><i>protocol</i></b> [protocol of api server]</li>
+            </ul>
         </ul>
       <li style="list-style-type:none;">/<b>env</b>/[parameter key]* [parameter value]</li>
       <li style="list-style-type:none;">/<b>adding-hosts</b>/<i>[role name]</i>/[instance_id]*</li>
@@ -74,7 +89,11 @@
           <li style="list-style-type:none;">/<b>node_id</b> [node ID]</li>
           <li style="list-style-type:none;">/<b>instance_id</b> [instance ID]</li>
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
+          <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
+          <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
+          <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
           <li style="list-style-type:none;">/<b>physical_machine</b> [ID of the physical machine that hosts the instance]</li>
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
@@ -90,7 +109,11 @@
           <li style="list-style-type:none;">/<b>node_id</b> [node ID]</li>
           <li style="list-style-type:none;">/<b>instance_id</b> [instance ID]</li>
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
+          <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
+          <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
+          <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
           <li style="list-style-type:none;">/<b>physical_machine</b> [ID of the physical machine that hosts the instance]</li>
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
@@ -133,6 +156,14 @@
     节点 CPU 核数
   + memory <br>
     节点内存大小， 单位 MiB。
+  + gpu <br>
+    节点 GPU 显卡数
+  + instance_class <br>
+    节点类型，其中 0 表示性能主机，1 表示超高性能主机。
+  + gpu_class <br>
+    节点 gpu 显卡类型，其中 0 表示性能型 gpu。
+  + volume_class <br>
+    数据盘类型，其中 0 表示性能盘，3 表示超高性能盘，2 表示容量盘。
   + physical_machine <br>
     节点所在物理机标识符
   + role <br>
@@ -165,6 +196,14 @@
     本节点 CPU 核数
   + memory <br>
     本节点内存大小
+  + gpu <br>
+    本节点节点 GPU 显卡数
+  + instance_class <br>
+    本节点类型。
+  + gpu_class <br>
+    本节点 gpu 显卡类型。
+  + volume_class <br>
+    本节点数据盘类型。
   + physical_machine　<br>
     本节点所在物理机标识符
   + role <br>
@@ -182,6 +221,8 @@
     集群所属的应用 ID
   + cluster_id <br>
     集群 ID，用户在创建应用的时候青云调度系统自动生成的一个以 cl- 开头的唯一标识，如 cl-0u0a6u1j。
+  + user_id <br>
+    用户 ID，创建该集群的用户，如 usr-5DJhqhIN。
   + global_uuid <br>
     集群全球唯一 ID，用户在进入部署应用页面时自动生成的全球唯一标识，这个 ID 可用于需要生成 licence 的应用使用。
   + vxnet <br>
@@ -190,6 +231,8 @@
     集群所在区域 ID
   + endpoints <br>
     应用供第三方使用的 endpoint 定义，service name 可在[应用开发模版规范-完整版](specifications/specifications.md)中任意定义。如果一个第三方应用通过 [links](#links) 链接到本应用，那么就可以通过此功能 (例： /links/*link\_name*/cluster/endpoints/*client*，假定开发者定义这个 endpoint 服务名为 client) 获取到本应用的 endpoint 信息。endpoint 下还可以定义 reserved\_ips，这个目录下开发者可以定义多个 reserved IP，比如 write\_ip, read\_ip 等等，名称开发者自行定义，value 对应的就是这个 reserved IP 的地址。
+  + api_server <br>
+    集群内部可通过内网访问的 api server 信息, 包括 host，port，protocol。目前仅在 sdn2.0 的 zone 内有此信息: pek3a/pek3b/sh1a/sh1b/gd2a
 
 * env <br>
   env 保存用户可修改的应用参数，key 为参数名，value 为具体参数值。<br>
