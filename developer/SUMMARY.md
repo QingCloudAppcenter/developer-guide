@@ -7,8 +7,6 @@
     * [合约管理](docs/business-process/contracts.md)
 * [开发者须知](docs/must-read.md)
 * [快速入门](docs/quick-start/README.md)
-    * [ZooKeeper示例](docs/quick-start/zookeeper.md)
-    * [Redis Standalone示例](docs/quick-start/redis-standalone.md)
 * [系统架构](docs/architechure.md)
 * [应用管理](docs/app-mgmt/README.md)
     * [创建应用](docs/app-mgmt/create-app.md)
