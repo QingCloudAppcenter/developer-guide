@@ -407,6 +407,18 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		},
 		"display": ["group_name_z"***, "item_name_x"***],
 		"alarm": ["item_name_x"***]
+	},
+	"display_tabs": {
+		"node_details_tab": {
+			"cmd": "/opt/myapp/bin/node_details_tab.sh",
+			"description": "More infomation about nodes",
+			"timeout": 10
+		},
+		"node_authentication_tab": {
+			"cmd": "/opt/myapp/bin/node_authentication_tab.sh",
+			"description": "Node authentication",
+			"timeout": 10
+		}
 	}
 }
 ```
@@ -636,6 +648,21 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
         告警指标，其值是一个 JSON Array，该 JSON Array 中的每个元素必须是上面某个监控项的名字 (item_name)，这里的每一项都会成为"控制台-管理-监控告警"下的一个告警指标。
 
   	应用节点会继承应用的监控配置，当应用节点配置了相同的监控参数时，优先使用节点的配置。注明：前端在创建集群之后需要等５分钟监控项才会展现出来。
+* display_tabs 自定义TAB页，TAB页中的信息会以表格的形式展现出来。
+	开发者可以配置此项以在集群详情页显示更多的自定义信息。例如，集群发生主从切换后，节点新的主从信息，节点新的状态。
+	- cmd 必填项，开发者自定义的命令，调度系统会去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
+	```
+	{
+		"labels": ["node_id", "role"], 
+		"data":
+		[
+			["cln-xyzw1234", "master"], 
+			["cln-xyzw1235", "slave"]
+		]
+	}
+	```
+	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容。
+	- timeout 非必填项，命令执行的timeout时长，单位ms，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
 
 ### 数据类型
 config.json 文件里对每个变量需要定义其类型、取值范围、默认值等，其中类型和默认值为必填项。
