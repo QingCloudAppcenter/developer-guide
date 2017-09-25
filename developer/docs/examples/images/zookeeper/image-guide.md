@@ -1,7 +1,7 @@
 ### ZooKeeper 节点镜像制作
 
 * 安装 agent <br>
-下载青云提供的 app agent [Linux 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-linux-amd64.tar.gz), [Windows 版本](https://pek3a.qingstor.com/appcenter/developer/packages/app-agent-windows-386.zip)，解压后运行 ./install.sh (Windows 下双击 install.bat)
+下载青云提供的 app agent [Linux 版本](http://appcenter-docs.qingcloud.com/developer-guide/scripts/app-agent-linux-amd64.tar.gz), [Windows 版本](http://appcenter-docs.qingcloud.com/developer-guide/scripts/app-agent-windows-386.zip)，解压后运行 ./install.sh (Windows 下双击 install.bat)
 
 * 安装 ZooKeepr <br>
 下载 [ZooKeeper](https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz)，解压安装至 /opt/zookeeper。安装 Java (以 Ubuntu 为例)
