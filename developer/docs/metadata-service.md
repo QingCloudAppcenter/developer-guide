@@ -161,7 +161,7 @@
   + instance_class <br>
     节点类型，其中 0 表示性能主机，1 表示超高性能主机。
   + gpu_class <br>
-    节点 gpu 显卡类型。
+    节点 gpu 显卡类型，其中 0 表示性能型 gpu。
   + volume_class <br>
     数据盘类型，其中 0 表示性能盘，3 表示超高性能盘，2 表示容量盘。
   + physical_machine <br>
