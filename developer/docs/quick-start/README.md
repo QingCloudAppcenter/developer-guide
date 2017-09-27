@@ -15,6 +15,12 @@
 
 * 具体步骤可以参考视频教程
 
-<embed height="600" width="787" quality="high" allowfullscreen="true" type="application/x-shockwave-flash" src="//static.hdslb.com/miniloader.swf" flashvars="aid=13504916&page=1" pluginspage="//www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"></embed>
+<video src="../videos/AppCenter2.0_Training_Fix.mp4" controls="controls">
+您的浏览器不支持 video 标签。
+</video>
+
+<video src="../videos/tomcatdemo_720p.mp4" controls="controls">
+您的浏览器不支持 video 标签。
+</video>
 
 * 常见的问题请参考－－[常见问题](../faq/README.md)
