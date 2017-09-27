@@ -15,11 +15,11 @@
 
 * 具体步骤可以参考视频教程
 
-<video src="../videos/AppCenter2.0_Training_Fix.mp4" controls="controls">
+<video src="https://appcenter-docs.pek3a.qingstor.com/developer-guide/docs/videos/AppCenter2.0_Training_Fix.mp4" controls="controls">
 您的浏览器不支持 video 标签。
 </video>
 
-<video src="../videos/tomcatdemo_720p.mp4" controls="controls">
+<video src="https://appcenter-docs.pek3a.qingstor.com/developer-guide/docs/videos/tomcatdemo_720p.mp4" controls="controls">
 您的浏览器不支持 video 标签。
 </video>
 
