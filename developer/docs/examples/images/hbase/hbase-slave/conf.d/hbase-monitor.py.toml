@@ -1,6 +1,0 @@
-[template]
-src = "hbase-monitor.py.tmpl"
-dest = "/opt/hbase/bin/hbase-monitor.py"
-keys = [
-  "/",
-]

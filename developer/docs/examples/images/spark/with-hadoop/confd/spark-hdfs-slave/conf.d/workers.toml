@@ -1,4 +1,0 @@
-[template]
-src = "workers.tmpl"
-dest = "/opt/spark/conf/slaves"
-keys = ["/",]

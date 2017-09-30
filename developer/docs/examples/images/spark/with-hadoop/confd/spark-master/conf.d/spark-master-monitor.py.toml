@@ -1,4 +1,0 @@
-[template]
-src = "spark-master-monitor.py.tmpl"
-dest = "/opt/spark/sbin/spark-master-monitor.py"
-keys = ["/",]

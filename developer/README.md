@@ -20,4 +20,5 @@
 * 版本号：1.0
 * 发布时间：2017年03月23日
 * 更新时间：2017年04月13日
+* 项目地址：https://github.com/QingCloudAppcenter/developer-guide/
 　　

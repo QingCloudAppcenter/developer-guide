@@ -113,7 +113,11 @@
 json 配置项中的每一项，都是一个含有 key、label、description、type、range 等参数的 object。配置项支持嵌套，若 type 为 array，则该项的 properties 填写一个有序列表，在用户部署应用的时候填写配置使用，因此需要注意配置项的顺序。配置项中各参数的解释如下：
 
 * key <br>
-  对应 [cluster.json.mustache](#cluster.json.mustache) 文件索引的值，例如 {% raw %}{{cluster.name}}{% endraw %} 表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
+  对应 [cluster.json.mustache](#cluster.json.mustache) 文件索引的值，例如
+  ```
+   {% raw %}{{cluster.name}}{% endraw %}  
+  ```
+   表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
 * label <br>
   用户部署应用时，填写配置项的名称。
 * description <br>

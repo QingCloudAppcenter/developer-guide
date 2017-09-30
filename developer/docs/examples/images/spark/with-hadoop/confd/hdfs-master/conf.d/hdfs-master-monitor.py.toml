@@ -1,4 +1,0 @@
-[template]
-src = "hdfs-master-monitor.py.tmpl"
-dest = "/opt/hadoop/sbin/hdfs-master-monitor.py"
-keys = ["/",]

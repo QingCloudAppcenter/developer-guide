@@ -1,7 +1,0 @@
-[template]
-src = "spark-defaults.conf.tmpl"
-dest = "/usr/local/spark/conf/spark-defaults.conf"
-keys = [
-    "/links/spk_service_1/",
-]
-reload_cmd = "/usr/local/hue/hue_shell.sh spark restart"
