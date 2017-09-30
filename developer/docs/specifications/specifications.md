@@ -466,11 +466,6 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 			"cmd": "/opt/myapp/bin/node_details_tab.sh",
 			"description": "More infomation about nodes",
 			"timeout": 10
-		},
-		"node_authentication_tab": {
-			"cmd": "/opt/myapp/bin/node_authentication_tab.sh",
-			"description": "Node authentication",
-			"timeout": 10
 		}
 	}
 }
@@ -726,6 +721,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
   	应用节点会继承应用的监控配置，当应用节点配置了相同的监控参数时，优先使用节点的配置。注明：前端在创建集群之后需要等５分钟监控项才会展现出来。
 * display_tabs 自定义TAB页，TAB页中的信息会以表格的形式展现出来。
 	开发者可以配置此项以在集群详情页显示更多的自定义信息。例如，集群发生主从切换后，节点新的主从信息，节点新的状态。配置应用于整个集群，不支持分角色定义。
+	- node_details_tab　必填项，需展示的TAB页标题，该key为自定义并且可定义多个，但最多不超过**5**个，该标题可定义国际化。
 	- cmd 必填项，开发者自定义的命令，调度系统会随机选择集群中的节点去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
 	```
 	{
@@ -737,7 +733,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		]
 	}
 	```
-	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容。
+	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
 	- timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
 	
 
