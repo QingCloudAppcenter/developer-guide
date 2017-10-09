@@ -321,9 +321,11 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 				"cmd": "/opt/myapp/bin/stop-server.sh"
 			},
 			"scale_out": {
+			    "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
 				"cmd": "/opt/myapp/sbin/scale-out.sh"
 			},
 			"scale_in": {
+			    "pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
 				"cmd": "/opt/myapp/sbin/scale-in.sh",
 				"timeout": 86400
 			},
@@ -331,6 +333,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 				"cmd": "/opt/myapp/sbin/restart-server.sh"
 			},
 			"destroy": {
+			    "allow_force": true,
 				"nodes_to_execute_on": 1,
 				"post_stop_service": true,
 				"cmd": "/opt/myapp/sbin/destroy-server.sh"
@@ -532,8 +535,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           初始化命令，在创建集群或者新加节点时会触发该命令的执行。
           * nodes\_to\_execute_on　<br>
             控制此命令在此类角色节点上某几个节点上执行，如果需要在所有此类节点上执行该命令可不填此项。
-          * post\_start\_service
-              控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
+          * post\_start\_service　<br>
+            控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
           * order　<br>
             控制不同角色节点之间执行此命令顺序。比如主从节点，有时候需要主节点先启动服务，从节点后启动服务，非必填项。
           * cmd　<br>
@@ -541,19 +544,23 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           * timeout　<br>
             执行该命令 timeout 时间(单位秒)，系统默认10分钟，由于某些命令可能需要迁移数据而耗时比较长，这种情况下需要计算出最长可能时间，最大值是86400，非必填项。
         + start
-
           服务启动命令，具体参数参考初始化命令 init。
-
         + stop　<br>
           停止服务命令，具体参数参考初始化命令 init。
         + scale\_out　<br>
           加节点时在非新加节点上需执行的命令，具体参数参考初始化命令 init。
+          * pre\_check　<br>
+            加节点时在非新加节点上执行的预检查命令，若返回非0值表示不可新增节点。
         + scale\_in <br>
           删除节点时在非删除节点上需执行的命令，具体参数参考初始化命令 init。
+          * pre\_check　<br>
+            删除节点时在非删除节点上执行的预检查命令，若返回非0值表示不可删除节点。
         + restart <br>
           服务重启动命令，具体参数参考初始化命令 init。
         + destroy <br>
           销毁命令，在删除集群或者节点时会触发该命令的执行，通常用作删除资源之前检查安全性，具体参数参考初始化命令 init。
+          * allow\_force <br>
+            是否允许强制删除, 默认值为 true 表示允许强制删除该节点, 强制删除时即使 destroy 的 cmd 返回非 0 值也会继续将节点删除。
           * post\_stop\_service　<br>
             控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
         + upgrade <br>
