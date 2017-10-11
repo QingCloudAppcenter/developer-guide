@@ -486,7 +486,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     -   role <br>
         多角色节点应用必填项，单角色应用可以无此项。角色名称自定义，但必须和 config.json 里定义的名字一致。
     -   loadbalancer <br>
-        新建应用可能会依赖负载均衡器，不同角色 (role) 以依赖不同的负载均衡器。
+        新建应用可能会依赖负载均衡器，不同角色 (role) 可以依赖不同的负载均衡器。
     -   container <br>
         镜像信息，必填项。
         + type <br>
