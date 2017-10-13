@@ -1,9 +1,0 @@
-/opt/qingcloud/app-agent/log/cmd.log /opt/qingcloud/app-agent/log/app.log /opt/qingcloud/app-agent/log/confd.log {
-    daily
-    rotate 10
-    size 100M
-    missingok
-    notifempty
-    compress
-    sharedscripts
-}

@@ -1,7 +1,0 @@
-[template]
-src = "cmd.info.tmpl"
-dest = "C:\\Program Files (x86)\\QingCloud\\App Agent\\log\\cmd.info"
-  keys = [
-    "/",
-]
-reload_cmd = "C:\\Program Files (x86)\\QingCloud\\App Agent\\bin\\exec.bat"
