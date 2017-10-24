@@ -4,5 +4,6 @@
 
 * [制作 KVM 虚机指南](kvm.md)
 * [制作 Docker 指南](docker.md)
+* [示例应用](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)
 
 提示：请参考[调试指南](../../debug.md)
