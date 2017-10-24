@@ -276,4 +276,4 @@ config.json 中定义的参数，在青云 QingCloud 控制台上由用户设置
 
 ## 范例
 
-参考 [青云应用目录](github.com/qingCloudAppcenter/)
+参考 [青云应用目录](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)
