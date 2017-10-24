@@ -17,6 +17,7 @@
 	* [制作镜像](docs/app-version-mgmt/images/README.md)
         * [制作KVM镜像](docs/app-version-mgmt/images/kvm.md)
         * [制作Docker镜像](docs/app-version-mgmt/images/docker.md)
+        * [示例应用](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)
 	* [测试应用版本](docs/app-version-mgmt/test-app-version.md)
 	* [提交应用版本](docs/app-version-mgmt/submit-app-version.md)
   * [上架和下架应用版本](docs/app-version-mgmt/manage-app-version.md)
