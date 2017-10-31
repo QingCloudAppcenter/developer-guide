@@ -464,6 +464,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 	"display_tabs": {
 		"node_details_tab": {
 			"cmd": "/opt/myapp/bin/node_details_tab.sh",
+			"roles_to_execute_on": ["master", "slave"],
 			"description": "More infomation about nodes",
 			"timeout": 10
 		}
@@ -733,6 +734,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		]
 	}
 	```
+	- roles\_to\_execute_on 非必填项，如填写此项，则命令只会在指定的角色节点上执行，若集群创建完成时，没有指定角色的节点存在则会报错。不配置此项则会在所有的节点里随机选取节点执行。
 	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
 	- timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
 	
