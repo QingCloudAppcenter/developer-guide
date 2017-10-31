@@ -74,7 +74,7 @@
 * locale 下翻译文件中, 支持 err_code 定义, 在出现错误时展示给用户相应的信息.
 
 ##### Metadata Service 变更
-* 主机 (hosts, host, adding-hosts, deleting-hosts) 增加节点 instance_class, volume_class, volume_size, gpu, gpu_class, reserved_ips 信息
+* 主机 (hosts, host, adding-hosts, deleting-hosts) 增加节点 instance_class, volume_class, volume_size, gpu, gpu_class, reserved_ips, eip 信息
 * 集群 cluster 下:
   * 增加 user_id 信息.
   * 增加 api_server 信息, 包括 host, port, protoco．在集群内部可通过内网向 api server 发送请求.
@@ -86,3 +86,4 @@
 * 已上架应用所使用的 image 免费
 * 支持查询 image 被哪些 app 使用
 * 支持为集群中节点绑定 eip 和防火墙
+* 支持创建, 切换网络时手动配置集群节点ip
