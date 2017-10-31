@@ -11,6 +11,7 @@
       <li style="list-style-type:none;">/<b>hosts</b>/<i>[role name]</i>/[instance_id]*</li>
         <ul>
           <li style="list-style-type:none;">/<b>ip</b> [IP address]</li>
+          <li style="list-style-type:none;">/<b>eip</b> [public IP address]</li>
           <li style="list-style-type:none;">/<b>mac</b> [MAC address]</li>
           <li style="list-style-type:none;">/<b>sid</b> [server ID]</li>
           <li style="list-style-type:none;">/<b>gid</b> [group ID]</li>
@@ -39,6 +40,7 @@
       <li style="list-style-type:none;">/<b>host</b></li>
         <ul>
           <li style="list-style-type:none;">/<b>ip</b> [IP address]</li>
+          <li style="list-style-type:none;">/<b>eip</b> [public IP address]</li>
           <li style="list-style-type:none;">/<b>mac</b> [MAC address]</li>
           <li style="list-style-type:none;">/<b>sid</b> [server ID]</li>
           <li style="list-style-type:none;">/<b>gid</b> [group ID]</li>
@@ -98,6 +100,7 @@
       <li style="list-style-type:none;">/<b>adding-hosts</b>/<i>[role name]</i>/[instance_id]*</li>
         <ul>
           <li style="list-style-type:none;">/<b>ip</b> [IP address]</li>
+          <li style="list-style-type:none;">/<b>eip</b> [public IP address]</li>
           <li style="list-style-type:none;">/<b>mac</b> [MAC address]</li>
           <li style="list-style-type:none;">/<b>sid</b> [server ID]</li>
           <li style="list-style-type:none;">/<b>gid</b> [group ID]</li>
@@ -126,6 +129,7 @@
       <li style="list-style-type:none;">/<b>deleting-hosts</b>/<i>[role name]</i>/[instance_id]*</li>
         <ul>
           <li style="list-style-type:none;">/<b>ip</b> [IP address]</li>
+          <li style="list-style-type:none;">/<b>eip</b> [public IP address]</li>
           <li style="list-style-type:none;">/<b>mac</b> [MAC address]</li>
           <li style="list-style-type:none;">/<b>sid</b> [server ID]</li>
           <li style="list-style-type:none;">/<b>gid</b> [group ID]</li>
@@ -172,6 +176,8 @@
   hosts 分角色保存节点信息，如果没有角色，就直接保存在 hosts 之下。角色名称的定义来自 [应用开发模版规范-完整版](specifications/specifications.md) 里的定义。节点信息是一组以主机 ID (通常情况也是主机名，即以 i- 开头的字符串)为子目录组成，每个子目录下是此主机以 key-value 形式保存的详细信息。
   + ip <br>
     节点私有 IP 地址
+  + eip <br>
+    节点绑定的公网 IP 地址，默认为空
   + mac <br>
     节点 mac 地址
   + sid <br>
@@ -216,6 +222,8 @@
 * host　<br>
   + ip <br>
     本节点私有 IP 地址
+  + eip <br>
+    节点绑定的公网 IP 地址，默认为空
   + mac <br>
     本节点 mac 地址
   + sid <br>
