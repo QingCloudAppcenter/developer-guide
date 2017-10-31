@@ -4,21 +4,21 @@
 
 ![关于 AppCenter 2.0](images/appcenter.png)
 
-### 读者对象
+## 读者对象
+
 青云 AppCenter 2.0 旨在人人都能开发云应用，本指南将介绍如何在青云 QingCloud AppCenter 之上云化应用，因此凡是对如何在云平台之上开发应用感兴趣的个人和企业都能使用此指南，具体来说此平台对青云的合作伙伴及个人都开放，但个人用户不能发布应用到商店供公众使用。
 
-### 如何阅读
+## 如何阅读
+
 如果想迅速了解如何开发基于 AppCenter 2.0 的应用，可以直接阅读 [快速入门](docs/quick-start/README.md)。如果想按部就班全面掌握开发云应用，请阅读 [应用管理](docs/app-mgmt/README.md) 和 [应用版本管理](docs/app-version-mgmt/README.md)，先仿照指南提供的比较简单的案例比如 ZooKeeer 或 Redis 部署一遍，了解整个流程之后您可以按照您应用的部署要求在 [应用模版规范-完整版](docs/specifications/specifications.md) 寻找相应解决方法以及从 [Metadata 服务](docs/metadata-service.md) 找到您需要的信息，在调试的时候最好参考一下 [调试指南](docs/debug.md)。
 
-### 联系我们
+## 联系我们
 
 * 技术疑问：周小四　ray@yunify.com
 * 商务合作：田华　 tianhua@yunify.com
 
-### 文档版本控制
+## 文档版本控制
 
-* 版本号：1.0
-* 发布时间：2017年03月23日
-* 更新时间：2017年04月13日
+* 版本号：{{ ""| gitTag}}
+* hash id： {{"" | gitLong}}
 * 项目地址：https://github.com/QingCloudAppcenter/developer-guide/
-　　

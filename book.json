@@ -3,7 +3,7 @@
   "title": "QingCloud AppCenter 2.0 Developer Guide",
   "structure.readme": "docs/introduction/README.md",
   "gitbook":">=3.2.2",
-  "plugins": ["image-captions", "styles-less","-lunr", "-search", "search-pro","anchor-navigation-ex","-sharing","sitemap"],
+  "plugins": ["image-captions", "styles-less","-lunr", "-search", "search-pro","anchor-navigation-ex","-sharing","sitemap","github-issue-feedback","gitversion"],
   "pluginsConfig": {
     "image-captions": {
       "align": "left"
@@ -13,6 +13,9 @@
     },
     "sitemap":{
       "hostname":"https://appcenter-docs.qingcloud.com/developer-guide/"
+    },
+    "github-issue-feedback": {
+          "repo": "QingCloudAppcenter/developer-guide"
     }
   },
   "styles": {

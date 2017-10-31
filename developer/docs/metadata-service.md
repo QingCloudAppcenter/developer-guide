@@ -20,6 +20,7 @@
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
           <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>volume_size</b> [volume size in GiB]</li>
           <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
           <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
           <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
@@ -27,6 +28,13 @@
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
           <li style="list-style-type:none;">/<b><i>token</i></b> [token string]</li>
+          <li style="list-style-type:none;">/<b><i>reserved_ips</i></b></li>
+            <ul>
+              <li style="list-style-type:none;">/<b>[reserved IP name such as vip]*</b></li>
+                <ul>
+                  <li style="list-style-type:none;">/<b>value</b> [reserved ip address]</li>
+                </ul>
+            </ul>
         </ul>
       <li style="list-style-type:none;">/<b>host</b></li>
         <ul>
@@ -40,6 +48,7 @@
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
           <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>volume_size</b> [volume size in GiB]</li>
           <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
           <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
           <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
@@ -47,6 +56,13 @@
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
           <li style="list-style-type:none;">/<b><i>token</i></b> [token string]</li>
+          <li style="list-style-type:none;">/<b><i>reserved_ips</i></b></li>
+            <ul>
+              <li style="list-style-type:none;">/<b>[reserved IP name such as vip]*</b></li>
+                <ul>
+                  <li style="list-style-type:none;">/<b>value</b> [reserved ip address]</li>
+                </ul>
+            </ul>
         </ul>
       <li style="list-style-type:none;">/<b>cluster</b></li>
         <ul>
@@ -91,6 +107,7 @@
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
           <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>volume_size</b> [volume size in GiB]</li>
           <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
           <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
           <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
@@ -98,6 +115,13 @@
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
           <li style="list-style-type:none;">/<b><i>token</i></b> [token string]</li>
+          <li style="list-style-type:none;">/<b><i>reserved_ips</i></b></li>
+            <ul>
+              <li style="list-style-type:none;">/<b>[reserved IP name such as vip]*</b></li>
+                <ul>
+                  <li style="list-style-type:none;">/<b>value</b> [reserved ip address]</li>
+                </ul>
+            </ul>
         </ul>
       <li style="list-style-type:none;">/<b>deleting-hosts</b>/<i>[role name]</i>/[instance_id]*</li>
         <ul>
@@ -111,6 +135,7 @@
           <li style="list-style-type:none;">/<b>cpu</b> [cpu]</li>
           <li style="list-style-type:none;">/<b>gpu</b> [gpu]</li>
           <li style="list-style-type:none;">/<b>memory</b> [memory in MiB]</li>
+          <li style="list-style-type:none;">/<b>volume_size</b> [volume size in GiB]</li>
           <li style="list-style-type:none;">/<b>instance_class</b> [instance class]</li>
           <li style="list-style-type:none;">/<b>gpu_class</b> [gpu class]</li>
           <li style="list-style-type:none;">/<b>volume_class</b> [volume class]</li>
@@ -118,6 +143,13 @@
           <li style="list-style-type:none;">/<b><i>role</i></b> [role name]</li>
           <li style="list-style-type:none;">/<b><i>pub_key</i></b> [pub key string]</li>
           <li style="list-style-type:none;">/<b><i>token</i></b> [token string]</li>
+          <li style="list-style-type:none;">/<b><i>reserved_ips</i></b></li>
+            <ul>
+              <li style="list-style-type:none;">/<b>[reserved IP name such as vip]*</b></li>
+                <ul>
+                  <li style="list-style-type:none;">/<b>value</b> [reserved ip address]</li>
+                </ul>
+            </ul>
         </ul>
       <li style="list-style-type:none;">/<b>links</b>/[service name]* [cluster_id]</li>
       <li style="list-style-type:none;">/<b>cmd</b></li>
@@ -156,6 +188,8 @@
     节点 CPU 核数
   + memory <br>
     节点内存大小， 单位 MiB。
+  + volume_size <br>
+    节点数据盘大小， 单位 GiB。
   + gpu <br>
     节点 GPU 显卡数
   + instance_class <br>
@@ -172,6 +206,8 @@
     节点 passphraseless ssh 公钥
   + token <br>
     节点通过开发者自定义脚本在该主机里运行结果，详情参见[应用开发模版规范-完整版](specifications/specifications.md)。
+  + reserved_ips <br>
+    节点预留 ip 地址. 这个目录下开发者可以定义多个 reserved IP，比如 write\_ip, read\_ip 等等，名称开发者自行定义，value 对应的就是这个 reserved IP 的地址。
 
   例：通过 /self/hosts/i-abcd2xyz/ip 可获取发起请求的节点所在集群中主机 ID 为 i-abcd2xyz 的 IP 地址；或通过 /self/hosts/master/i-abcd2xyz/ip 可获取发起请求的节点所在集群中主机 ID 为 i-abcd2xyz 的 IP 地址，而此节点是一个 master 节点。
 
@@ -196,6 +232,8 @@
     本节点 CPU 核数
   + memory <br>
     本节点内存大小
+  + volume_size <br>
+    本节点数据盘大小。
   + gpu <br>
     本节点节点 GPU 显卡数
   + instance_class <br>
@@ -212,6 +250,8 @@
     本节点 passphraseless ssh 公钥
   + token <br>
     本节点通过开发者自定义脚本在本主机里运行结果
+  + reserved_ips <br>
+    本节点预留 ip 地址. 这个目录下开发者可以定义多个 reserved IP，比如 write\_ip, read\_ip 等等，名称开发者自行定义，value 对应的就是这个 reserved IP 的地址。
 
   例：通过 /self/host/ip 可获取自身节点的 IP 地址
 
