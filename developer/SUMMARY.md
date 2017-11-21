@@ -1,38 +1,58 @@
 # Summary
 
 * [序言](README.md)
+
 * [简介](docs/introduction/README.md)
+
 * [申请入驻](docs/business-process/README.md)
     * [入驻须知](docs/business-process/prerequisite.md)
     * [合约管理](docs/business-process/contracts.md)
+
 * [开发者须知](docs/must-read.md)
+
 * [快速入门](docs/quick-start/README.md)
+
 * [系统架构](docs/architechure.md)
+
 * [应用管理](docs/app-mgmt/README.md)
     * [创建应用](docs/app-mgmt/create-app.md)
     * [管理应用](docs/app-mgmt/manage-app.md)
+
 * [应用版本管理](docs/app-version-mgmt/README.md)
-	* [创建应用版本](docs/app-version-mgmt/create-app-version.md)
-	* [创建配置文件](docs/app-version-mgmt/create-app-config.md)
-	* [制作镜像](docs/app-version-mgmt/images/README.md)
-        * [制作KVM镜像](docs/app-version-mgmt/images/kvm.md)
-        * [制作Docker镜像](docs/app-version-mgmt/images/docker.md)
-        * [示例应用](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)
-	* [测试应用版本](docs/app-version-mgmt/test-app-version.md)
-	* [提交应用版本](docs/app-version-mgmt/submit-app-version.md)
+  * [创建应用版本](docs/app-version-mgmt/create-app-version.md)
+  * [创建配置文件](docs/app-version-mgmt/create-app-config.md)
+  * [制作镜像](docs/app-version-mgmt/images/README.md)
+    * [制作KVM镜像](docs/app-version-mgmt/images/kvm.md)
+    * [制作Docker镜像](docs/app-version-mgmt/images/docker.md)
+    * [示例应用](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)
+  * [测试应用版本](docs/app-version-mgmt/test-app-version.md)
+  * [提交应用版本](docs/app-version-mgmt/submit-app-version.md)
   * [上架和下架应用版本](docs/app-version-mgmt/manage-app-version.md)
   * [应用版本记录](docs/app-version-mgmt/app-version-history.md)
+
 * [Metadata服务](docs/metadata-service.md)
+
 * [应用开发模版规范](docs/specifications/README.md)
   * [应用开发模版规范-基础版](docs/specifications/basic-specifications.md)
   * [应用开发模版规范-完整版](docs/specifications/specifications.md)
   * [应用实例生命周期](docs/specifications/lifecycle.md)
+
 * [用户列表](docs/users/README.md)
+
+* [配置网络设备](/docs/network-device/README.md)
+
 * [集群实例列表](docs/resources/README.md)
+
 * [操作日志](docs/job-logs/README.md)
+
 * [工单系统](docs/tickets/README.md)
+
 * [通知中心](docs/notification/README.md)
+
 * [财务管理](docs/finance/README.md)
+
 * [调试指南](docs/debug.md)
+
 * [常见问题](docs/faq/README.md)
+
 * [版本变更记录](docs/changelogs.md)
