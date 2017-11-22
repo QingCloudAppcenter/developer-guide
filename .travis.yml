@@ -13,7 +13,7 @@ install:
 before_script:
 - export FILENAME="_book/qingcloud-appcenter-developer-guide"
 script:
-- markdownlint --config markdownlint.conf.json developer/*
+- markdownlint --config markdownlint.conf.json developer/
 - gitbook install
 - gitbook build . $FILENAME
 - if [ "$TRAVIS_BRANCH" = "master" -a "$TRAVIS_PULL_REQUEST" = "false" ]; then openssl aes-256-cbc -K $encrypted_4812bbd1d0bc_key -iv $encrypted_4812bbd1d0bc_iv
