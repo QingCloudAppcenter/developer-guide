@@ -103,6 +103,7 @@
           <li style="list-style-type:none;">/<b>cmd</b> [cmd string]</li>
           <li style="list-style-type:none;">/<b>timeout</b> [timeout(second)]</li>
         </ul>
+      <li style="list-style-type:none;">/<b>vertical-scaling-roles</b> [role names]</li>
     </ul>
   <li style="list-style-type:none;">/<b>[cluster ID]*</b></li>  
   与 self 平级目录，每个 cluster ID 目录下内容结构与 self 相同，self 通过软链接指向自己的 cluster ID　
@@ -207,6 +208,8 @@
 * cmd <br>
   cmd 表示本节点需要执行的命令。开发者不需要用到这类信息，这是青云调度系统转发并执行应用命令(开发者只需要在模版中定义命令即可，详情参见[应用开发模版规范-完整版](specifications/specifications.md))，如启动应用命令等。
 
+* vertical-scaling-roles <br>
+  vertical-scaling-roles 表示当前正在进行纵向扩容的角色节点名称，目前的扩容策略是每次扩容一类角色节点，所以 vertical-scaling-roles 的值通常即为角色名称，如 master ； 如果扩容的角色节点设置了 replica ，则此项值为扩容角色和其replica 角色，以逗号隔开，如 master,master-replica 。扩容完成后，此项值会从 metadata 中移除。
 
 ### 查询
 在创建好一个集群后，登陆到任意一个节点，在文件 /etc/confd/confd.toml 里找到 nodes 这一行(这个文件是青云调度系统在用户创建集群的时候自动生成的)，这一行定义的是 metadata server 的 IP 地址，任取一个 IP，运行下面命令即可看到所有信息。注明：同一 VPC 里所有集群这个文件内容相同。
