@@ -44,37 +44,35 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "nodes": [
-             {
-                 "role": "tomcat_nodes",
-                 "container": {
-                     "type": "kvm",
-                     "zone": "pek3a",
-                     "image": "img-h73eih5e"
-                 },
-                 "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-                 "instance_class": {{cluster.tomcat_nodes.instance_class}},
-                 "count": {{cluster.tomcat_nodes.count}},
-                 "cpu": {{cluster.tomcat_nodes.cpu}},
-                 "memory": {{cluster.tomcat_nodes.memory}},
-                 "volume": {
-                    "size": {{cluster.tomcat_nodes.volume_size}},
-                    "mount_point": "/data",  ***请注意这里!!!
-                    "mount_options": "defaults,noatime",
-                    "filesystem": "ext4"
-                }
+            {
+			"role": "tomcat_nodes",
+			"container": {
+				"type": "kvm",
+				"zone": "pek3a",
+				"image": "img-h73eih5e"
+			},
+            "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
+            "instance_class": {{cluster.tomcat_nodes.instance_class}},
+            "count": {{cluster.tomcat_nodes.count}},
+            "cpu": {{cluster.tomcat_nodes.cpu}},
+            "memory": {{cluster.tomcat_nodes.memory}},
+            "volume": {
+                 "size": {{cluster.tomcat_nodes.volume_size}},
+                 "mount_point": "/data",  ***请注意这里!!!
+                 "mount_options": "defaults,noatime",
+                 "filesystem": "ext4"
+              }
     ```
 
     通常如果配置了数据持久化处理，在配置文件的init脚本中需要编写脚本，将应用的默认的数据路径下的数据复制到挂载盘下。
 
 	```text
 	#cluster.json.mustache文件
-
     "services": {
-                 	 "init": {
+                 "init": {
                  	 	"cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
-                 	 },    ***请注意这里!!!
+                 },    ***请注意这里!!!
     ```
 
     如何检查数据持久化是否配置成功？  
@@ -87,7 +85,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "health_check": {
           "enable": true,
           "interval_sec": 60,
@@ -103,7 +100,7 @@
    如果配置了此参数，在控制台上会展示各个节点的服务状态是否健康。
    ![faq_healthcheck.png](../../images/faq_healthcheck.png)
 
-    >check_cmd的内容为根据你的应用自己编写的脚本，其返回结果是特定格式的json。
+    >check_cmd的内容为根据你的应用自己编写的脚本，appcenter会根据exit code判断是否健康，exit code为0则健康，非0则不健康。
      action_cmd的内容为在服务不健康的情况下需要做的动作。  
      具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：health_check
 
@@ -112,7 +109,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "monitor": {
         "enable": true,
         "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgmonitor.py",
@@ -150,7 +146,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "services": {
      "init": {  
                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
@@ -210,7 +205,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "env": {
 		  "DBname": {{env.DBname}},
  		  "max_connections": {{env.max_connections}}
@@ -239,19 +233,19 @@
     ```text
 	#config.json文件
     {
-			"key": "env",
-			"description": "Tomcat cluster service properties",
-			"type": "array",
-			"properties": [
-				{
-					"key": "tomcat_user",
-					"label": "User name to access Tomcat manager GUI",
-					"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
-					"type": "string",
-					"default": "qingAdmin",
-					"pattern": "^(?!.*?[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
-					"required": "yes"
-				},
+		"key": "env",
+		"description": "Tomcat cluster service properties",
+		"type": "array",
+		"properties": [
+			{
+				"key": "tomcat_user",
+				"label": "User name to access Tomcat manager GUI",
+				"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
+				"type": "string",
+				"default": "qingAdmin",
+				"pattern": "^(?!.*?[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
+				"required": "yes"
+			},
     ```
 
     如果配置了此参数，输入非法数据，在提交创建应用的时候会提示错误信息。
@@ -263,7 +257,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "display_tabs": {
       "node_details": {
           "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgnodedetails.sh",
@@ -287,13 +280,12 @@
 
     ```text
 	#cluster.json.mustache文件
-
     {
       "role": "log_node",
       "container": {
            "type": "kvm",
-            "zone": "pek3a",
-            "image": "img-b5urfv9t"
+           "zone": "pek3a",
+           "image": "img-b5urfv9t"
       },
       "instance_class": {{cluster.log_node.instance_class}},
   	  "user_access": true           ***请注意这里!!!
@@ -310,7 +302,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "name": {{cluster.name}},
     "description": {{cluster.description}},
     "vxnet": {{cluster.vxnet}},
@@ -321,7 +312,6 @@
 
 	```text
 	#cluster.json.mustache文件
-
      "services": {
 			"init": {  
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
@@ -343,7 +333,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     {
     "name": {{cluster.name}},
     "description": {{cluster.description}},
@@ -359,7 +348,6 @@
 
 	```text
 	#cluster.json.mustache文件
-
 	 "services": {
 			"init": {  
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
@@ -386,26 +374,24 @@
 
    "nodes": [
     {
-      "role": "tomcat_nodes",
-      "container": {
-      "type": "kvm",
-      "zone": "pek3a",
-      "image": "img-h73eih5e"
-      },
-     "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-     "instance_class": {{cluster.tomcat_nodes.instance_class}},
-     "count": {{cluster.tomcat_nodes.count}},
-     "cpu": {{cluster.tomcat_nodes.cpu}},
-     "memory": {{cluster.tomcat_nodes.memory}},             
-     "advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
-      },
+        "role": "tomcat_nodes",
+        "container": {
+			  "type": "kvm",
+			  "zone": "pek3a",
+			  "image": "img-h73eih5e" },
+		"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
+		"instance_class": {{cluster.tomcat_nodes.instance_class}},
+		"count": {{cluster.tomcat_nodes.count}},
+		"cpu": {{cluster.tomcat_nodes.cpu}},
+		"memory": {{cluster.tomcat_nodes.memory}},             
+		"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
+    },
     ```
 
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
 
 	```text
 	#cluster.json.mustache文件
-
      "services": {
 			"scale_out": {
                 "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
@@ -428,7 +414,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
     "reserved_ips": {
 		"vip": {
 		"value":""
@@ -456,7 +441,6 @@
 
     ```text
 	#locale/zh-cn.json文件
-
     {
     "Master": "主节点",
     "Slave": "从节点",
@@ -477,7 +461,6 @@
 
     ```text
 	#cluster.json.mustache文件
-
      "links": {
          "redis_service": {{cluster.redis_service}},
          "mysql_service": {{cluster.mysql_service}}
@@ -531,7 +514,7 @@
 	{{range $dir := lsdir "/hosts"}}
 		{{$sid := printf "/hosts/%s/sid" $dir}}
 		{{$ip := printf "/hosts/%s/ip" $dir}}
-	server.{{getv $sid}}={{getv $ip}}:2888:3888
+			server.{{getv $sid}}={{getv $ip}}:2888:3888
 	{{end}} 
 	#confd service restart 刷新后的信息为
 	server.1=192.168.100.2:2888:3888
