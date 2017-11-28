@@ -42,7 +42,7 @@
     基于AppCenter开发的应用实例如果不配置挂载盘是不会保存用户需要持久化的数据的，在用用实例重启之后数据都会清空。因此需要在config文件中配置挂盘，配置挂载盘之后，每次实例重新启动后会从该挂载盘的路径下读取用户持久化的数据。   
     具体参数配置如下图所示：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "nodes": [
@@ -68,7 +68,7 @@
 
     通常如果配置了数据持久化处理，在配置文件的init脚本中需要编写脚本，将应用的默认的数据路径下的数据复制到挂载盘下。
 
-	```json
+	```text
 	#cluster.json.mustache文件
 
     "services": {
@@ -85,7 +85,7 @@
 1. **如何写健康检查的配置和脚本？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "health_check": {
@@ -110,7 +110,7 @@
 1. **如何写监控数据的配置和脚本？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "monitor": {
@@ -148,7 +148,7 @@
 1. **如何写自定义服务的脚本？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "services": {
@@ -180,7 +180,7 @@
 
    示例（应用全局级别）如下：
 
-   ```json
+   ```text
    #config.json文件
    {
         "key": "env",
@@ -208,7 +208,7 @@
 			},
    ```
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "env": {
@@ -219,7 +219,7 @@
 
 	同时定义好应用的配置参数，在confd的.tmpl文件中可以使用这些参数。例如:
 
-	```json
+	```text
 	max_connections= {{getv "/env/max_connections"}}
 	```
 
@@ -236,7 +236,7 @@
 1. **用户输入参数如何做校验,如何支持正则表达式？**  
     示例如下：
 
-    ```json
+    ```text
 	#config.json文件
     {
 			"key": "env",
@@ -261,7 +261,7 @@
 1. **如何展示节点的其他信息？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "display_tabs": {
@@ -285,7 +285,7 @@
 1. **如何开放VNC给用户，允许用户访问节点？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     {
@@ -308,7 +308,7 @@
 1. **如何备份？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "name": {{cluster.name}},
@@ -319,7 +319,7 @@
 
 	注意，如果设置了备份策略参数的话，必须将service下的backup命令写上，否则该参数不会生效。 示例如下：
 
-	```json
+	```text
 	#cluster.json.mustache文件
 
      "services": {
@@ -341,7 +341,7 @@
     AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载盘下应用的数据，因此如果应用本身的版本没有变化或者只是小版本升级，可以直接通过AppCenter的升级参数配置进行无缝升级。
 	示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     {
@@ -357,7 +357,7 @@
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：   
 	请注意该脚本是在新的应用的集群上运行的，其流程是：关机 => 升级 => 开机 => 执行upgrade cmd=> 执行start cmd
 
-	```json
+	```text
 	#cluster.json.mustache文件
 
 	 "services": {
@@ -381,7 +381,7 @@
 1. **如何配置横向扩容？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
    "nodes": [
@@ -403,7 +403,7 @@
 
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
 
-	```json
+	```text
 	#cluster.json.mustache文件
 
      "services": {
@@ -426,7 +426,7 @@
 1. **如何设置集群的VIP？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
     "reserved_ips": {
@@ -454,7 +454,7 @@
 
     示例如下：
 
-    ```json
+    ```text
 	#locale/zh-cn.json文件
 
     {
@@ -472,10 +472,10 @@
 	因此建议大家在编写脚本的时候重新再export一下环境变量。    
 	例如export PGDATA=/data/pgsql/main。
 
- 1. **如何配置依赖其他集群的服务？**  
+1. **如何配置依赖其他集群的服务？**  
     示例如下：
 
-    ```json
+    ```text
 	#cluster.json.mustache文件
 
      "links": {
@@ -484,7 +484,7 @@
      },		
     ```
 
-	```json
+	```text
 	#config.json文件
 	{
 	    "key": "redis_service",
@@ -526,7 +526,7 @@
 1. **能否提供一些confd templates（即tmpl文件）的使用例子？**    
 	示例1：
   
-	```json
+	```text
 	#获取集群中所有节点的ip地址，range循环的用法
 	{{range $dir := lsdir "/hosts"}}
 		{{$sid := printf "/hosts/%s/sid" $dir}}
@@ -541,7 +541,7 @@
 	```
 
 	示例2：
-	```json
+	```text
 	# 定义一个变量并使用这个变量
 	{{$tomcat_user :=getv "/env/tomcat_user"}}
     {{$tomcat_pwd :=getv "/env/tomcat_pwd"}}
@@ -551,19 +551,19 @@
 	```
 
 	示例3：
-	```json
+	```text
 	# 获取一个key的值
 	max_connections= {{getv "/env/max_connections"}}
 	```
 
 	示例4：
-	```json
+	```text
 	# 对算术的支持 div
 	{{$shared_buffers := div (getv "/host/memory") 4}}
 	```
 
 	示例5：
-	```json
+	```text
 	# if else的用法
 	{{$SyncStreamRepl := getv "/env/SyncStreamRepl"}}
 
@@ -575,7 +575,7 @@
 	```
 
 	示例6：
-	```json
+	```text
 	# split的用法
 	{{ $replicaIPs := split (getv "/host/ip") "." }}
     {{index $replicaIPs 0}}.{{index $replicaIPs 1}}.{{index $replicaIPs 2}}.0/24
@@ -634,14 +634,14 @@
     请确保在制作镜像时正常关机，保证磁盘正常卸载。
 
 1. **使用说明和服务条款的 Markdown 语法说明**
-    * 支持标准的 [Markdown 语法](http://wowubuntu.com/markdown/)，同时你也可以直接使用 HTML 代码
-    * Markdown 转换后的内容是没有样式，如果你想再添加样式，可以将下面的 HTML 代码添加到你输入的内容之前：
+    - 支持标准的 [Markdown 语法](http://wowubuntu.com/markdown/)，同时你也可以直接使用 HTML 代码
+    - Markdown 转换后的内容是没有样式，如果你想再添加样式，可以将下面的 HTML 代码添加到你输入的内容之前：
 
     ```html
     <link href="https://cdn.bootcss.com/foundation/6.3.1/css/foundation.min.css" rel="stylesheet">
     ```
 
-    * 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
+    - 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
 
 
 
