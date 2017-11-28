@@ -12,7 +12,8 @@
     >具体配置请参考文档 [制作 KVM 镜像](https://appcenter-docs.qingcloud.com/developer-guide/docs/app-version-mgmt/images/kvm.html)   关键字：创建模版文件
 
 1. **什么是Metadata 服务，如何查询Metadata上的值？**  
-	在创建好一个集群后，登陆到任意一个节点，在文件 /etc/confd/confd.toml 里找到 nodes 这一行(这个文件是青云调度系统在用户创建集群的时候自动生成的)，这一行定义的是 metadata server 的 IP 地址，任取一个 IP，运行下面命令即可看到所有信息。   
+  青云 AppCenter 的 metadata service 是在 etcd 基础之上进行了二次开发，主要增加了 self 属性，即每个节点只能从该服务获取到自身相关的信息，如本机 IP、server ID 等， 此项目已在 github 上开源。   
+  在创建好一个集群后，登陆到任意一个节点，在文件 /etc/confd/confd.toml 里找到 nodes 这一行(这个文件是青云调度系统在用户创建集群的时候自动生成的)，这一行定义的是 metadata server 的 IP 地址，任取一个 IP，运行下面命令即可看到所有信息。   
 	注明：同一 VPC 里所有集群这个文件内容相同。   
 	curl http://[IP]/self  	   
 	或者直接访问	  
