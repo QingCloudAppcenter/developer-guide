@@ -42,7 +42,7 @@
     基于AppCenter开发的应用实例如果不配置挂载盘是不会保存用户需要持久化的数据的，在用用实例重启之后数据都会清空。因此需要在config文件中配置挂盘，配置挂载盘之后，每次实例重新启动后会从该挂载盘的路径下读取用户持久化的数据。   
     具体参数配置如下图所示：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "nodes": [
@@ -68,7 +68,7 @@
 
     通常如果配置了数据持久化处理，在配置文件的init脚本中需要编写脚本，将应用的默认的数据路径下的数据复制到挂载盘下。
 
-	```
+	```json
 	#cluster.json.mustache文件
 
     "services": {
@@ -85,7 +85,7 @@
 1. **如何写健康检查的配置和脚本？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "health_check": {
@@ -110,7 +110,7 @@
 1. **如何写监控数据的配置和脚本？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "monitor": {
@@ -148,7 +148,7 @@
 1. **如何写自定义服务的脚本？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "services": {
@@ -180,7 +180,7 @@
 
    示例（应用全局级别）如下：
 
-   ```
+   ```json
    #config.json文件
    {
         "key": "env",
@@ -208,7 +208,7 @@
 			},
    ```
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "env": {
@@ -219,13 +219,13 @@
 
 	同时定义好应用的配置参数，在confd的.tmpl文件中可以使用这些参数。例如:
 
-	```
+	```json
 	max_connections= {{getv "/env/max_connections"}}
 	```
 
 	也可以使用shell脚本在metadata server上获取改值。
 
-	```
+	```shell
 	curl http://metadata/self/cluster/endpoints/reserved_ips/vip/value
 	```
 
@@ -236,7 +236,7 @@
 1. **用户输入参数如何做校验,如何支持正则表达式？**  
     示例如下：
 
-    ```
+    ```json
 	#config.json文件
     {
 			"key": "env",
@@ -261,7 +261,7 @@
 1. **如何展示节点的其他信息？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "display_tabs": {
@@ -285,7 +285,7 @@
 1. **如何开放VNC给用户，允许用户访问节点？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     {
@@ -308,7 +308,7 @@
 1. **如何备份？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "name": {{cluster.name}},
@@ -319,7 +319,7 @@
 
 	注意，如果设置了备份策略参数的话，必须将service下的backup命令写上，否则该参数不会生效。 示例如下：
 
-	```
+	```json
 	#cluster.json.mustache文件
 
      "services": {
@@ -341,7 +341,7 @@
     AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载盘下应用的数据，因此如果应用本身的版本没有变化或者只是小版本升级，可以直接通过AppCenter的升级参数配置进行无缝升级。
 	示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     {
@@ -357,7 +357,7 @@
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：   
 	请注意该脚本是在新的应用的集群上运行的，其流程是：关机 => 升级 => 开机 => 执行upgrade cmd=> 执行start cmd
 
-	```
+	```json
 	#cluster.json.mustache文件
 
 	 "services": {
@@ -381,7 +381,7 @@
 1. **如何配置横向扩容？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
    "nodes": [
@@ -403,7 +403,7 @@
 
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
 
-	```
+	```json
 	#cluster.json.mustache文件
 
      "services": {
@@ -426,7 +426,7 @@
 1. **如何设置集群的VIP？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
     "reserved_ips": {
@@ -454,7 +454,7 @@
 
     示例如下：
 
-    ```
+    ```json
 	#locale/zh-cn.json文件
 
     {
@@ -475,7 +475,7 @@
  1. **如何配置依赖其他集群的服务？**  
     示例如下：
 
-    ```
+    ```json
 	#cluster.json.mustache文件
 
      "links": {
@@ -484,7 +484,7 @@
      },		
     ```
 
-	```
+	```json
 	#config.json文件
 	{
 	    "key": "redis_service",
@@ -526,7 +526,7 @@
 1. **能否提供一些confd templates（即tmpl文件）的使用例子？**    
 	示例1：
   
-	```
+	```json
 	#获取集群中所有节点的ip地址，range循环的用法
 	{{range $dir := lsdir "/hosts"}}
 		{{$sid := printf "/hosts/%s/sid" $dir}}
@@ -541,7 +541,7 @@
 	```
 
 	示例2：
-	```
+	```json
 	# 定义一个变量并使用这个变量
 	{{$tomcat_user :=getv "/env/tomcat_user"}}
     {{$tomcat_pwd :=getv "/env/tomcat_pwd"}}
@@ -551,19 +551,19 @@
 	```
 
 	示例3：
-	```
+	```json
 	# 获取一个key的值
 	max_connections= {{getv "/env/max_connections"}}
 	```
 
 	示例4：
-	```
+	```json
 	# 对算术的支持 div
 	{{$shared_buffers := div (getv "/host/memory") 4}}
 	```
 
 	示例5：
-	```
+	```json
 	# if else的用法
 	{{$SyncStreamRepl := getv "/env/SyncStreamRepl"}}
 
@@ -575,7 +575,7 @@
 	```
 
 	示例6：
-	```
+	```json
 	# split的用法
 	{{ $replicaIPs := split (getv "/host/ip") "." }}
     {{index $replicaIPs 0}}.{{index $replicaIPs 1}}.{{index $replicaIPs 2}}.0/24
@@ -599,26 +599,26 @@
     当定义的应用的启动/停止/监控命令执行有问题，例如
     文件定义如下
 
-    ```
+    ```json
     "start":"your_script"
     ```
 
     服务日志如下
 
-    ```
+    ```json
     2017-04-13 12:14:19,318 ERROR Failed to execute the [cmd:your_script, id:JPwqtXY56Mp22t0RsqkDtQVu3hQLxxxx] in the node [cln-pwgxxxxx]
     ```
 
     请确认起停的命令要写全路径。例如
 
-    ```
+    ```json
     "start":"/bin/your_script"
     ```
 
     要保证脚本在任意路径下调用都可以成功返回。   
     例如在创建好的集群中，执行如下命令返回正常。
 
-    ```
+    ```shell
     cd /tmp  
     /opt/yourscript.sh
     ```
@@ -627,7 +627,7 @@
 
     日志如下
 
-    ```
+    ```json
     2017-04-17 11:03:48,800 CRITICAL Mount volume [{'mount_point': '/data', 'mount_options': '', 'filesystem': 'ext4'}] on node [cln-bo73222b] failed
     ```
 
