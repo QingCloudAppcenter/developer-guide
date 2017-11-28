@@ -551,18 +551,28 @@
 1. **能否提供一些confd templates（即tmpl文件）的使用例子？**    
 	示例1：
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 	```text
 =======
 	
 	```text	
 >>>>>>> c85bbe8... update
+=======
+
+	```text
+>>>>>>> 4d48c6d... update
 	# 获取集群中所有节点的ip地址，range循环的用法
 	{{range $dir := lsdir "/hosts"}}
 		{{$sid := printf "/hosts/%s/sid" $dir}}
 		{{$ip := printf "/hosts/%s/ip" $dir}}
+<<<<<<< HEAD
 			server.{{getv $sid}}={{getv $ip}}:2888:3888
 	{{end}}
+=======
+	server.{{getv $sid}}={{getv $ip}}:2888:3888
+	{{end}} 
+>>>>>>> 4d48c6d... update
 	#confd service restart 刷新后的信息为
 	server.1=192.168.100.2:2888:3888
 	server.2=192.168.100.3:2888:3888
@@ -571,10 +581,14 @@
 
 	示例2：
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> 8fc3ca2... update
+=======
+
+>>>>>>> 4d48c6d... update
 	```text
 	# 定义一个变量并使用这个变量
 	{{$tomcat_user :=getv "/env/tomcat_user"}}
@@ -586,10 +600,14 @@
 
 	示例3：
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> 8fc3ca2... update
+=======
+
+>>>>>>> 4d48c6d... update
 	```text
 	# 获取一个key的值
 	max_connections= {{getv "/env/max_connections"}}
@@ -597,10 +615,14 @@
 
 	示例4：
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> 8fc3ca2... update
+=======
+
+>>>>>>> 4d48c6d... update
 	```text
 	# 对算术的支持 div
 	{{$shared_buffers := div (getv "/host/memory") 4}}
@@ -608,10 +630,14 @@
 
 	示例5：
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> 8fc3ca2... update
+=======
+
+>>>>>>> 4d48c6d... update
 	```text
 	# if else的用法
 	{{$SyncStreamRepl := getv "/env/SyncStreamRepl"}}
@@ -625,10 +651,14 @@
 
 	示例6：
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> 8fc3ca2... update
+=======
+
+>>>>>>> 4d48c6d... update
 	```text
 	# split的用法
 	{{ $replicaIPs := split (getv "/host/ip") "." }}
