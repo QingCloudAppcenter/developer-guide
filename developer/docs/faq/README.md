@@ -47,19 +47,27 @@
 	#cluster.json.mustache文件
     "nodes": [
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 452724a... update
     {
 		"role": "tomcat_nodes",
 		"container": {
           				"type": "kvm",
           				"zone": "pek3a",
           				"image": "img-h73eih5e"
+<<<<<<< HEAD
       },
+=======
+                 },
+>>>>>>> 452724a... update
      "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
      "instance_class": {{cluster.tomcat_nodes.instance_class}},
      "count": {{cluster.tomcat_nodes.count}},
      "cpu": {{cluster.tomcat_nodes.cpu}},
      "memory": {{cluster.tomcat_nodes.memory}},
      "volume": {
+<<<<<<< HEAD
 =======
             {
 			"role": "tomcat_nodes",
@@ -75,15 +83,21 @@
             "memory": {{cluster.tomcat_nodes.memory}},
             "volume": {
 >>>>>>> c4d4ed8... update
+=======
+>>>>>>> 452724a... update
                  "size": {{cluster.tomcat_nodes.volume_size}},
                  "mount_point": "/data",  ***请注意这里!!!
                  "mount_options": "defaults,noatime",
                  "filesystem": "ext4"
 <<<<<<< HEAD
+<<<<<<< HEAD
       }
 =======
               }
 >>>>>>> c4d4ed8... update
+=======
+                }
+>>>>>>> 452724a... update
     ```
 
     通常如果配置了数据持久化处理，在配置文件的init脚本中需要编写脚本，将应用的默认的数据路径下的数据复制到挂载盘下。
@@ -93,12 +107,17 @@
     "services": {
                  "init": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                  	 	      "cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
                 },    ***请注意这里!!!
 =======
                  	 	"cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
                  },    ***请注意这里!!!
 >>>>>>> c4d4ed8... update
+=======
+                 	 	      "cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
+                          },    ***请注意这里!!!
+>>>>>>> 452724a... update
     ```
 
     如何检查数据持久化是否配置成功？  
@@ -144,18 +163,30 @@
                                         "value_type": "int",
                                         "statistics_type": "latest",
                                         "scale_factor_when_display": 1
+<<<<<<< HEAD
                           },
+=======
+                                      },
+>>>>>>> 452724a... update
                           "commitCnt": {
                                         "unit": "",
                                         "value_type": "int",
                                         "statistics_type": "latest",
                                         "scale_factor_when_display": 1
+<<<<<<< HEAD
                           }
+=======
+                                        }
+>>>>>>> 452724a... update
                         },
             		"groups": {
                     			"connCntGrp": ["connCnt"],
                     			"commitCntGrp": ["commitCnt"]
+<<<<<<< HEAD
             		},
+=======
+            		          },
+>>>>>>> 452724a... update
             		"display": ["connCntGrp","commitCntGrp"],
             		"alarm": ["connCnt"]
      }
@@ -175,6 +206,7 @@
     "services": {
                  "init": {  
                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+<<<<<<< HEAD
                 },
                  "start": {
                              "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
@@ -182,11 +214,24 @@
                  "restart": {
                              "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
                 },        
+=======
+                         },
+                 "start": {
+                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
+                          },
+                 "restart": {
+                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
+                            },        
+>>>>>>> 452724a... update
                  "RebuildStandby": {        ***请注意这里!!!
                                      "type": "custom",
                                      "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrebuildstandby.sh",
                                      "timeout": 86400    
+<<<<<<< HEAD
                 }
+=======
+                                    }
+>>>>>>> 452724a... update
        },  
     ```
 
@@ -208,7 +253,12 @@
         "description": "application configuration properties",
         "type": "array",
         "properties": [
+<<<<<<< HEAD
                   			{ "key": "DBname",
+=======
+                  			{
+                  				"key": "DBname",
+>>>>>>> 452724a... update
                   				"label": "DBname",
                   				"description": "DB name to create",
                   				"type": "string",
@@ -216,7 +266,12 @@
                   				"required": "yes",
                   				"changeable": false
                   			},
+<<<<<<< HEAD
                   			{"key": "max_connections",
+=======
+                  			{
+                  				"key": "max_connections",
+>>>>>>> 452724a... update
                   				"label": "max_connections",
                   				"description": "Sets the maximum number of concurrent connections.",
                   				"type": "integer",
@@ -262,7 +317,12 @@
 		"type": "array",
 		"properties": [
 <<<<<<< HEAD
+<<<<<<< HEAD
             			{ "key": "tomcat_user",
+=======
+            			{
+            				"key": "tomcat_user",
+>>>>>>> 452724a... update
             				"label": "User name to access Tomcat manager GUI",
             				"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
             				"type": "string",
@@ -270,6 +330,7 @@
             				"pattern": "^(?!.*?[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
             				"required": "yes"
             			},
+<<<<<<< HEAD
 =======
 			{
 				"key": "tomcat_user",
@@ -281,6 +342,8 @@
 				"required": "yes"
 			},
 >>>>>>> c4d4ed8... update
+=======
+>>>>>>> 452724a... update
     ```
 
     如果配置了此参数，输入非法数据，在提交创建应用的时候会提示错误信息。
@@ -319,6 +382,7 @@
       "role": "log_node",
       "container": {
 <<<<<<< HEAD
+<<<<<<< HEAD
                    "type": "kvm",
                    "zone": "pek3a",
                    "image": "img-b5urfv9t"
@@ -328,6 +392,12 @@
            "image": "img-b5urfv9t"
 >>>>>>> c4d4ed8... update
       },
+=======
+                   "type": "kvm",
+                   "zone": "pek3a",
+                   "image": "img-b5urfv9t"
+                    },
+>>>>>>> 452724a... update
       "instance_class": {{cluster.log_node.instance_class}},
   	  "user_access": true,           ***请注意这里!!!
       "count": 1,
@@ -348,10 +418,14 @@
 
     ```text
 <<<<<<< HEAD
+<<<<<<< HEAD
   	#cluster.json.mustache文件
 =======
 	#cluster.json.mustache文件
 >>>>>>> c4d4ed8... update
+=======
+  	#cluster.json.mustache文件
+>>>>>>> 452724a... update
     "name": {{cluster.name}},
     "description": {{cluster.description}},
     "vxnet": {{cluster.vxnet}},
@@ -365,6 +439,7 @@
      "services": {
 			"init": {  
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+<<<<<<< HEAD
       },
 			"backup": {       ***请注意这里!!!
                   "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
@@ -375,6 +450,14 @@
                 "timeout": 86400
             }
      },
+=======
+              },
+			"backup": {       ***请注意这里!!!
+                  "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
+                  "timeout": 86400
+                }
+        },
+>>>>>>> 452724a... update
     ```
 
     如果配置了此参数，在控制台上集群右键会出现创建备份的菜单。
@@ -401,7 +484,13 @@
       "description": {{cluster.description}},
       "vxnet": {{cluster.vxnet}},
     	"backup_policy": "device",
+<<<<<<< HEAD
     	"upgrade_policy": ["appv-djgirq3p"],
+=======
+    	"upgrade_policy": [
+                "appv-djgirq3p"
+                        ],
+>>>>>>> 452724a... update
     ```
 
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：   
@@ -410,11 +499,21 @@
 	```text
 	#cluster.json.mustache文件
 	 "services": {
+<<<<<<< HEAD
 			"init": {"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"},
 			"upgrade": {        ***请注意这里!!!
                  "cmd": "/opt/myapp/sbin/upgrade.sh"
       }
    },
+=======
+			"init": {  
+                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+              },
+			"upgrade": {        ***请注意这里!!!
+                 "cmd": "/opt/myapp/sbin/upgrade.sh"
+                 }
+        },
+>>>>>>> 452724a... update
 
 	```		
    如果配置了此参数，在控制台上原来旧的版本的集群列表集群右侧会出现一个向上的升级箭头，关闭旧的集群，点击该图标就可以直接升级到最新的版本。
@@ -435,17 +534,17 @@
 
    "nodes": [
     {
-        "role": "tomcat_nodes",
-        "container": {
-			  "type": "kvm",
-			  "zone": "pek3a",
-			  "image": "img-h73eih5e" },
-		"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-		"instance_class": {{cluster.tomcat_nodes.instance_class}},
-		"count": {{cluster.tomcat_nodes.count}},
-		"cpu": {{cluster.tomcat_nodes.cpu}},
-		"memory": {{cluster.tomcat_nodes.memory}},             
-		"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
+      "role": "tomcat_nodes",
+      "container": {
+                		"type": "kvm",
+                		"zone": "pek3a",
+                		"image": "img-h73eih5e" },
+  		"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
+  		"instance_class": {{cluster.tomcat_nodes.instance_class}},
+  		"count": {{cluster.tomcat_nodes.count}},
+  		"cpu": {{cluster.tomcat_nodes.cpu}},
+  		"memory": {{cluster.tomcat_nodes.memory}},             
+  		"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
     },
     ```
 
@@ -455,14 +554,14 @@
 	#cluster.json.mustache文件
      "services": {
 			"scale_out": {
-                "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
-                "cmd": "/opt/myapp/sbin/scale-out.sh"
-            },
+                      "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
+                      "cmd": "/opt/myapp/sbin/scale-out.sh"
+                   },
             "scale_in": {
-                "pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
-                "cmd": "/opt/myapp/sbin/scale-in.sh",
-                "timeout": 86400
-            },
+                          "pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
+                          "cmd": "/opt/myapp/sbin/scale-in.sh",
+                          "timeout": 86400
+                        },
         },
     ```
 
@@ -477,8 +576,13 @@
     ```text
 	#cluster.json.mustache文件
     "reserved_ips": {
+<<<<<<< HEAD
       "vip": { "value":""	}
 	  }			
+=======
+                  		"vip": { "value":""	}
+	                  }			
+>>>>>>> 452724a... update
     ```
 
     如果配置了此参数，在控制台上集群信息左侧会出现VIP的具体信息。   
@@ -667,9 +771,13 @@
 	server.{{getv $sid}}={{getv $ip}}:2888:3888
 =======
 			server.{{getv $sid}}={{getv $ip}}:2888:3888
+<<<<<<< HEAD
 >>>>>>> c4d4ed8... update
 	{{end}} 
 >>>>>>> 4d48c6d... update
+=======
+	{{end}}
+>>>>>>> 452724a... update
 	#confd service restart 刷新后的信息为
 	server.1=192.168.100.2:2888:3888
 	server.2=192.168.100.3:2888:3888
