@@ -586,7 +586,9 @@
 1. **confd 日志显示 key 找不到的错误信息**
     经常会在confd的日志文件中看到类似于如下错误信息，通常情况是在 toml 文件没 watch 该 key，或者该 key 不存在，可以通过 `curl http://metadata/self` 查看。
 
-    > 2016-10-11T13:54:41+08:00 i-lvn35udh confd[1531]: ERROR template: index.html.tmpl:2:7: executing "index.html.tmpl" at <getv "/self/host/sid...>: error calling getv: key does not exist: /self/host/sid
+    ```text
+	2016-10-11T13:54:41+08:00 i-lvn35udh confd[1531]: ERROR template: index.html.tmpl:2:7: executing "index.html.tmpl" at <getv "/self/host/sid...>: error calling getv: key does not exist: /self/host/sid
+	```
 
 1. **上传配置包时报错：配置验证失败,报 `[config.json] Not valid json` 错误，该如何排查？**
     需要检查config.json文本内容，是否有中文符号或其他不符合json格式的部分，可以通过在线工具验证合法性，比如 [jsonlint](http://jsonlint.com/)。   
@@ -599,19 +601,19 @@
     当定义的应用的启动/停止/监控命令执行有问题，例如
     文件定义如下
 
-    ```json
+    ```text
     "start":"your_script"
     ```
 
     服务日志如下
 
-    ```json
+    ```text
     2017-04-13 12:14:19,318 ERROR Failed to execute the [cmd:your_script, id:JPwqtXY56Mp22t0RsqkDtQVu3hQLxxxx] in the node [cln-pwgxxxxx]
     ```
 
     请确认起停的命令要写全路径。例如
 
-    ```json
+    ```text
     "start":"/bin/your_script"
     ```
 
@@ -627,7 +629,7 @@
 
     日志如下
 
-    ```json
+    ```text
     2017-04-17 11:03:48,800 CRITICAL Mount volume [{'mount_point': '/data', 'mount_options': '', 'filesystem': 'ext4'}] on node [cln-bo73222b] failed
     ```
 
