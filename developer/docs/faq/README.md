@@ -541,6 +541,7 @@
 	```
 
 	示例2：
+	
 	```text
 	# 定义一个变量并使用这个变量
 	{{$tomcat_user :=getv "/env/tomcat_user"}}
@@ -551,18 +552,21 @@
 	```
 
 	示例3：
+	
 	```text
 	# 获取一个key的值
 	max_connections= {{getv "/env/max_connections"}}
 	```
 
 	示例4：
+	
 	```text
 	# 对算术的支持 div
 	{{$shared_buffers := div (getv "/host/memory") 4}}
 	```
 
 	示例5：
+	
 	```text
 	# if else的用法
 	{{$SyncStreamRepl := getv "/env/SyncStreamRepl"}}
@@ -575,6 +579,7 @@
 	```
 
 	示例6：
+	
 	```text
 	# split的用法
 	{{ $replicaIPs := split (getv "/host/ip") "." }}
