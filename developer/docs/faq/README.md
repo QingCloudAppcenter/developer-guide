@@ -525,6 +525,7 @@
 
 1. **能否提供一些confd templates（即tmpl文件）的使用例子？**    
 	示例1：
+  
 	```
 	#获取集群中所有节点的ip地址，range循环的用法
 	{{range $dir := lsdir "/hosts"}}
