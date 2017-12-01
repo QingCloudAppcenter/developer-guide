@@ -336,9 +336,9 @@
     以上示例是基于device类型的备份策略，对于custom类型类似，但是需要注意如下几点：   
     - "backup_policy": "custom",  
     - "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
-    例如：执行的时候是sh /opt/yourbackup.sh {"snapshot_id": "s-12345678"}  开发者可以解析后在cmd命令写成处理成 cp /opt/data.txt /data/s-12345678
+    例如：执行的时候是sh /opt/yourbackup.sh '{"snapshot_id": "s-12345678"}'  开发者可以解析后在cmd命令写成处理成 cp /opt/data.txt /data/s-12345678
     - "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
-    例如：执行的时候是sh /opt/yourrestore.sh {"snapshot_id": "s-12345678"}  开发者可以解析后在cmd命令写成处理成 cp /data/s-12345678 /opt/data.txt
+    例如：执行的时候是sh /opt/yourrestore.sh '{"snapshot_id": "s-12345678"}'  开发者可以解析后在cmd命令写成处理成 cp /data/s-12345678 /opt/data.txt
 
     >注意：restore 操作是在恢复的新集群上进行操作的。   
     具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：backup_policy、backup
