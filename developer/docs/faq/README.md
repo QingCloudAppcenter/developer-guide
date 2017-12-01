@@ -46,66 +46,24 @@
     ```text
 	#cluster.json.mustache文件
     "nodes": [
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 452724a... update
     {
 		"role": "tomcat_nodes",
 		"container": {
           				"type": "kvm",
           				"zone": "pek3a",
           				"image": "img-h73eih5e"
-<<<<<<< HEAD
-<<<<<<< HEAD
       },
-=======
-                 },
->>>>>>> 452724a... update
-=======
-      },
->>>>>>> 5acd561... update
      "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
      "instance_class": {{cluster.tomcat_nodes.instance_class}},
      "count": {{cluster.tomcat_nodes.count}},
      "cpu": {{cluster.tomcat_nodes.cpu}},
      "memory": {{cluster.tomcat_nodes.memory}},
      "volume": {
-<<<<<<< HEAD
-=======
-            {
-			"role": "tomcat_nodes",
-			"container": {
-				"type": "kvm",
-				"zone": "pek3a",
-				"image": "img-h73eih5e"
-			},
-            "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-            "instance_class": {{cluster.tomcat_nodes.instance_class}},
-            "count": {{cluster.tomcat_nodes.count}},
-            "cpu": {{cluster.tomcat_nodes.cpu}},
-            "memory": {{cluster.tomcat_nodes.memory}},
-            "volume": {
->>>>>>> c4d4ed8... update
-=======
->>>>>>> 452724a... update
                  "size": {{cluster.tomcat_nodes.volume_size}},
                  "mount_point": "/data",  ***请注意这里!!!
                  "mount_options": "defaults,noatime",
                  "filesystem": "ext4"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
       }
-=======
-              }
->>>>>>> c4d4ed8... update
-=======
-                }
->>>>>>> 452724a... update
-=======
-      }
->>>>>>> 5acd561... update
     ```
 
     通常如果配置了数据持久化处理，在配置文件的init脚本中需要编写脚本，将应用的默认的数据路径下的数据复制到挂载盘下。
@@ -114,22 +72,8 @@
 	#cluster.json.mustache文件
     "services": {
                  "init": {
-<<<<<<< HEAD
-<<<<<<< HEAD
                  	 	      "cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
                 },    ***请注意这里!!!
-=======
-                 	 	"cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
-                 },    ***请注意这里!!!
->>>>>>> c4d4ed8... update
-=======
-                 	 	      "cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
-<<<<<<< HEAD
-                          },    ***请注意这里!!!
->>>>>>> 452724a... update
-=======
-                },    ***请注意这里!!!
->>>>>>> 5acd561... update
     ```
 
     如何检查数据持久化是否配置成功？  
@@ -175,42 +119,18 @@
                                         "value_type": "int",
                                         "statistics_type": "latest",
                                         "scale_factor_when_display": 1
-<<<<<<< HEAD
-<<<<<<< HEAD
                           },
-=======
-                                      },
->>>>>>> 452724a... update
-=======
-                          },
->>>>>>> 5acd561... update
                           "commitCnt": {
                                         "unit": "",
                                         "value_type": "int",
                                         "statistics_type": "latest",
                                         "scale_factor_when_display": 1
-<<<<<<< HEAD
-<<<<<<< HEAD
                           }
-=======
-                                        }
->>>>>>> 452724a... update
-=======
-                          }
->>>>>>> 5acd561... update
                         },
             		"groups": {
                     			"connCntGrp": ["connCnt"],
                     			"commitCntGrp": ["commitCnt"]
-<<<<<<< HEAD
-<<<<<<< HEAD
             		},
-=======
-            		          },
->>>>>>> 452724a... update
-=======
-            		},
->>>>>>> 5acd561... update
             		"display": ["connCntGrp","commitCntGrp"],
             		"alarm": ["connCnt"]
      }
@@ -230,8 +150,6 @@
     "services": {
                  "init": {  
                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
-<<<<<<< HEAD
-<<<<<<< HEAD
                 },
                  "start": {
                              "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
@@ -239,35 +157,11 @@
                  "restart": {
                              "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
                 },        
-=======
-                         },
-=======
-                },
->>>>>>> 5acd561... update
-                 "start": {
-                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
-                },
-                 "restart": {
-                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
-<<<<<<< HEAD
-                            },        
->>>>>>> 452724a... update
-=======
-                },        
->>>>>>> 5acd561... update
                  "RebuildStandby": {        ***请注意这里!!!
                                      "type": "custom",
                                      "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrebuildstandby.sh",
                                      "timeout": 86400    
-<<<<<<< HEAD
-<<<<<<< HEAD
                 }
-=======
-                                    }
->>>>>>> 452724a... update
-=======
-                }
->>>>>>> 5acd561... update
        },  
     ```
 
@@ -289,16 +183,7 @@
         "description": "application configuration properties",
         "type": "array",
         "properties": [
-<<<<<<< HEAD
-<<<<<<< HEAD
                   			{ "key": "DBname",
-=======
-                  			{
-                  				"key": "DBname",
->>>>>>> 452724a... update
-=======
-                  			{ "key": "DBname",
->>>>>>> 5acd561... update
                   				"label": "DBname",
                   				"description": "DB name to create",
                   				"type": "string",
@@ -306,16 +191,7 @@
                   				"required": "yes",
                   				"changeable": false
                   			},
-<<<<<<< HEAD
-<<<<<<< HEAD
                   			{"key": "max_connections",
-=======
-                  			{
-                  				"key": "max_connections",
->>>>>>> 452724a... update
-=======
-                  			{"key": "max_connections",
->>>>>>> 5acd561... update
                   				"label": "max_connections",
                   				"description": "Sets the maximum number of concurrent connections.",
                   				"type": "integer",
@@ -360,17 +236,7 @@
 		"description": "Tomcat cluster service properties",
 		"type": "array",
 		"properties": [
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
             			{ "key": "tomcat_user",
-=======
-            			{
-            				"key": "tomcat_user",
->>>>>>> 452724a... update
-=======
-            			{ "key": "tomcat_user",
->>>>>>> 5acd561... update
             				"label": "User name to access Tomcat manager GUI",
             				"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
             				"type": "string",
@@ -378,20 +244,6 @@
             				"pattern": "^(?!.*?[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
             				"required": "yes"
             			},
-<<<<<<< HEAD
-=======
-			{
-				"key": "tomcat_user",
-				"label": "User name to access Tomcat manager GUI",
-				"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
-				"type": "string",
-				"default": "qingAdmin",
-				"pattern": "^(?!.*?[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
-				"required": "yes"
-			},
->>>>>>> c4d4ed8... update
-=======
->>>>>>> 452724a... update
     ```
 
     如果配置了此参数，输入非法数据，在提交创建应用的时候会提示错误信息。
@@ -429,27 +281,10 @@
     {
       "role": "log_node",
       "container": {
-<<<<<<< HEAD
-<<<<<<< HEAD
                    "type": "kvm",
                    "zone": "pek3a",
                    "image": "img-b5urfv9t"
-=======
-           "type": "kvm",
-           "zone": "pek3a",
-           "image": "img-b5urfv9t"
->>>>>>> c4d4ed8... update
       },
-=======
-                   "type": "kvm",
-                   "zone": "pek3a",
-                   "image": "img-b5urfv9t"
-<<<<<<< HEAD
-                    },
->>>>>>> 452724a... update
-=======
-      },
->>>>>>> 5acd561... update
       "instance_class": {{cluster.log_node.instance_class}},
   	  "user_access": true,           ***请注意这里!!!
       "count": 1,
@@ -469,15 +304,7 @@
     示例如下：
 
     ```text
-<<<<<<< HEAD
-<<<<<<< HEAD
   	#cluster.json.mustache文件
-=======
-	#cluster.json.mustache文件
->>>>>>> c4d4ed8... update
-=======
-  	#cluster.json.mustache文件
->>>>>>> 452724a... update
     "name": {{cluster.name}},
     "description": {{cluster.description}},
     "vxnet": {{cluster.vxnet}},
@@ -491,8 +318,6 @@
      "services": {
 			"init": {  
                 "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
-<<<<<<< HEAD
-<<<<<<< HEAD
       },
 			"backup": {       ***请注意这里!!!
                   "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
@@ -503,22 +328,6 @@
                 "timeout": 86400
             }
      },
-=======
-              },
-			"backup": {       ***请注意这里!!!
-                  "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
-                  "timeout": 86400
-                }
-        },
->>>>>>> 452724a... update
-=======
-      },
-			"backup": {       ***请注意这里!!!
-                  "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
-                  "timeout": 86400
-      }
-     },
->>>>>>> 5acd561... update
     ```
 
     如果配置了此参数，在控制台上集群右键会出现创建备份的菜单。
@@ -545,17 +354,7 @@
       "description": {{cluster.description}},
       "vxnet": {{cluster.vxnet}},
     	"backup_policy": "device",
-<<<<<<< HEAD
-<<<<<<< HEAD
     	"upgrade_policy": ["appv-djgirq3p"],
-=======
-    	"upgrade_policy": [
-                "appv-djgirq3p"
-                        ],
->>>>>>> 452724a... update
-=======
-    	"upgrade_policy": ["appv-djgirq3p"],
->>>>>>> 5acd561... update
     ```
 
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：   
@@ -564,29 +363,11 @@
 	```text
 	#cluster.json.mustache文件
 	 "services": {
-<<<<<<< HEAD
-<<<<<<< HEAD
 			"init": {"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"},
 			"upgrade": {        ***请注意这里!!!
                  "cmd": "/opt/myapp/sbin/upgrade.sh"
       }
    },
-=======
-			"init": {  
-                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
-              },
-			"upgrade": {        ***请注意这里!!!
-                 "cmd": "/opt/myapp/sbin/upgrade.sh"
-                 }
-        },
->>>>>>> 452724a... update
-=======
-			"init": {"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"},
-			"upgrade": {        ***请注意这里!!!
-                 "cmd": "/opt/myapp/sbin/upgrade.sh"
-      }
-   },
->>>>>>> 5acd561... update
 
 	```		
    如果配置了此参数，在控制台上原来旧的版本的集群列表集群右侧会出现一个向上的升级箭头，关闭旧的集群，点击该图标就可以直接升级到最新的版本。
@@ -597,73 +378,14 @@
 	- 新版本直接支持从旧版本无缝升级到新版本，在新版本的镜像中同时安装新旧2个版本，在upgrade的cmd编写脚本，将数据从旧版本转换成新版本可直接读取的文件格式。   
     >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：upgrade_policy、upgrade  
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-1. **如何配置横向扩容？**  
-    示例如下：
-
-    ```text
-	#cluster.json.mustache文件
-
-   "nodes": [
-    {
-      "role": "tomcat_nodes",
-      "container": {
-                		"type": "kvm",
-                		"zone": "pek3a",
-                		"image": "img-h73eih5e" },
-  		"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-  		"instance_class": {{cluster.tomcat_nodes.instance_class}},
-  		"count": {{cluster.tomcat_nodes.count}},
-  		"cpu": {{cluster.tomcat_nodes.cpu}},
-  		"memory": {{cluster.tomcat_nodes.memory}},             
-  		"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
-    },
-    ```
-
-	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
-
-	```text
-	#cluster.json.mustache文件
-     "services": {
-			"scale_out": {
-                      "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
-                      "cmd": "/opt/myapp/sbin/scale-out.sh"
-                   },
-            "scale_in": {
-                          "pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
-                          "cmd": "/opt/myapp/sbin/scale-in.sh",
-                          "timeout": 86400
-                        },
-        },
-    ```
-
-    如果配置了此参数，在控制台上集群节点列表上会出现新增节点的按钮。
-    ![faq_scale.png](../../images/faq_scale.png)
-    >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：scale_horizontal、scale_out、scale_in		
-
->>>>>>> c4d4ed8... update
-=======
->>>>>>> 5acd561... update
 1. **如何设置集群的VIP？**  
     示例如下：
 
     ```text
 	#cluster.json.mustache文件
     "reserved_ips": {
-<<<<<<< HEAD
-<<<<<<< HEAD
       "vip": { "value":""	}
 	  }			
-=======
-                  		"vip": { "value":""	}
-	                  }			
->>>>>>> 452724a... update
-=======
-      "vip": { "value":""	}
-	  }			
->>>>>>> 5acd561... update
     ```
 
     如果配置了此参数，在控制台上集群信息左侧会出现VIP的具体信息。   
@@ -748,7 +470,6 @@
 
 1. **如何配置横向扩容？**  
     示例如下：
-<<<<<<< HEAD
 
     ```text
 	#cluster.json.mustache文件
@@ -770,29 +491,6 @@
     },
     ```
 
-=======
-
-    ```text
-	#cluster.json.mustache文件
-
-   "nodes": [
-    {
-      "role": "tomcat_nodes",
-      "container": {
-                		"type": "kvm",
-                		"zone": "pek3a",
-                		"image": "img-h73eih5e"
-      },
-  		"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-  		"instance_class": {{cluster.tomcat_nodes.instance_class}},
-  		"count": {{cluster.tomcat_nodes.count}},
-  		"cpu": {{cluster.tomcat_nodes.cpu}},
-  		"memory": {{cluster.tomcat_nodes.memory}},             
-  		"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
-    },
-    ```
-
->>>>>>> 5acd561... update
 	同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
 
 	```text
@@ -824,19 +522,11 @@
 	"backup_policy": "device",
 	"advanced_actions": ["change_vxnet"],
     ```
-<<<<<<< HEAD
 
 	如果配置了此参数，在控制台上集群列表选中集群右键会出现切换私有网络菜单。
     ![faq_vxnet.png](../../images/faq_vxnet.png)
     >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：advanced_actions、change_vxnet
 
-=======
-	
-	如果配置了此参数，在控制台上集群列表选中集群右键会出现切换私有网络菜单。
-    ![faq_vxnet.png](../../images/faq_vxnet.png)
-    >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：advanced_actions、change_vxnet
-	
->>>>>>> 5acd561... update
 1. **如何将角色的某个节点直接绑定公网IP？**  
    绑定公网IP (associate_eip)  
    如果该角色的节点需要直接绑定公网IP可以加上 associate_eip，注意: 绑定公网IP会给这个集群绑定默认集群防火墙, 其他集群如果需要访问这个集群请在集群防火墙中添加对应放行规则。
@@ -860,37 +550,14 @@
 
 1. **能否提供一些confd templates（即tmpl文件）的使用例子？**    
 	示例1：
-<<<<<<< HEAD
-<<<<<<< HEAD
 
 	```text
-=======
-	
-	```text	
->>>>>>> c85bbe8... update
-=======
-
-	```text
->>>>>>> 4d48c6d... update
 	# 获取集群中所有节点的ip地址，range循环的用法
 	{{range $dir := lsdir "/hosts"}}
 		{{$sid := printf "/hosts/%s/sid" $dir}}
 		{{$ip := printf "/hosts/%s/ip" $dir}}
-<<<<<<< HEAD
-<<<<<<< HEAD
 			server.{{getv $sid}}={{getv $ip}}:2888:3888
 	{{end}}
-=======
-	server.{{getv $sid}}={{getv $ip}}:2888:3888
-=======
-			server.{{getv $sid}}={{getv $ip}}:2888:3888
-<<<<<<< HEAD
->>>>>>> c4d4ed8... update
-	{{end}} 
->>>>>>> 4d48c6d... update
-=======
-	{{end}}
->>>>>>> 452724a... update
 	#confd service restart 刷新后的信息为
 	server.1=192.168.100.2:2888:3888
 	server.2=192.168.100.3:2888:3888
@@ -898,15 +565,7 @@
 	```
 
 	示例2：
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8fc3ca2... update
-=======
-
->>>>>>> 4d48c6d... update
 	```text
 	# 定义一个变量并使用这个变量
 	{{$tomcat_user :=getv "/env/tomcat_user"}}
@@ -917,45 +576,21 @@
 	```
 
 	示例3：
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8fc3ca2... update
-=======
-
->>>>>>> 4d48c6d... update
 	```text
 	# 获取一个key的值
 	max_connections= {{getv "/env/max_connections"}}
 	```
 
 	示例4：
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8fc3ca2... update
-=======
-
->>>>>>> 4d48c6d... update
 	```text
 	# 对算术的支持 div
 	{{$shared_buffers := div (getv "/host/memory") 4}}
 	```
 
 	示例5：
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8fc3ca2... update
-=======
-
->>>>>>> 4d48c6d... update
 	```text
 	# if else的用法
 	{{$SyncStreamRepl := getv "/env/SyncStreamRepl"}}
@@ -968,15 +603,7 @@
 	```
 
 	示例6：
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8fc3ca2... update
-=======
-
->>>>>>> 4d48c6d... update
 	```text
 	# split的用法
 	{{ $replicaIPs := split (getv "/host/ip") "." }}
@@ -1070,4 +697,5 @@
 
 
 
- 
+
+---
