@@ -298,6 +298,9 @@
     >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：user_access
 
 1. **如何备份？**  
+    backup_policy
+    定义应用的备份策略，支持 "device" 和 "custom" 两种类型。"device" 表示对节点的挂盘做snapshot；"custom" 则是使用自定义的备份命令进行备份操作，比如备份到某个目录，或拷贝到某个节点。非必填项
+
     示例如下：
 
     ```text
@@ -319,13 +322,26 @@
 			"backup": {       ***请注意这里!!!
                   "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
                   "timeout": 86400
-      }
+      },
+      "restore": {
+                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:restore by Appcenter interface!>>/data/pgsql/main/pg_log/pgscripts.log",
+                "timeout": 86400
+            }
      },
     ```
 
     如果配置了此参数，在控制台上集群右键会出现创建备份的菜单。
     ![faq_backup.png](../../images/faq_backup.png)
-    >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：backup_policy、backup
+
+    以上示例是基于device类型的备份策略，对于custom类型类似，但是需要注意如下几点：   
+    - "backup_policy": "custom",  
+    - "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
+    例如：执行的时候是sh /opt/yourbackup.sh {"snapshot_id": "s-12345678"}  开发者可以解析后在cmd命令写成处理成 cp /opt/data.txt /data/s-12345678
+    - "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
+    例如：执行的时候是sh /opt/yourrestore.sh {"snapshot_id": "s-12345678"}  开发者可以解析后在cmd命令写成处理成 cp /data/s-12345678 /opt/data.txt
+
+    >注意：restore 操作是在恢复的新集群上进行操作的。   
+    具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：backup_policy、backup
 
 1. **如何升级，如何支持应用的大版本升级？**  
     AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载盘下应用的数据，因此如果应用本身的版本没有变化或者只是小版本升级，可以直接通过AppCenter的升级参数配置进行无缝升级。
@@ -506,11 +522,11 @@
 	"backup_policy": "device",
 	"advanced_actions": ["change_vxnet"],
     ```
-	
+
 	如果配置了此参数，在控制台上集群列表选中集群右键会出现切换私有网络菜单。
     ![faq_vxnet.png](../../images/faq_vxnet.png)
     >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：advanced_actions、change_vxnet
-	
+
 1. **如何将角色的某个节点直接绑定公网IP？**  
    绑定公网IP (associate_eip)  
    如果该角色的节点需要直接绑定公网IP可以加上 associate_eip，注意: 绑定公网IP会给这个集群绑定默认集群防火墙, 其他集群如果需要访问这个集群请在集群防火墙中添加对应放行规则。
@@ -681,4 +697,5 @@
 
 
 
- 
+
+---
