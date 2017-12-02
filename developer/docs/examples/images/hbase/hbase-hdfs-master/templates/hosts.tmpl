@@ -1,6 +1,0 @@
-{{range $dir := lsdir "/hosts/hbase-master/"}}{{$ip := printf "/hosts/hbase-master/%s/ip" $dir}}{{$node := printf "/hosts/hbase-master/%s/node_id" $dir}}
-{{getv $ip}} {{getv $node}}{{end}}
-{{range $dir := lsdir "/hosts/hbase-hdfs-master/"}}{{$ip := printf "/hosts/hbase-hdfs-master/%s/ip" $dir}}{{$node := printf "/hosts/hbase-hdfs-master/%s/node_id" $dir}}
-{{getv $ip}} {{getv $node}}{{end}}
-{{range $dir := lsdir "/hosts/hbase-slave/"}}{{$ip := printf "/hosts/hbase-slave/%s/ip" $dir}}{{$node := printf "/hosts/hbase-slave/%s/node_id" $dir}}
-{{getv $ip}} {{getv $node}}{{end}}

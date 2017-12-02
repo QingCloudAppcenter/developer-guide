@@ -1,6 +1,0 @@
-[template]
-src = "start.sh.tmpl"
-dest = "/opt/hbase/bin/start.sh"
-keys = [
-  "/",
-]

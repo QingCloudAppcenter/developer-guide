@@ -1,6 +1,0 @@
-[template]
-src = "slaves.tmpl"
-dest = "/opt/hadoop/etc/hadoop/slaves"
-keys = [
-  "/",
-]

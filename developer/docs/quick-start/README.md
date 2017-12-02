@@ -10,7 +10,17 @@
 * [完善应用的详细信息](../app-mgmt/create-app.md#complete_app_details)
 * [提交应用版本审核](../app-version-mgmt/submit-app-version.md) 或直接发布到个人应用中心(内部使用的应用)
 
-这个创建流程中除了通过开发者控制台输入一些必要的应用信息外，最核心的是在创建应用版本时候包含的两个步骤：创建应用模版配置文件和制作镜像。为简化起见，下面举两个简单的例子介绍这两个步骤。例子使用了 [应用开发模版规范-基础版](../specifications/basic-specifications.md) 和在制作镜像过程中用到青云提供的 [Metadata](../metadata-service.md) 服务。
+* 更多青云制作的应用可以在[这里](https://github.com/qingCloudAppcenter/)找到．
 
-* [ZooKeeper 示例](zookeeper.md)
-* [Redis Standalone 示例](redis-standalone.md)
+
+* 具体步骤可以参考视频教程
+
+<video src="https://appcenter-docs.pek3a.qingstor.com/developer-guide/docs/videos/AppCenter2.0_Training_Fix.mp4" controls="controls">
+您的浏览器不支持 video 标签。
+</video>
+
+<video src="https://appcenter-docs.pek3a.qingstor.com/developer-guide/docs/videos/tomcatdemo_720p.mp4" controls="controls">
+您的浏览器不支持 video 标签。
+</video>
+
+* 常见的问题请参考－－[常见问题](../faq/README.md)

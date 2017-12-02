@@ -11,4 +11,4 @@ config.json 中定义的参数，在青云QingCloud 控制台上由用户设置�
 
 将以上几个文件压缩打包成 TAR，TAR.GZ，ZIP 或 TAR.BZ 格式并上传。
 
-我们提供了从简单到复杂的应用配置文件样例，详情请参看[应用开发模版规范-完整版](../specifications/specifications.md)，也提供一些[范例](../examples/spec/README.md)供参考。
+我们提供了从简单到复杂的应用配置文件样例，详情请参看[应用开发模版规范-完整版](../specifications/specifications.md)，也提供一些[范例](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)供参考。

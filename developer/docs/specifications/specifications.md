@@ -95,6 +95,14 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 				"range": [2048, 8192, 16384, 32768, 49152],
 				"required": "yes"
 			}, {
+				"key": "gpu",
+				"label": "GPU",
+				"description": "GPUs of each node",
+				"type": "integer",
+				"default": 1,
+				"range": [0, 1, 2],
+				"required": "yes"
+			}, {
 				"key": "count",
 				"label": "Count",
 				"description": "Number of nodes for the cluster to create",
@@ -110,6 +118,14 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 				"type": "integer",
 				"default": 0,
 				"range": [0, 1],
+				"required": "yes"
+			}, {
+				"key": "gpu_class",
+				"label": "GPU Class",
+				"description": "The gpu type for the cluster to run，such as high performance",
+				"type": "integer",
+				"default": 0,
+				"range": [0],
 				"required": "yes"
 			}, {
 				"key": "volume_class",
@@ -260,7 +276,12 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 	"links": {
 		"external_service"***: {{cluster.external_service}}
 	},
-	"add_links": ["external_service"***],
+	"backup_policy": "device",
+	"incremental_backup_supported": false,
+	"upgrade_policy": [
+			"appv-xxxxxxxx",
+			"appv-yyyyyyyy"
+	],
 	"nodes": [{***
 		"role": "role_name",
 		"loadbalancer": {{cluster.role_name.loadbalancer}},
@@ -270,9 +291,11 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 			"zone": "pek3a"
 		},
 		"instance_class": {{cluster.role_name.instance_class}},
+		"gpu_class": {{cluster.role_name.gpu_class}},
 		"count": {{cluster.role_name.count}},
 		"cpu": {{cluster.role_name.cpu}},
 		"memory": {{cluster.role_name.memory}},
+		"gpu": {{cluster.role_name.gpu}},
 		"volume": {
 			"size": {{cluster.role_name.volume_size}},
 			"mount_point": "/data",
@@ -298,9 +321,11 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 				"cmd": "/opt/myapp/bin/stop-server.sh"
 			},
 			"scale_out": {
+			    "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
 				"cmd": "/opt/myapp/sbin/scale-out.sh"
 			},
 			"scale_in": {
+			    "pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
 				"cmd": "/opt/myapp/sbin/scale-in.sh",
 				"timeout": 86400
 			},
@@ -308,13 +333,44 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 				"cmd": "/opt/myapp/sbin/restart-server.sh"
 			},
 			"destroy": {
+			    "allow_force": true,
 				"nodes_to_execute_on": 1,
 				"post_stop_service": true,
 				"cmd": "/opt/myapp/sbin/destroy-server.sh"
 			},
-			"backup"***: {
-				"type": "custom",
+			"upgrade": {
+				"cmd": "/opt/myapp/sbin/upgrade.sh"
+			},
+			"backup": {
 				"cmd": "/opt/myapp/sbin/backup.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400
+			},
+			"restore": {
+				"cmd": "/opt/myapp/sbin/restore.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400,
+			},
+			"delete_snapshot": {
+				"cmd": "/opt/myapp/sbin/delete_snapshot.sh",
+				"nodes_to_execute_on": 1,
+				"order": 1,
+				"service_params": {
+					"service_param"***: {{service_params.role_name.param}}
+				},
+				"timeout": 86400
+			},
+			"custom_service"***: {
+				"type": "custom",
+				"cmd": "/opt/myapp/sbin/custom_service.sh",
 				"timeout": 86400,
 				"service_params": {
 					"service_param"***: {{service_params.role_name.param}}
@@ -407,6 +463,14 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		},
 		"display": ["group_name_z"***, "item_name_x"***],
 		"alarm": ["item_name_x"***]
+	},
+	"display_tabs": {
+		"node_details_tab": {
+			"cmd": "/opt/myapp/bin/node_details_tab.sh",
+			"roles_to_execute_on": ["master", "slave"],
+			"description": "More infomation about nodes",
+			"timeout": 10
+		}
 	}
 }
 ```
@@ -419,14 +483,18 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     新建应用所在网络 ID，必填项。
 *   links <br>
     新建应用可能会依赖外部应用，比如 Kafka 依赖 ZooKeeper，依赖名称可以任意命名，不一定是 external\_service，比如命名为 zk\_service；可以依赖多个外部应用，非必填项。
-*   add\_links <br>
-    允许增加的外部应用列表，定义在列表中的依赖名称，如 zk\_service，用户部署集群后可以新加以该名字为前缀的依赖如：zk\_service2，这样在定义多种外部依赖时，可以通过匹配前缀信息来得知用户配置的当前 link 属于哪个种类。
+*   backup_policy <br>
+    定义应用的备份策略，支持 "device" 和 "custom" 两种类型。"device" 表示对节点的挂盘做snapshot；"custom" 则是使用自定义的备份命令进行备份操作，比如备份到某个目录，或拷贝到某个节点。非必填项。
+*   incremental_backup_supported <br>
+    定义应用是否支持增量备份。备份分为全量备份和增量备份，全量备份每次创建新的备份链，而增量备份会在原有备份链上基于上一个备份点创建新的备份点，删除备份链上某一备份点后，其后的所有备份点都会被相应删除。默认值为 false 表示只支持全量备份，非必填项。
+*   upgrade\_policy <br>
+    定义当前应用的哪些版本可以升级到当前版本，新老版本之间 role 必须相同，数据盘挂载位置必须一致。由于升级后会替换集群的镜像，所以在开发阶段**请仔细测试升级功能**。
 *   nodes <br>
     新建应用节点信息，必填项。一个应用的节点可能是无角色区分的，这个时候 nodes 只有一种角色的信息；也可能是多角色组成的复杂应用，这个时候 nodes 就是这些角色节点信息组成的一个数组。
     -   role <br>
         多角色节点应用必填项，单角色应用可以无此项。角色名称自定义，但必须和 config.json 里定义的名字一致。
     -   loadbalancer <br>
-        新建应用可能会依赖负载均衡器，不同角色 (role) 以依赖不同的负载均衡器。
+        新建应用可能会依赖负载均衡器，不同角色 (role) 可以依赖不同的负载均衡器。
     -   container <br>
         镜像信息，必填项。
         + type <br>
@@ -437,12 +505,16 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           镜像制作时所属区域 (如果是 docker 镜像，则无需填写该字段)
     -   instance\_class <br>
         节点类型，支持 0 和 1， 其中0表示性能主机，1表示超高性能主机。可选项，默认值为0。
+    -   gpu\_class <br>
+        节点 gpu 类型，支持 0 表示性能主机。可选项，默认值为0。
     -   count <br>
         节点个数，必填项，可以为0，但集群节点总数必须大于0。
     -   cpu <br>
         每个节点 cpu 个数，可选值范围：1, 2, 4, 8, 12, 16。
     -   memory <br>
         每个节点内存大小，单位 MiB。可选值范围：1024, 2048, 4096, 6144, 8192, 12288, 16384, 24576, 32768, 40960, 49152, 65536, 131072。
+    -   gpu <br>
+        每个节点 gpu 个数，可选值范围：0, 1, 2。目前仅在北京3区(pek3a)可创建带 gpu 的集群, 具体使用方式参考[GPU 主机](https://docs.qingcloud.com/guide/compute_network/gpu_instance.html)
     -   volume <br>
         每个节点数据盘信息，如果此类节点不需要数据盘，不需要填写此项。
         + size <br>
@@ -471,8 +543,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           初始化命令，在创建集群或者新加节点时会触发该命令的执行。
           * nodes\_to\_execute_on　<br>
             控制此命令在此类角色节点上某几个节点上执行，如果需要在所有此类节点上执行该命令可不填此项。
-          * post\_start\_service
-              控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
+          * post\_start\_service　<br>
+            控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
           * order　<br>
             控制不同角色节点之间执行此命令顺序。比如主从节点，有时候需要主节点先启动服务，从节点后启动服务，非必填项。
           * cmd　<br>
@@ -480,31 +552,50 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           * timeout　<br>
             执行该命令 timeout 时间(单位秒)，系统默认10分钟，由于某些命令可能需要迁移数据而耗时比较长，这种情况下需要计算出最长可能时间，最大值是86400，非必填项。
         + start
-
           服务启动命令，具体参数参考初始化命令 init。
-
         + stop　<br>
           停止服务命令，具体参数参考初始化命令 init。
         + scale\_out　<br>
           加节点时在非新加节点上需执行的命令，具体参数参考初始化命令 init。
+          * pre\_check　<br>
+            加节点时在非新加节点上执行的预检查命令，若返回非0值表示不可新增节点。此项是 scale\_in 和 scale\_out 独有。
         + scale\_in <br>
           删除节点时在非删除节点上需执行的命令，具体参数参考初始化命令 init。
+          * pre\_check　<br>
+            删除节点时在非删除节点上执行的预检查命令，若返回非0值表示不可删除节点。此项是 scale\_in 和 scale\_out 独有。
         + restart <br>
           服务重启动命令，具体参数参考初始化命令 init。
         + destroy <br>
           销毁命令，在删除集群或者节点时会触发该命令的执行，通常用作删除资源之前检查安全性，具体参数参考初始化命令 init。
+          * allow\_force <br>
+            是否允许强制删除, 默认值为 true 表示允许强制删除该节点, 强制删除时即使 destroy 的 cmd 返回非 0 值也会继续将节点删除。
           * post\_stop\_service　<br>
             控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
-
-        这几个服务都是系统定义的；除了 post\_start\_service 是 init 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
+        + upgrade <br>
+          升级集群后执行的命令，具体参数参考初始化命令 init。
+          > 注：必须先关机集群后才能升级，升级后再开启集群将会以<strong>新版本的镜像</strong>启动并执行升级命令。如果升级命令执行失败，用户可以关闭集群后降级回老版本。<br> 对于 user\_access 为 true 的节点也会使用新的镜像启动，请在使用说明中提醒用户自行备份 user\_access 为 true 节点上的数据。
 
         + backup <br>
-          用户自定义命令，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
-          * type <br>
-            type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 backup) 开发者自行定义。
+          定义该角色的备份操作，若不定义表示该角色不支持备份。若 "backup_policy" 定义为 "custom" 则必须定义 cmd；若 "backup_policy" 定义为 "device" 可不定义 cmd，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
           * service\_params <br>
             service\_params 中定义这个 cmd 所需要传的参数，json 格式，非必须项，参数具体定义在 config.json 里，可参考 env 的定义方式。
-          > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key，如 backup。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
+          > 注：提供手动备份的同时也会提供 "定时自动备份" 支持，手动备份时会以 json 形式传入用户填入具体 "service\_params" 到 backup 的 cmd，而 "定时自动备份" 操作时不会传入参数。
+
+        + restore <br>
+          定义该角色的备份恢复操作。若该角色定义该服务，恢复时使用 restore 进行恢复；若该角色未定义该服务，恢复时使用 start 进行恢复。具体参数参考备份命令 backup。
+          > 注：若 "backup_policy" 定义为 "custom"，备份恢复操作会在当前集群完成；若 "backup_policy" 定义为 "device"，备份恢复操作会使用挂盘的 snapshot 创建一个新的集群。
+
+        + delete_snapshot <br>
+          定义备份删除操作。若 "backup_policy" 定义为 "custom" 则必须定义 cmd；若 "backup_policy" 定义为 "device" 可不定义 cmd。具体参数参考备份命令 backup。
+
+        这几个服务都是系统定义的；除了 post\_start\_service 是 init, upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
+
+        + custom_service <br>
+          用户自定义命令，具体参数参考备份命令 backup，除此之外自定义的服务参数还有：
+          * type <br>
+            type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 custom_service) 开发者自行定义。
+          > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
+          
     -   env <br>
         特定角色节点的应用参数配置，每类应用有自身特有的可配置应用参数，每类节点也会有不同于应用全局级别的可配置参数。注意：节点之间或节点与集群全局之间的参数没有任何关系，都是独立的。
     -   agent\_installed <br>
@@ -636,6 +727,24 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
         告警指标，其值是一个 JSON Array，该 JSON Array 中的每个元素必须是上面某个监控项的名字 (item_name)，这里的每一项都会成为"控制台-管理-监控告警"下的一个告警指标。
 
   	应用节点会继承应用的监控配置，当应用节点配置了相同的监控参数时，优先使用节点的配置。注明：前端在创建集群之后需要等５分钟监控项才会展现出来。
+* display_tabs 自定义TAB页，TAB页中的信息会以表格的形式展现出来。
+	开发者可以配置此项以在集群详情页显示更多的自定义信息。例如，集群发生主从切换后，节点新的主从信息，节点新的状态。配置应用于整个集群，不支持分角色定义。
+	- node_details_tab　必填项，需展示的TAB页标题，该key为自定义并且可定义多个，但最多不超过**5**个，该标题可定义国际化。
+	- cmd 必填项，开发者自定义的命令，调度系统会随机选择集群中的节点去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
+	```
+	{
+		"labels": ["node_id", "role"], 
+		"data":
+		[
+			["cln-xyzw1234", "master"], 
+			["cln-xyzw1235", "slave"]
+		]
+	}
+	```
+	- roles\_to\_execute_on 非必填项，如填写此项，则命令只会在指定的角色节点上执行，若集群创建完成时，没有指定角色的节点存在则会报错。不配置此项则会在所有的节点里随机选取节点执行。
+	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
+	- timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
+	
 
 ### 数据类型
 config.json 文件里对每个变量需要定义其类型、取值范围、默认值等，其中类型和默认值为必填项。
@@ -645,7 +754,7 @@ config.json 文件里对每个变量需要定义其类型、取值范围、默�
     - service <br>
       新应用可能会依赖外部应用，比如 Kafka 依赖 ZooKeeper，应用使用该类型表示。
     - loadbalancer <br>
-      新应用如需使用负载均衡器，可以使用该类型表示，定义时需要同时定义负载均衡器后端服务端口参数：port，比如搭建的 HTTP 的 web server，可以指定 port 为80。
+      新应用如需使用负载均衡器，可以使用该类型表示，定义时需要同时定义负载均衡器后端服务端口参数：port，比如搭建的 HTTP 的 web server，可以指定 port 为 80，如需定义多个后端服务端口，可将 port 定义为一个列表，如：[80, 8080]。
     - password <br>
       可在 env 或 service_params 变量中使用，界面会用密码形式显示输入。
 * range <br>

@@ -276,42 +276,4 @@ config.json 中定义的参数，在青云 QingCloud 控制台上由用户设置
 
 ## 范例
 
-#### ZooKeeper
-* [ZooKeeper应用模版](examples/spec/zookeeper.md)
-* [配置节点镜像](examples/images/zookeeper/image-guide.md)
-
-#### Kafka
-* [Kafka应用模版](examples/spec/kafka.md)
-* [配置节点镜像](examples/images/kafka/image-guide.md)
-
-#### Redis Standalone
-* [Redis Standalone应用模版](examples/spec/redis-standalone.md)
-* [配置主节点镜像](examples/images/redis/standalone/master-image-guide.md)
-* [配置从节点镜像](examples/images/redis/standalone/slave-image-guide.md)
-
-#### Redis Cluster
-* [Redis Cluster应用模版](examples/spec/redis-cluster.md)
-* [配置节点镜像](examples/images/redis/cluster/image-guide.md)
-
-#### Spark with HDFS
-* [Spark with HDFS应用模版](examples/spec/spark-hdfs.md)
-* [配置Spark主节点镜像](examples/images/spark/with-hadoop/spark-master-image-guide.md)
-* [配置Hadoop主节点镜像](examples/images/spark/with-hadoop/hadoop-master-image-guide.md)
-* [配置Spark从节点镜像](examples/images/spark/with-hadoop/worker-image-guide.md)
-
-#### Spark without HDFS
-* [Spark without Spark应用模版](examples/spec/spark.md)
-* [配置Spark主节点镜像](examples/images/spark/without-hadoop/master-image-guide.md)
-* [配置Spark从节点镜像](examples/images/spark/without-hadoop/worker-image-guide.md)
-
-#### RDS
-
-#### MongoDB
-
-#### HBase
-
-#### Hadoop
-
-#### Elastic Search
-
-#### Storm
+参考 [青云应用目录](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)
