@@ -5,8 +5,8 @@
 
 * [创建应用](../app-mgmt/create-app.md)
 * [创建应用版本](../app-version-mgmt/create-app-version.md)
-	* [创建应用模版配置文件](../app-version-mgmt/create-app-config.md)
-	* [创建应用使用的镜像](../app-version-mgmt/images/README.md)
+    * [创建应用模版配置文件](../app-version-mgmt/create-app-config.md)
+    * [创建应用使用的镜像](../app-version-mgmt/images/README.md)
 * [完善应用的详细信息](../app-mgmt/create-app.md#complete_app_details)
 * [提交应用版本审核](../app-version-mgmt/submit-app-version.md) 或直接发布到个人应用中心(内部使用的应用)
 

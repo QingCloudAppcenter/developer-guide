@@ -2,15 +2,17 @@
 
 >提示：在 AppCenter 2.0 正式发布之前，版本升级没有考虑兼容，因此您需要删掉自己的测试集群，更新应用版本的配置包，重新部署新的配置包和集群。
 
-### 版本发布时间
+## 版本发布时间
+
 * 2.0 Alpha  : 2016年12月26日
 * 2.0 Beta   : 2017年3月6日
 * 2.0 Release : 2017年3月23日
 * 2.1 Release : 2017年10月29日
 
-### Alpha 到 Beta 主要变更记录
+## Alpha 到 Beta 主要变更记录
 
-##### Specifications 变更
+### Specifications 变更
+
 * 为了更好的规范化 specifications，统一使用名称的复数形式，变更如下：
   * endpoint --> endpoints
   * advanced\_action --> advanced_actions
@@ -33,7 +35,8 @@
   * monitor 下 script --> cmd
 * env 里增加 pattern 正则字段来规范配置
   
-##### Metadata Service 变更
+### Metadata Service 变更
+
 * 同上，endpoint 在 metadata service 里也改成 endpoints，同时把 endpoints 从根目录挪到 <cluster_id>/cluster/ 下，以满足本集群节点访问自身 endpoints 的需求
 * endpoints 下增加 reserved_ips
 * 主机 (hosts, host, adding-hosts, deleting-hosts) 增加主机通过 custom_metadata 获取的 token 信息
@@ -41,22 +44,24 @@
 * 主机 (同上) 增加 gid (group id)，主机分组 ID
 * 集群 cluster 下增加 global_uuid 给某些需要依据此信息生成 license key 的 app 使用	
 
-##### 功能
+### 功能
+
 * 支持 Windows
 
 
-### Beta 到 2.0 Release 主要变更记录
+## Beta 到 2.0 Release 主要变更记录
 
-##### Specifications 变更
+### Specifications 变更
   
-##### Metadata Service 变更
+### Metadata Service 变更
 * 主机 (hosts, host, adding-hosts, deleting-hosts) 增加节点 instance_id 信息
 * 集群 cluster 下增加集群所在 zone 信息
 
 
-### 2.0 Release 到 2.1 Release 主要变更记录
+## 2.0 Release 到 2.1 Release 主要变更记录
 
-##### Specifications 变更
+### Specifications 变更
+
 * 增加 env 的 changeable 选项, 定义该项 env 在集群创建完毕以后是否可以修改.
 * advanced_actions 里增加 add_nodes 选项，表示只允许增加节点，不允许删除节点.
 * 增加 upgrade_policy 定义当前应用的哪些版本可以升级到当前版本.
@@ -73,13 +78,15 @@
 * 增加 display_tabs 展示自定义 tab 页命令, 开发者可以展示更多的集群信息给用户, 用户点击列表项时触发该命令的执行.
 * locale 下翻译文件中, 支持 err_code 定义, 在出现错误时展示给用户相应的信息.
 
-##### Metadata Service 变更
+### Metadata Service 变更
+
 * 主机 (hosts, host, adding-hosts, deleting-hosts) 增加节点 instance_class, volume_class, volume_size, gpu, gpu_class, reserved_ips, eip 信息
 * 集群 cluster 下:
   * 增加 user_id 信息.
   * 增加 api_server 信息, 包括 host, port, protoco．在集群内部可通过内网向 api server 发送请求.
 
-##### 功能
+### 功能
+
 * 支持按资源价格比例计费方式
 * 支持价格随应用版本升级而变动
 * 开发者可以查看到用户集群的环境变量
