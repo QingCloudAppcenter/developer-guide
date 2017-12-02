@@ -22,6 +22,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 ## 规范
 
 ### config.json
+
 此配置文件定义用户在创建应用的时候需填入的参数信息，参数包括资源信息如 CPU、内存、节点数等，还包括应用本身配置参数以及外面依赖集群信息等。
 这些信息有集群级别的全局设置，也有基于角色节点级别的信息设置。下面是对每个参数详细的解释：
 
@@ -263,7 +264,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
   此应用依赖外部应用信息，名称可以任意定义，即可以命名为 zk_service 表示依赖 ZooKeeper，用户可以选择在同一 VPC 中满足 limits 限定条件的集群作为此应用依赖的服务。limits 限定条件可以指定应用所依赖服务的 app id 及 app version。
 
 
-##### cluster.json.mustache
+#### cluster.json.mustache
+
 该文件是在用户创建应用时需要传给青云 API 的参数，这些信息的具体值是来自用户在 UI 上根据 config.json 定义的变量的输入，每个字段的具体描述如下：
 
 >注： 右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。advanced_actions 的内容可以添加在国际化中，在控制台用户操作时展示。
@@ -610,7 +612,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     集群支持高级操作，目前支持两类：变换网络 (change\_vxnet) 和横向伸缩 (scale\_horizontal) 即增加节点或删除节点，这是因为有些应用尤其传统应用并不适合云的弹性要求，因此如果您的应用支持切换网络则加上 change_vxnet，如果支持横向伸缩则加上 scale\_horizontal。如果只有某一类角色需要切换网络或添加/删除节点，其它类型节点不支持，则可以只写到这个角色节点里。如果不支持此类操作则需去掉相应的定义，否则用户在界面看见有此功能而实际上是不支持的。
 *   advanced\_services <br>
     应用服务高级指令，青云 AppCenter 调度系统会随机选取一个节点执行这些命令，非必填项。
-    - update_nodes_names　<br>
+    * update_nodes_names　<br>
       修改节点显示名称命令。
       * cmd　<br>
         具体需执行的命令，必填项。采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是node_id (cln-xxxxxxxx)，value 是节点显示名称，例如： {"cln-xxxxxxxx": "replica-master"，"cln-xxxxxxxx": "replica-slave"}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
@@ -660,78 +662,80 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     {{end}}
     ```
     {% endraw %}
+    
 *   health_check
 
     应用可以配置健康检查，详细的配置参数如下：
-    - enable <br>
+    * enable <br>
       是否开启健康检查，默认值为 false。
-    - interval_sec <br>
+    * interval_sec <br>
       健康检查的周期，默认值为 60，最小值不小于 60。
-    - timeout_sec <br>
+    * timeout_sec <br>
       健康检查脚本执行的超时时间，默认值为 10，最小值不小于 3，最大值不能超过 interval_sec。
-    - action_timeout_sec <br>
+    * action_timeout_sec <br>
       动作脚本执行的超时时间，默认值为 30，最小值不小于 3。
-    - healthy_threshold <br>
+    * healthy_threshold <br>
       节点状态变为健康时，连续健康检查成功所需的最小次数，默认值为 3，最小值不小于 2。
-    - unhealthy_threshold <br>
+    * unhealthy_threshold <br>
       节点状态变为非健康时，连续健康检查失败所需的最小次数，默认值为 3，最小值不小于 2。
-    - check_cmd <br>
+    * check_cmd <br>
       健康检查脚本。如果本次检查节点正常，脚本应返回0，否则返回非0值。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
-    - action_cmd <br>
+    * action_cmd <br>
       节点状态变为非健康时，触发的动作脚本。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
 
   	应用节点会继承应用的健康检查配置，当应用节点配置了相同的健康检查参数时，优先使用节点的配置。注明：前端在创建集群之后需要等大约５分钟左右服务检测才会展现出来。
 *   monitor <br>
     应用可以配置可采集的监控数据，详细的配置参数如下：
-    -   enable <br>
+    *   enable <br>
         是否开启监控，默认值为 false。
-    -   cmd <br>
+    *   cmd <br>
         监控数据采集脚本。脚本应保证在5秒内完成，采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是监控项的名字 (item_name)，value 是监控项的值，例如： {"received": 1200，"sent": 1234，"connections": 10}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
-    -   items <br>
+    *   items <br>
         设置采集的监控项，监控项的个数不能超过50。"items" 对应的值是一个 JSON Object，该 JSON Object 的 key 是监控项的名字 (item_name)，value 是监控项配置，详细的监控项配置参数如下：
-        - unit <br>
+        * unit <br>
           监控项的计量单位，默认值为空字符串("")。
-        - value_type <br>
+        * value_type <br>
           监控项的值类型，目前支持 "int" (整型)和 "str" (字符串型)，默认值为 "int"。
           对于浮点型数据，可以通过乘于一个倍数(例如100)将其转化成整型，并将 scale_factor_when_display 设为该倍数的倒数(例如0.01)来实现数据的采集。
-        - statistics\_type <br>
+        * statistics\_type <br>
           指定监控项值的统计方式，目前支持如下方式：
-          - min <br>
+          * min <br>
             取监控项在统计区间内采集数据的最小值
-          - max <br>
+          * max <br>
             取监控项在统计区间内采集数据的最大值
-          - avg <br>
+          * avg <br>
             取监控项在统计区间内采集数据的平均值
-          - delta <br>
+          * delta <br>
             取监控项在统计区间内采集数据的变化值，如果变化值小于0,则设为0。
-          - rate <br>
+          * rate <br>
             取监控项在统计区间内采集数据的变化率
-          - mode <br>
+          * mode <br>
             取监控项在统计区间内采集数据的众数(即出现次数最多的一个值)
-          - median <br>
+          * median <br>
             取监控项在统计区间内采集数据的中位数
-          - latest <br>
+          * latest <br>
             取监控项在统计区间内采集数据的最新值
 
           值类型为 "int" (整型)的监控数据，支持以上所有类型的统计方式，默认的统计方式为 "avg"。
           值类型为 "str" (字符串型)的监控数据，只支持 "mode" 和 "latest" 两种统计方式，默认的统计方式为 "latest"。
-        - enums <br>
+        * enums <br>
           当 value_type 为 "str" 的时候才需要该字段，枚举出该监控项可能的 value 值(为了方便用户配置告警)。
-        - scale_factor_when_display <br>
+        * scale_factor_when_display <br>
           指定在前端展示时，采集数据的放大倍数，默认值为1。该配置只支持值类型为 "int" (整型)的监控数据。
-    -   groups <br>
+    *   groups <br>
         设置监控组，每个监控组可以包含1～5个监控项。"groups" 对应的值是一个 JSON Object，该 JSON Object 的 key 是监控组的名字 (group_name)，value 是一个 JSON Array，该 Array 中的每个元素是一个监控项的名字 (item_name)。
-    -   display <br>
+    *   display <br>
         指定监控数据的显示顺序，其值是一个 JSON Array，该 JSON Array 中的每个元素可以是一个监控组的名字 (group_name)，也可以是一个监控项的名字 (item_name)。item_name 和 group_name 会进行国际化，如果想要提供各语言环境下的监控项描述，请提供翻译文件。
-    -   alarm <br>
+    *   alarm <br>
         告警指标，其值是一个 JSON Array，该 JSON Array 中的每个元素必须是上面某个监控项的名字 (item_name)，这里的每一项都会成为"控制台-管理-监控告警"下的一个告警指标。
 
   	应用节点会继承应用的监控配置，当应用节点配置了相同的监控参数时，优先使用节点的配置。注明：前端在创建集群之后需要等５分钟监控项才会展现出来。
 * display_tabs 自定义TAB页，TAB页中的信息会以表格的形式展现出来。
 	开发者可以配置此项以在集群详情页显示更多的自定义信息。例如，集群发生主从切换后，节点新的主从信息，节点新的状态。配置应用于整个集群，不支持分角色定义。
-	- node_details_tab　必填项，需展示的TAB页标题，该key为自定义并且可定义多个，但最多不超过**5**个，该标题可定义国际化。
-	- cmd 必填项，开发者自定义的命令，调度系统会随机选择集群中的节点去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
-	```
+	
+	* node_details_tab　必填项，需展示的TAB页标题，该key为自定义并且可定义多个，但最多不超过**5**个，该标题可定义国际化。
+	* cmd 必填项，开发者自定义的命令，调度系统会随机选择集群中的节点去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
+	```json
 	{
 		"labels": ["node_id", "role"], 
 		"data":
@@ -741,9 +745,9 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		]
 	}
 	```
-	- roles\_to\_execute_on 非必填项，如填写此项，则命令只会在指定的角色节点上执行，若集群创建完成时，没有指定角色的节点存在则会报错。不配置此项则会在所有的节点里随机选取节点执行。
-	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
-	- timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
+	* roles\_to\_execute_on 非必填项，如填写此项，则命令只会在指定的角色节点上执行，若集群创建完成时，没有指定角色的节点存在则会报错。不配置此项则会在所有的节点里随机选取节点执行。
+	* description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
+	* timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
 	
 
 ### 数据类型

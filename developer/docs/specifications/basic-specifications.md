@@ -3,6 +3,7 @@
 >此规范定义的是开发一个基于 AppCenter 2.0 云应用需要的基本元素，不包括国际化、监控告警和其它高级功能，旨在让开发者快速入门，详细的规范请参考[完整版规范](specifications.md)。
 
 开发者提交一个应用需要包含以下几个文件：
+
 * config.json <br>
   该文件定义最终用户在控制台部署应用实例时需要填写的表单；
 * cluster.json.mustache <br>
@@ -11,6 +12,7 @@
 >注：以上文件不支持 "UTF-8 Unicode (with BOM) text" 文本格式，windows下的编辑器编辑文件默认是此格式，可通过 "格式-> 以utf-8无BOM格式编码" 进行转换。
 
 ## config.json
+
 此配置文件定义最终用户在创建应用实例的时候需填入的参数信息，参数包括资源信息如 CPU、内存、节点数等，还包括应用本身配置参数等。下面是对每个参数详细的解释：
 
 >注：role_name, common.param名称自定义，cluster 的 name 和 description 不需要自定义。右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。另外，env 表示集群的环境变量，是可选项，即可以不用定义此项，每一个变量的 key 会作为配置名直接展示给用户 (key 不能包含空格)，它的 label 属性可以是空字符串 ""。
@@ -114,7 +116,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 
 * key <br>
   对应 [cluster.json.mustache](#cluster.json.mustache) 文件索引的值，例如
-  ```
+  ```toml
    {% raw %}{{cluster.name}}{% endraw %}  
   ```
    表示 config.json 中 cluster 内 key=name 的项用户所填写的值。
@@ -148,6 +150,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 
 
 ### cluster.json.mustache
+
 该文件是在用户创建应用时需要传给青云 API 的参数，这些信息的具体值是来自用户在 UI 上根据 config.json 定义的变量的输入，每个字段的具体描述如下：
 
 >注：role, vloume, services, env 和 advanced_actions 为可选项，如果不定义 role 则意味着这是个单角色的应用；不定义 volume 则表示该节点没有挂盘，只有系统盘；右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。

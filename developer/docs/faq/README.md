@@ -27,19 +27,19 @@
     当定义的应用的启动/停止/监控命令执行有问题，例如
     文件定义如下
 
-    ```
+    ``` toml
     "start":"your_script"
     ```
 
     服务日志如下
 
-    ```
+    ``` log
     2017-04-13 12:14:19,318 ERROR Failed to execute the [cmd:your_script, id:JPwqtXY56Mp22t0RsqkDtQVu3hQLxxxx] in the node [cln-pwgxxxxx]
     ```
 
     请确认起停的命令要写全路径。例如
 
-    ```
+    ``` toml
     "start":"/bin/your_script"
     ```
     
@@ -52,7 +52,7 @@
 
     使用kvm作为镜像模板时，应用创建资源失败，登录创建的节点发现文件系统变成只读，日志如下
 
-    ```
+    ``` log
     2017-04-17 11:03:48,800 CRITICAL Mount volume [{'mount_point': '/data', 'mount_options': '', 'filesystem': 'ext4'}] on node [cln-bo73222b] failed
     ```
 
