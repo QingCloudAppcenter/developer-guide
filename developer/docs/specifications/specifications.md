@@ -594,9 +594,9 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 
         * custom_service <br>
           用户自定义命令，具体参数参考备份命令 backup，除此之外自定义的服务参数还有：
-          * type <br>
-            type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 custom_service) 开发者自行定义。
-          > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
+            * type <br>
+              type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 custom_service) 开发者自行定义。
+            > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
           
     *   env <br>
         特定角色节点的应用参数配置，每类应用有自身特有的可配置应用参数，每类节点也会有不同于应用全局级别的可配置参数。注意：节点之间或节点与集群全局之间的参数没有任何关系，都是独立的。
@@ -614,15 +614,15 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     应用服务高级指令，青云 AppCenter 调度系统会随机选取一个节点执行这些命令，非必填项。
     * update_nodes_names　<br>
       修改节点显示名称命令。
-      * cmd　<br>
-        具体需执行的命令，必填项。采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是node_id (cln-xxxxxxxx)，value 是节点显示名称，例如： {"cln-xxxxxxxx": "replica-master"，"cln-xxxxxxxx": "replica-slave"}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
-      * timeout　<br>
-        执行该命令 timeout 时间(单位秒)，默认5秒，最大值是30秒，非必填项。
+        * cmd　<br>
+          具体需执行的命令，必填项。采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是node_id (cln-xxxxxxxx)，value 是节点显示名称，例如： {"cln-xxxxxxxx": "replica-master"，"cln-xxxxxxxx": "replica-slave"}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
+        * timeout　<br>
+          执行该命令 timeout 时间(单位秒)，默认5秒，最大值是30秒，非必填项。
 *   endpoints <br>
     应用可定义 endpoints 供第三方使用，服务名称可以自定义，但建议使用通用的名称比如 client，manager 等，这样第三方应用使用的时候更方便一些，被第三方应用使用的可能性更大一些。详细的服务信息必须包括 port，但 protocol 非必须项，即可以不提供 protocol 信息。port 除可以是整数端口外，也可以是一个指向 env 的变量，如 "port":"env.port"或 "port":"role_name.env.port"，这样用户在更新这个变量的时候会自动更新其关联的 endpoint 端口。如果您的应用是一个大家熟知的且 enpoint 不会被修改，可以省略这一定义，比如 ZooKeeper，通用端口是2181，所以可以省略掉，参见 [ZooKeeper 应用模版](../examples/spec/zookeeper.md)。<br>
 *   reserved\_ips <br>
     表示集群要预留一些 IP 资源，由应用自己来分配使用，如果无此需求可不定义。预留 IP 的成员名称由开发者指定，比如这里定义为 "vip"，暂时不支持指定 IP，所以定义时 "value" 的值为空。然后系统会为该集群分配一个 IP 并更新到 "value" 中。比如系统预留了192.168.0.250这个地址给 "vip"，则 reserved_ips 的信息为：
-    ```json
+    ```text
 	"reserved_ips": {
 		"vip": {
 			"value":"192.168.0.250"
@@ -634,24 +634,24 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 
     下例示范 tmpl 模版文件遍历所有集群节点 ip 地址 (假定都是无角色的节点)
     {% raw  %}
-    ``` toml
+    ``` text
     {{range gets "/clusters/*/hosts/*/ip"}}{{.Value}}
 	{{end}}
     ```
     {% endraw %}
     下例示范 tmpl 模板文件遍历某一类 App 的所有集群
     {% raw  %}
-    ``` toml
+    ``` text
     {{$appID := "app-pjkzvd1"}}
     {{range gets"/clusters/*/cluster/app_id" | filter $appID}}
         {{$string := split .Key "/"}}
         {{$cluster_id := (index $string 2)}}
     {{end}}
-    ``` toml
+    ``` 
     {% endraw %}
     下例示范 tmpl 模板文件遍历某几类 App 的所有集群
     {% raw  %}
-    ```
+    ``` text
     {{$appID1 := "app-pjkzvd1"}}
     {{$appID2 := "app-ascz121"}}
     {{$appID3 := "app-mjkrm56"}}
@@ -699,22 +699,22 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
           对于浮点型数据，可以通过乘于一个倍数(例如100)将其转化成整型，并将 scale_factor_when_display 设为该倍数的倒数(例如0.01)来实现数据的采集。
         * statistics\_type <br>
           指定监控项值的统计方式，目前支持如下方式：
-          * min <br>
-            取监控项在统计区间内采集数据的最小值
-          * max <br>
-            取监控项在统计区间内采集数据的最大值
-          * avg <br>
-            取监控项在统计区间内采集数据的平均值
-          * delta <br>
-            取监控项在统计区间内采集数据的变化值，如果变化值小于0,则设为0。
-          * rate <br>
-            取监控项在统计区间内采集数据的变化率
-          * mode <br>
-            取监控项在统计区间内采集数据的众数(即出现次数最多的一个值)
-          * median <br>
-            取监控项在统计区间内采集数据的中位数
-          * latest <br>
-            取监控项在统计区间内采集数据的最新值
+            * min <br>
+              取监控项在统计区间内采集数据的最小值
+            * max <br>
+              取监控项在统计区间内采集数据的最大值
+            * avg <br>
+              取监控项在统计区间内采集数据的平均值
+            * delta <br>
+              取监控项在统计区间内采集数据的变化值，如果变化值小于0,则设为0。
+            * rate <br>
+              取监控项在统计区间内采集数据的变化率
+            * mode <br>
+              取监控项在统计区间内采集数据的众数(即出现次数最多的一个值)
+            * median <br>
+              取监控项在统计区间内采集数据的中位数
+            * latest <br>
+              取监控项在统计区间内采集数据的最新值
 
           值类型为 "int" (整型)的监控数据，支持以上所有类型的统计方式，默认的统计方式为 "avg"。
           值类型为 "str" (字符串型)的监控数据，只支持 "mode" 和 "latest" 两种统计方式，默认的统计方式为 "latest"。
