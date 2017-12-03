@@ -10,12 +10,12 @@
 
   跟平常一样到您控制台选择需要的系统镜像创建主机，以下系统镜像(括号内为镜像 ID )已经过测试:
 
-  + Ubuntu: 12.10 64-bit (quantalx64b)，13.10 64-bit (saucysrvx64b)，14.04.1 LTS 64-bit (trustysrvx64c)，16.04 LTS 64-bit (xenialx64)
-  + CentOS: 6.4 64-bit (centos64x64b)，7 64-bit (centos7x64b)
-  + Debian: Wheezy 7.5 64-bit (wheezyx64g)
-  + OpenSUSE: 12.3 64-bit (opensuse12x64c)
-  + Fedora: 18 64-bit (fedora18x64b)，20 64-bit (fedora20x64b)
-  + Windows: Windows Server 2008 (win2k8r2eechsi, win2k8r2eechdc, win2k8r2seen), Windows Server 2012 (winsrv2012r2chsh)
+    * Ubuntu: 12.10 64-bit (quantalx64b)，13.10 64-bit (saucysrvx64b)，14.04.1 LTS 64-bit (trustysrvx64c)，16.04 LTS 64-bit (xenialx64)
+    * CentOS: 6.4 64-bit (centos64x64b)，7 64-bit (centos7x64b)
+    * Debian: Wheezy 7.5 64-bit (wheezyx64g)
+    * OpenSUSE: 12.3 64-bit (opensuse12x64c)
+    * Fedora: 18 64-bit (fedora18x64b)，20 64-bit (fedora20x64b)
+    * Windows: Windows Server 2008 (win2k8r2eechsi, win2k8r2eechdc, win2k8r2seen), Windows Server 2012 (winsrv2012r2chsh)
 
 * 安装自己的应用
 
@@ -27,7 +27,7 @@
 
   开发一些必须的模版文件，这些文件会监听青云 metadata service 的变化从而更新自己应用的配置文件。这些文件后缀名为 toml 和 tmpl，例如，ZooKeeper 有两个配置文件 zoo.cfg 和 myid，每个配置文件需要一套相应的 toml 和 tmpl 模版对应，详情请见[范例](https://github.com/search?q=topic%3Aqingcloud-sample-apps+org%3AQingCloudAppcenter&type=Repositories)中的应用。
 
-	+ /etc/confd/conf.d/zoo.cfg.toml
+	* /etc/confd/conf.d/zoo.cfg.toml
 
   ``` toml
 [template]
@@ -43,7 +43,7 @@ reload_cmd = "/opt/zookeeper/bin/restart-server.sh"
 
 	+  /etc/confd/templates/zoo.cfg.tmpl
 
-  ```
+  ``` toml
 tickTime=2000
 initLimit=1ini0
 syncLimit=5
@@ -56,7 +56,7 @@ maxClientCnxns=1000
 
   tmpl 模版文件决定应用配置文件内容，confd 读取青云 metadata service 刷新这些变量的值，如此例 range 这一行是读取该节点所在集群节点的 IP 和 server ID 信息，然后刷新为如下信息：
 
-  ```
+  ``` toml
 server.1=192.168.100.2:2888:3888
 server.2=192.168.100.3:2888:3888
 server.3=192.168.100.4:2888:3888
