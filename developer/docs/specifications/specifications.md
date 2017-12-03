@@ -19,9 +19,10 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 >注：以上文件不支持 "UTF-8 Unicode (with BOM) text" 文本格式，windows下的编辑器编辑文件默认是此格式，可通过 "格式-> 以utf-8无BOM格式编码" 进行转换。
 
-### 规范
+## 规范
 
-##### config.json
+### config.json
+
 此配置文件定义用户在创建应用的时候需填入的参数信息，参数包括资源信息如 CPU、内存、节点数等，还包括应用本身配置参数以及外面依赖集群信息等。
 这些信息有集群级别的全局设置，也有基于角色节点级别的信息设置。下面是对每个参数详细的解释：
 
@@ -263,7 +264,8 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
   此应用依赖外部应用信息，名称可以任意定义，即可以命名为 zk_service 表示依赖 ZooKeeper，用户可以选择在同一 VPC 中满足 limits 限定条件的集群作为此应用依赖的服务。limits 限定条件可以指定应用所依赖服务的 app id 及 app version。
 
 
-##### cluster.json.mustache
+#### cluster.json.mustache
+
 该文件是在用户创建应用时需要传给青云 API 的参数，这些信息的具体值是来自用户在 UI 上根据 config.json 定义的变量的输入，每个字段的具体描述如下：
 
 >注： 右上角带3个星号(*)表示该项有 sibling (兄弟)节点，开发者提交的时候也要去掉这个标记。advanced_actions 的内容可以添加在国际化中，在控制台用户操作时展示。
@@ -491,118 +493,118 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     定义当前应用的哪些版本可以升级到当前版本，新老版本之间 role 必须相同，数据盘挂载位置必须一致。由于升级后会替换集群的镜像，所以在开发阶段**请仔细测试升级功能**。
 *   nodes <br>
     新建应用节点信息，必填项。一个应用的节点可能是无角色区分的，这个时候 nodes 只有一种角色的信息；也可能是多角色组成的复杂应用，这个时候 nodes 就是这些角色节点信息组成的一个数组。
-    -   role <br>
+    *   role <br>
         多角色节点应用必填项，单角色应用可以无此项。角色名称自定义，但必须和 config.json 里定义的名字一致。
-    -   loadbalancer <br>
+    *   loadbalancer <br>
         新建应用可能会依赖负载均衡器，不同角色 (role) 可以依赖不同的负载均衡器。
-    -   container <br>
+    *   container <br>
         镜像信息，必填项。
-        + type <br>
+        * type <br>
           镜像类型，目前支持 kvm，docker。
-        + image <br>
+        * image <br>
           镜像 ID，开发者根据镜像制作指南制作的以 img- 开头的镜像 ID，如果是 docker 则是 docker image name，包含 tag 部分。
-        + zone <br>
+        * zone <br>
           镜像制作时所属区域 (如果是 docker 镜像，则无需填写该字段)
-    -   instance\_class <br>
+    *   instance\_class <br>
         节点类型，支持 0 和 1， 其中0表示性能主机，1表示超高性能主机。可选项，默认值为0。
-    -   gpu\_class <br>
+    *   gpu\_class <br>
         节点 gpu 类型，支持 0 表示性能主机。可选项，默认值为0。
-    -   count <br>
+    *   count <br>
         节点个数，必填项，可以为0，但集群节点总数必须大于0。
-    -   cpu <br>
+    *   cpu <br>
         每个节点 cpu 个数，可选值范围：1, 2, 4, 8, 12, 16。
-    -   memory <br>
+    *   memory <br>
         每个节点内存大小，单位 MiB。可选值范围：1024, 2048, 4096, 6144, 8192, 12288, 16384, 24576, 32768, 40960, 49152, 65536, 131072。
-    -   gpu <br>
+    *   gpu <br>
         每个节点 gpu 个数，可选值范围：0, 1, 2。目前仅在北京3区(pek3a)可创建带 gpu 的集群, 具体使用方式参考[GPU 主机](https://docs.qingcloud.com/guide/compute_network/gpu_instance.html)
-    -   volume <br>
+    *   volume <br>
         每个节点数据盘信息，如果此类节点不需要数据盘，不需要填写此项。
-        + size <br>
+        * size <br>
           每个节点数据容量大小，单位 GiB，注：是单个节点总容量大小，不是每个挂盘容量大小，如果有多个挂盘，则容量平均分配到每个挂盘上，必填项。单张容量盘最大5000G，单张性能盘和超高性能盘最大1000G，且单张步长大小需是10的整数倍。
-        + mount\_point <br>
+        * mount\_point <br>
           每个节点数据盘挂载路径，可以是单个数据盘， 也可以有多个数据盘，多个数据盘以数组形式表示，如 "mount\_point": ["/data1","/data2"]。如果image是基于 Linux 操作系统，默认挂载路径为 /data; 如果 image 是基于 Windows 操作系统，默认挂载路径是 d:, 挂载路径是盘符（后面须带冒号，可选的盘符名从 d 开始，z 结束）。目前最大支持3块数据盘挂载到节点上。请注意，如果挂载了多块数据盘，config.json 对应的 volume\_size 部分，最好设置一下 min，max，step 这 3 个值，以配置创建集群、扩容集群时的范围和步长。例如挂载盘数为3，可以指定 {min: 30，max: 3000，step: 30}。
-        + mount\_options <br>
+        * mount\_options <br>
           描述数据盘的挂接方式，默认值 ext4 是 defaults,noatime，xfs 是 rw,noatime,inode64,allocsize=16m。
-        + filesystem <br>
+        * filesystem <br>
           数据盘文件系统类型。如果 image 是基于 Linux 操作系统，目前支持 ext4 和 xfs，默认为 ext4; 如果 image 是基于 Windows 操作系统，目前支持 ntfs, 默认为 ntfs。
-        + class <br>
+        * class <br>
           数据盘类型，支持0、2、3，其中0表示性能盘，3表示超高性能盘，2表示容量盘。可选项，如果不写此项，数据盘类型和主机类型一样，即性能主机挂载性能硬盘，超高性能主机挂载超高性能硬盘。容量盘可以挂载在不同类型主机上，但容量盘是通过网络协议挂载的，所以性能相对来说比较差，通常来说如果不是提供必须基于容量盘的服务，最好去掉这个选项，大容量存储可以考虑[对象存储 QingStor](https://docs.qingcloud.com/qingstor/index.html)。
-    -   passphraseless　<br>
+    *   passphraseless　<br>
         生成密钥信息，即提供此类节点能无密码登录其它节点的可能性，但青云调度系统只负责把此信息注册到 metadata service 中，开发者自行去获取密钥配置主机。目前支持 ssh-dsa, ssh-rsa，非必填项。
-    -   vertical\_scaling\_policy <br>
+    *   vertical\_scaling\_policy <br>
         配置纵向伸缩时的操作策略，目前支持：sequential 和 parallel，默认是 parallel 即并行操作，非必填项。比如 ZooKeeper 在扩容时希望不影响对外服务，可设置该值为 sequential，串行重启。
-    -   user_access　<br>
+    *   user_access　<br>
         是否允许用户访问，true 表示该角色节点允许用户通过 vnc 登录，默认值为 false，该映像的初始用户名和密码需要在“版本描述”中写清楚以便告知用户。允许用户登陆的节点在集群非活跃状态如关闭时不会销毁主机，所以用户可以往这类主机写入数据。而其它主机是不会持久化数据，必须在挂盘上持久化数据，参见[制作 KVM 镜像](../app-version-mgmt/images/kvm.md)。
-    -   server\_id\_upper\_bound <br>
+    *   server\_id\_upper\_bound <br>
         节点的 index 的上限，从1开始记起，有些服务如 ZooKeeper 要求这个 index (myid) 必须控制在某一个范围内。缺省没有上限，非必填项。
-    -   replica <br>
+    *   replica <br>
         此类节点每个节点的副本个数，这是给分片式 (即多主多从，如 redis cluster) 分布式系统使用的功能，定义每个分片的主有多少个从。这类应用需要指定 role 名称比如 master，副本节点的 role 系统会自动添加为主节点 role 加 -replica，比如此例 master-replica。因此开发者在定义节点角色名称时不能定义后缀为 "-replica"，这是一个系统保留命名规则，非必填项。
-    -   services　<br>
+    *   services　<br>
         应用本身服务的初始化、启停等指令，青云 AppCenter 调度系统会发送这些命令到指定节点执行，非必填项。
-        + init　<br>
+        * init　<br>
           初始化命令，在创建集群或者新加节点时会触发该命令的执行。
-          * nodes\_to\_execute_on　<br>
-            控制此命令在此类角色节点上某几个节点上执行，如果需要在所有此类节点上执行该命令可不填此项。
-          * post\_start\_service　<br>
-            控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
-          * order　<br>
-            控制不同角色节点之间执行此命令顺序。比如主从节点，有时候需要主节点先启动服务，从节点后启动服务，非必填项。
-          * cmd　<br>
-            具体需执行的命令，必填项。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本，且脚本需通过变量 %ERRORLEVEL% 设定返回值。
-          * timeout　<br>
-            执行该命令 timeout 时间(单位秒)，系统默认10分钟，由于某些命令可能需要迁移数据而耗时比较长，这种情况下需要计算出最长可能时间，最大值是86400，非必填项。
-        + start
+            * nodes\_to\_execute_on　<br>
+              控制此命令在此类角色节点上某几个节点上执行，如果需要在所有此类节点上执行该命令可不填此项。
+            * post\_start\_service　<br>
+              控制初始化命令是在 [start](#start) 命令执行完毕后执行还是之前执行，如果 post\_start\_service 为 true 则表示 init 在 start 后执行；默认 (即不加此项) 是之前执行。此项是 init 独有。
+            * order　<br>
+              控制不同角色节点之间执行此命令顺序。比如主从节点，有时候需要主节点先启动服务，从节点后启动服务，非必填项。
+            * cmd　<br>
+              具体需执行的命令，必填项。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本，且脚本需通过变量 %ERRORLEVEL% 设定返回值。
+            * timeout　<br>
+              执行该命令 timeout 时间(单位秒)，系统默认10分钟，由于某些命令可能需要迁移数据而耗时比较长，这种情况下需要计算出最长可能时间，最大值是86400，非必填项。
+        * start
           服务启动命令，具体参数参考初始化命令 init。
-        + stop　<br>
+        * stop　<br>
           停止服务命令，具体参数参考初始化命令 init。
-        + scale\_out　<br>
+        * scale\_out　<br>
           加节点时在非新加节点上需执行的命令，具体参数参考初始化命令 init。
-          * pre\_check　<br>
-            加节点时在非新加节点上执行的预检查命令，若返回非0值表示不可新增节点。此项是 scale\_in 和 scale\_out 独有。
-        + scale\_in <br>
+            * pre\_check　<br>
+              加节点时在非新加节点上执行的预检查命令，若返回非0值表示不可新增节点。此项是 scale\_in 和 scale\_out 独有。
+        * scale\_in <br>
           删除节点时在非删除节点上需执行的命令，具体参数参考初始化命令 init。
-          * pre\_check　<br>
-            删除节点时在非删除节点上执行的预检查命令，若返回非0值表示不可删除节点。此项是 scale\_in 和 scale\_out 独有。
-        + restart <br>
+            * pre\_check　<br>
+              删除节点时在非删除节点上执行的预检查命令，若返回非0值表示不可删除节点。此项是 scale\_in 和 scale\_out 独有。
+        * restart <br>
           服务重启动命令，具体参数参考初始化命令 init。
-        + destroy <br>
+        * destroy <br>
           销毁命令，在删除集群或者节点时会触发该命令的执行，通常用作删除资源之前检查安全性，具体参数参考初始化命令 init。
-          * allow\_force <br>
-            是否允许强制删除, 默认值为 true 表示允许强制删除该节点, 强制删除时即使 destroy 的 cmd 返回非 0 值也会继续将节点删除。
-          * post\_stop\_service　<br>
-            控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
-        + upgrade <br>
+            * allow\_force <br>
+              是否允许强制删除, 默认值为 true 表示允许强制删除该节点, 强制删除时即使 destroy 的 cmd 返回非 0 值也会继续将节点删除。
+            * post\_stop\_service　<br>
+              控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
+        * upgrade <br>
           升级集群后执行的命令，具体参数参考初始化命令 init。
           > 注：必须先关机集群后才能升级，升级后再开启集群将会以<strong>新版本的镜像</strong>启动并执行升级命令。如果升级命令执行失败，用户可以关闭集群后降级回老版本。<br> 对于 user\_access 为 true 的节点也会使用新的镜像启动，请在使用说明中提醒用户自行备份 user\_access 为 true 节点上的数据。
 
-        + backup <br>
+        * backup <br>
           定义该角色的备份操作，若不定义表示该角色不支持备份。若 "backup_policy" 定义为 "custom" 则必须定义 cmd；若 "backup_policy" 定义为 "device" 可不定义 cmd，具体参数参考初始化命令 init，除此之外自定义的服务参数还有：
           * service\_params <br>
             service\_params 中定义这个 cmd 所需要传的参数，json 格式，非必须项，参数具体定义在 config.json 里，可参考 env 的定义方式。
           > 注：提供手动备份的同时也会提供 "定时自动备份" 支持，手动备份时会以 json 形式传入用户填入具体 "service\_params" 到 backup 的 cmd，而 "定时自动备份" 操作时不会传入参数。
 
-        + restore <br>
+        * restore <br>
           定义该角色的备份恢复操作。若该角色定义该服务，恢复时使用 restore 进行恢复；若该角色未定义该服务，恢复时使用 start 进行恢复。具体参数参考备份命令 backup。
           > 注：若 "backup_policy" 定义为 "custom"，备份恢复操作会在当前集群完成；若 "backup_policy" 定义为 "device"，备份恢复操作会使用挂盘的 snapshot 创建一个新的集群。
 
-        + delete_snapshot <br>
+        * delete_snapshot <br>
           定义备份删除操作。若 "backup_policy" 定义为 "custom" 则必须定义 cmd；若 "backup_policy" 定义为 "device" 可不定义 cmd。具体参数参考备份命令 backup。
 
         这几个服务都是系统定义的；除了 post\_start\_service 是 init, upgrade 独有、post\_stop\_service 是 destroy 独有之外，其它配置项每个服务都可配置，比如控制 stop 服务 order 等。这些命令的执行顺序请见 [应用实例生命周期](lifecycle.md)。
 
-        + custom_service <br>
+        * custom_service <br>
           用户自定义命令，具体参数参考备份命令 backup，除此之外自定义的服务参数还有：
-          * type <br>
-            type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 custom_service) 开发者自行定义。
-          > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
+            * type <br>
+              type = custom 表示这个服务是自定义的， 自定义的名字 (即 key，此处为 custom_service) 开发者自行定义。
+            > 注：用户可以自定义多个服务。自定义服务在用户使用时，展示的服务名就是该 service 的 key。如果想要对其进行国际化，可以在 locale 中添加它的翻译。
           
-    -   env <br>
+    *   env <br>
         特定角色节点的应用参数配置，每类应用有自身特有的可配置应用参数，每类节点也会有不同于应用全局级别的可配置参数。注意：节点之间或节点与集群全局之间的参数没有任何关系，都是独立的。
-    -   agent\_installed <br>
+    *   agent\_installed <br>
     	如果用户想利用这套框架管理纯主机集群，则可以不用装青云提供的 App agent，同时需要指定这个参数为 false，否则系统会提示错误，该参数默认为 true。
-    -   custom\_metadata <br>
+    *   custom\_metadata <br>
         节点通过脚本生成的 token (string 类型或返回 json 格式的 string) 需要注册到 metadata service 里供其它节点使用，例如开源容器集群管理系统 (Docker Swarm, Kuburnetes) 会用到此类信息。它是在 start service 之前执行，如果 start 之前有 init 则在 init 之后 start 之前执行。
-    -   health\_check <br>
+    *   health\_check <br>
         特定角色节点的健康检查配置，每类应用有自身特有的可配置健康检查参数，每类节点也会有不同于应用全局级别的可配置健康检查参数。详情请见 [应用 health check](#health_check)。
 *   env <br>
     应用参数配置，比如 ZooKeeper的 zoo.cfg 里的参数配置等。
@@ -610,17 +612,17 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     集群支持高级操作，目前支持两类：变换网络 (change\_vxnet) 和横向伸缩 (scale\_horizontal) 即增加节点或删除节点，这是因为有些应用尤其传统应用并不适合云的弹性要求，因此如果您的应用支持切换网络则加上 change_vxnet，如果支持横向伸缩则加上 scale\_horizontal。如果只有某一类角色需要切换网络或添加/删除节点，其它类型节点不支持，则可以只写到这个角色节点里。如果不支持此类操作则需去掉相应的定义，否则用户在界面看见有此功能而实际上是不支持的。
 *   advanced\_services <br>
     应用服务高级指令，青云 AppCenter 调度系统会随机选取一个节点执行这些命令，非必填项。
-    - update_nodes_names　<br>
+    * update_nodes_names　<br>
       修改节点显示名称命令。
-      * cmd　<br>
-        具体需执行的命令，必填项。采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是node_id (cln-xxxxxxxx)，value 是节点显示名称，例如： {"cln-xxxxxxxx": "replica-master"，"cln-xxxxxxxx": "replica-slave"}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
-      * timeout　<br>
-        执行该命令 timeout 时间(单位秒)，默认5秒，最大值是30秒，非必填项。
+        * cmd　<br>
+          具体需执行的命令，必填项。采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是node_id (cln-xxxxxxxx)，value 是节点显示名称，例如： {"cln-xxxxxxxx": "replica-master"，"cln-xxxxxxxx": "replica-slave"}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
+        * timeout　<br>
+          执行该命令 timeout 时间(单位秒)，默认5秒，最大值是30秒，非必填项。
 *   endpoints <br>
     应用可定义 endpoints 供第三方使用，服务名称可以自定义，但建议使用通用的名称比如 client，manager 等，这样第三方应用使用的时候更方便一些，被第三方应用使用的可能性更大一些。详细的服务信息必须包括 port，但 protocol 非必须项，即可以不提供 protocol 信息。port 除可以是整数端口外，也可以是一个指向 env 的变量，如 "port":"env.port"或 "port":"role_name.env.port"，这样用户在更新这个变量的时候会自动更新其关联的 endpoint 端口。如果您的应用是一个大家熟知的且 enpoint 不会被修改，可以省略这一定义，比如 ZooKeeper，通用端口是2181，所以可以省略掉，参见 [ZooKeeper 应用模版](../examples/spec/zookeeper.md)。<br>
 *   reserved\_ips <br>
     表示集群要预留一些 IP 资源，由应用自己来分配使用，如果无此需求可不定义。预留 IP 的成员名称由开发者指定，比如这里定义为 "vip"，暂时不支持指定 IP，所以定义时 "value" 的值为空。然后系统会为该集群分配一个 IP 并更新到 "value" 中。比如系统预留了192.168.0.250这个地址给 "vip"，则 reserved_ips 的信息为：
-    ```json
+    ```text
 	"reserved_ips": {
 		"vip": {
 			"value":"192.168.0.250"
@@ -632,24 +634,24 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 
     下例示范 tmpl 模版文件遍历所有集群节点 ip 地址 (假定都是无角色的节点)
     {% raw  %}
-    ```
+    ``` text
     {{range gets "/clusters/*/hosts/*/ip"}}{{.Value}}
 	{{end}}
     ```
     {% endraw %}
     下例示范 tmpl 模板文件遍历某一类 App 的所有集群
     {% raw  %}
-    ```
+    ``` text
     {{$appID := "app-pjkzvd1"}}
     {{range gets"/clusters/*/cluster/app_id" | filter $appID}}
         {{$string := split .Key "/"}}
         {{$cluster_id := (index $string 2)}}
     {{end}}
-    ```
+    ``` 
     {% endraw %}
     下例示范 tmpl 模板文件遍历某几类 App 的所有集群
     {% raw  %}
-    ```
+    ``` text
     {{$appID1 := "app-pjkzvd1"}}
     {{$appID2 := "app-ascz121"}}
     {{$appID3 := "app-mjkrm56"}}
@@ -660,78 +662,80 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     {{end}}
     ```
     {% endraw %}
+    
 *   health_check
 
     应用可以配置健康检查，详细的配置参数如下：
-    - enable <br>
+    * enable <br>
       是否开启健康检查，默认值为 false。
-    - interval_sec <br>
+    * interval_sec <br>
       健康检查的周期，默认值为 60，最小值不小于 60。
-    - timeout_sec <br>
+    * timeout_sec <br>
       健康检查脚本执行的超时时间，默认值为 10，最小值不小于 3，最大值不能超过 interval_sec。
-    - action_timeout_sec <br>
+    * action_timeout_sec <br>
       动作脚本执行的超时时间，默认值为 30，最小值不小于 3。
-    - healthy_threshold <br>
+    * healthy_threshold <br>
       节点状态变为健康时，连续健康检查成功所需的最小次数，默认值为 3，最小值不小于 2。
-    - unhealthy_threshold <br>
+    * unhealthy_threshold <br>
       节点状态变为非健康时，连续健康检查失败所需的最小次数，默认值为 3，最小值不小于 2。
-    - check_cmd <br>
+    * check_cmd <br>
       健康检查脚本。如果本次检查节点正常，脚本应返回0，否则返回非0值。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
-    - action_cmd <br>
+    * action_cmd <br>
       节点状态变为非健康时，触发的动作脚本。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
 
   	应用节点会继承应用的健康检查配置，当应用节点配置了相同的健康检查参数时，优先使用节点的配置。注明：前端在创建集群之后需要等大约５分钟左右服务检测才会展现出来。
 *   monitor <br>
     应用可以配置可采集的监控数据，详细的配置参数如下：
-    -   enable <br>
+    *   enable <br>
         是否开启监控，默认值为 false。
-    -   cmd <br>
+    *   cmd <br>
         监控数据采集脚本。脚本应保证在5秒内完成，采集的数据以 JSON Object 的方式输出，JSON Object 的 key 是监控项的名字 (item_name)，value 是监控项的值，例如： {"received": 1200，"sent": 1234，"connections": 10}。如果 image 是基于 Windows 操作系统，目前仅支持 bat 脚本。
-    -   items <br>
+    *   items <br>
         设置采集的监控项，监控项的个数不能超过50。"items" 对应的值是一个 JSON Object，该 JSON Object 的 key 是监控项的名字 (item_name)，value 是监控项配置，详细的监控项配置参数如下：
-        - unit <br>
+        * unit <br>
           监控项的计量单位，默认值为空字符串("")。
-        - value_type <br>
+        * value_type <br>
           监控项的值类型，目前支持 "int" (整型)和 "str" (字符串型)，默认值为 "int"。
           对于浮点型数据，可以通过乘于一个倍数(例如100)将其转化成整型，并将 scale_factor_when_display 设为该倍数的倒数(例如0.01)来实现数据的采集。
-        - statistics\_type <br>
+        * statistics\_type <br>
           指定监控项值的统计方式，目前支持如下方式：
-          - min <br>
-            取监控项在统计区间内采集数据的最小值
-          - max <br>
-            取监控项在统计区间内采集数据的最大值
-          - avg <br>
-            取监控项在统计区间内采集数据的平均值
-          - delta <br>
-            取监控项在统计区间内采集数据的变化值，如果变化值小于0,则设为0。
-          - rate <br>
-            取监控项在统计区间内采集数据的变化率
-          - mode <br>
-            取监控项在统计区间内采集数据的众数(即出现次数最多的一个值)
-          - median <br>
-            取监控项在统计区间内采集数据的中位数
-          - latest <br>
-            取监控项在统计区间内采集数据的最新值
+            * min <br>
+              取监控项在统计区间内采集数据的最小值
+            * max <br>
+              取监控项在统计区间内采集数据的最大值
+            * avg <br>
+              取监控项在统计区间内采集数据的平均值
+            * delta <br>
+              取监控项在统计区间内采集数据的变化值，如果变化值小于0,则设为0。
+            * rate <br>
+              取监控项在统计区间内采集数据的变化率
+            * mode <br>
+              取监控项在统计区间内采集数据的众数(即出现次数最多的一个值)
+            * median <br>
+              取监控项在统计区间内采集数据的中位数
+            * latest <br>
+              取监控项在统计区间内采集数据的最新值
 
           值类型为 "int" (整型)的监控数据，支持以上所有类型的统计方式，默认的统计方式为 "avg"。
           值类型为 "str" (字符串型)的监控数据，只支持 "mode" 和 "latest" 两种统计方式，默认的统计方式为 "latest"。
-        - enums <br>
+        * enums <br>
           当 value_type 为 "str" 的时候才需要该字段，枚举出该监控项可能的 value 值(为了方便用户配置告警)。
-        - scale_factor_when_display <br>
+        * scale_factor_when_display <br>
           指定在前端展示时，采集数据的放大倍数，默认值为1。该配置只支持值类型为 "int" (整型)的监控数据。
-    -   groups <br>
+    *   groups <br>
         设置监控组，每个监控组可以包含1～5个监控项。"groups" 对应的值是一个 JSON Object，该 JSON Object 的 key 是监控组的名字 (group_name)，value 是一个 JSON Array，该 Array 中的每个元素是一个监控项的名字 (item_name)。
-    -   display <br>
+    *   display <br>
         指定监控数据的显示顺序，其值是一个 JSON Array，该 JSON Array 中的每个元素可以是一个监控组的名字 (group_name)，也可以是一个监控项的名字 (item_name)。item_name 和 group_name 会进行国际化，如果想要提供各语言环境下的监控项描述，请提供翻译文件。
-    -   alarm <br>
+    *   alarm <br>
         告警指标，其值是一个 JSON Array，该 JSON Array 中的每个元素必须是上面某个监控项的名字 (item_name)，这里的每一项都会成为"控制台-管理-监控告警"下的一个告警指标。
 
   	应用节点会继承应用的监控配置，当应用节点配置了相同的监控参数时，优先使用节点的配置。注明：前端在创建集群之后需要等５分钟监控项才会展现出来。
 * display_tabs 自定义TAB页，TAB页中的信息会以表格的形式展现出来。
 	开发者可以配置此项以在集群详情页显示更多的自定义信息。例如，集群发生主从切换后，节点新的主从信息，节点新的状态。配置应用于整个集群，不支持分角色定义。
-	- node_details_tab　必填项，需展示的TAB页标题，该key为自定义并且可定义多个，但最多不超过**5**个，该标题可定义国际化。
-	- cmd 必填项，开发者自定义的命令，调度系统会随机选择集群中的节点去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
-	```
+	
+	* node_details_tab　必填项，需展示的TAB页标题，该key为自定义并且可定义多个，但最多不超过**5**个，该标题可定义国际化。
+	* cmd 必填项，开发者自定义的命令，调度系统会随机选择集群中的节点去执行。返回的结果需是完整的JSON格式字符串，表格标题以`labels`来标识，数据行以`data`，所以命令执行返回的JSON必须包含这两个键。标题的个数不能超过**５**个，数据的行数不能超过**225**行。例如
+	```json
 	{
 		"labels": ["node_id", "role"], 
 		"data":
@@ -741,32 +745,34 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 		]
 	}
 	```
-	- roles\_to\_execute_on 非必填项，如填写此项，则命令只会在指定的角色节点上执行，若集群创建完成时，没有指定角色的节点存在则会报错。不配置此项则会在所有的节点里随机选取节点执行。
-	- description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
-	- timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
+	* roles\_to\_execute_on 非必填项，如填写此项，则命令只会在指定的角色节点上执行，若集群创建完成时，没有指定角色的节点存在则会报错。不配置此项则会在所有的节点里随机选取节点执行。
+	* description 非必填项，显示在表格的顶部，起到描述表格的作用，帮助用户更好地理解表格的内容，该描述可以定义国际化。
+	* timeout 非必填项，命令执行的timeout时长，单位s，最大值和默认值为10，如果命令执行时长超过最大值将被终止。
 	
 
 ### 数据类型
+
 config.json 文件里对每个变量需要定义其类型、取值范围、默认值等，其中类型和默认值为必填项。
 
 * type
-变量数据类型，支持：integer，boolean，string，number (浮点数)，array，service，loadbalancer，password。
-    - service <br>
+  变量数据类型，支持：integer，boolean，string，number (浮点数)，array，service，loadbalancer，password。
+    * service <br>
       新应用可能会依赖外部应用，比如 Kafka 依赖 ZooKeeper，应用使用该类型表示。
-    - loadbalancer <br>
+    * loadbalancer <br>
       新应用如需使用负载均衡器，可以使用该类型表示，定义时需要同时定义负载均衡器后端服务端口参数：port，比如搭建的 HTTP 的 web server，可以指定 port 为 80，如需定义多个后端服务端口，可将 port 定义为一个列表，如：[80, 8080]。
-    - password <br>
+    * password <br>
       可在 env 或 service_params 变量中使用，界面会用密码形式显示输入。
 * range <br>
-变量定值的取值范围，数组类型，如 "range": [1,3,5,7,9]。
+  变量定值的取值范围，数组类型，如 "range": [1,3,5,7,9]。
 * max <br>
-变量取值的最大值，integer 和 number 类型有效。
+  变量取值的最大值，integer 和 number 类型有效。
 * min <br>
-变量取值的最小值，integer 和 number 类型有效。
+  变量取值的最小值，integer 和 number 类型有效。
 * default <br>
-变量默认值
+  变量默认值
 
 ### 国际化
+
 config.json 中的 label 和 description 在控制台呈现时，默认使用配置文件中定义的内容。另外，一些自定义的服务、监控项也会直接展示到集群使用者的操作界面上。控制台的用户切换语言时，不改变该描述。如果您想让不同语言场景的用户能看到该语言的描述，请在提交的包中添加 locale 文件夹，并根据您希望国际化的语言提供翻译文件。
 
 翻译文件是“语言名称.json”这样的格式，如 locale/en.json，locale/zh-cn.json。例如简体中文的翻译文件 zh-cn.json 内容示例如下：
