@@ -2,7 +2,7 @@
 
 ## 1. 作为新手，如何从一个最简单的例子入手？    
 
-我们在  [GitHub](https://github.com/QingCloudAppcenter/) [GitHub](https://github.com/QingCloudAppcenter/) 上提供了大量的基于AppCenter开发的实例代码和配置文件，作为新手我们建议从[Zookeeper](https://github.com/QingCloudAppcenter/Zookeeper)或者[Redis](https://github.com/QingCloudAppcenter/Redis-standalone)入手。
+我们在  [GitHub](https://github.com/QingCloudAppcenter/)上提供了大量的基于AppCenter开发的实例代码和配置文件，作为新手我们建议从[Zookeeper](https://github.com/QingCloudAppcenter/Zookeeper)或者[Redis](https://github.com/QingCloudAppcenter/Redis-standalone)入手。
 
 ## 2. app agent是什么？如何安装app agent程序？   
 
@@ -27,17 +27,18 @@ curl http://metadata/self
 ## 5. 如何查看日志？  
 
 App有以下几种日志信息需要开发者关注。
- - 集群主机里的 confd的日志     
+
+- 集群主机里的 confd的日志     
     启动时的 log： /opt/qingcloud/app-agent/log/confd-onetime.log   
     其他操作修改时的 log： /opt/qingcloud/app-agent/log/confd.log  
     >其他操作是指修改了confd相关的.toml和.tmpl文件后,执行了service confd restart命令之后重新生成新的confd相关的日志。
 
- - 应用本身服务调用的日志     
+- 应用本身服务调用的日志     
     应用本身服务的初始化、启动、停止等指令，青云 AppCenter 调度系统会发送这些命令到指定节点执行，非必填项。  
     在 [AppCenter 应用开发平台](https://appcenter.qingcloud.com/developer/) 上可以查到相关日志。
     ![faq_applog.png](../../images/faq_applog.png)
 
- - 监控日志
+- 监控日志
     监控日志主要是指用户开发的健康检查和监控命令调用的日志。   
     在 [AppCenter 应用开发平台](https://appcenter.qingcloud.com/developer/) 上可以查到相关日志。  
     ![faq_applog.png](../../images/faq_appmonitorlog.png)
@@ -356,12 +357,12 @@ backup_policy
 
 如果配置了此参数，在控制台上集群右键会出现创建备份的菜单。
 ![faq_backup.png](../../images/faq_backup.png)
+以上示例是基于device类型的备份策略，对于custom类型类似，但是需要注意如下几点：
 
-以上示例是基于device类型的备份策略，对于custom类型类似，但是需要注意如下几点：   
- - "backup_policy": "custom",  
- - "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
+- "backup_policy": "custom",  
+- "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
     例如：执行的时候是sh /opt/yourbackup.sh '{"snapshot_id": "s-12345678"}'  开发者可以解析后在cmd命令写成处理成 cp /opt/data.txt /data/s-12345678
- - "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
+- "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
     例如：执行的时候是sh /opt/yourrestore.sh '{"snapshot_id": "s-12345678"}'  开发者可以解析后在cmd命令写成处理成 cp /data/s-12345678 /opt/data.txt
 
 >注意：restore 操作是在恢复的新集群上进行操作的。   
@@ -402,9 +403,10 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 
 对于应用的大版本升级的问题，例如PostgreSQL9.6和PostgreSQL10，如果直接采用上面的方法是不可用的，因为对于新版本的应用（PostgreSQL10）是无法驱动挂载盘下的旧版本（PostgreSQL9.6）格式的数据，需要对挂载盘下的数据做转换才可以以升级后的新版本的应用读取数据。    
 因此，我们建议有以下2种方式进行升级处理。
- - 新版本不直接支持从旧版本无缝升级到新版本，用户创建好新版本后，自己通过工具将数据从旧版本导入到新版本的集群中去。    
- - 新版本直接支持从旧版本无缝升级到新版本，在新版本的镜像中同时安装新旧2个版本，在upgrade的cmd编写脚本，将数据从旧版本转换成新版本可直接读取的文件格式。   
- >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：upgrade_policy、upgrade  
+
+- 新版本不直接支持从旧版本无缝升级到新版本，用户创建好新版本后，自己通过工具将数据从旧版本导入到新版本的集群中去。    
+- 新版本直接支持从旧版本无缝升级到新版本，在新版本的镜像中同时安装新旧2个版本，在upgrade的cmd编写脚本，将数据从旧版本转换成新版本可直接读取的文件格式。   
+>具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：upgrade_policy、upgrade  
 
 ## 16. 如何设置集群的VIP？  
 
@@ -425,10 +427,11 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 ## 17. 如何支持用户下载和查看应用的日志？
 
 对于这个需求，解决的办法可以有多种方式。
- - 应用自身提供的web页面的log查看方式。
- - 若应用本身不提供web log，可以开放ftp权限给用户去应用的日志路径下查看日志。
- - 采用第三方日志收集工具rsyslog，logstash等日志收集到日志节点，允许用户登录该节点查看日志。
- - 其他方式。
+
+- 应用自身提供的web页面的log查看方式。
+- 若应用本身不提供web log，可以开放ftp权限给用户去应用的日志路径下查看日志。
+- 采用第三方日志收集工具rsyslog，logstash等日志收集到日志节点，允许用户登录该节点查看日志。
+- 其他方式。
 
 ## 18. 如何语言国际化？     
 
