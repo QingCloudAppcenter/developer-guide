@@ -665,7 +665,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 	2016-10-11T13:54:41+08:00 i-lvn35udh confd[1531]: ERROR template: index.html.tmpl:2:7: executing "index.html.tmpl" at <getv "/self/host/sid...>: error calling getv: key does not exist: /self/host/sid
   ```
 
-## 28. 上传配置包时报错：配置验证失败,报 `[config.json] Not valid json` 错误，该如何排查？
+## 28. 上传配置包时报错：配置验证失败,报 `[config.json] Not valid json` 错误？
 
 需要检查config.json文本内容，是否有中文符号或其他不符合json格式的部分，可以通过在线工具验证合法性，比如 [jsonlint](http://jsonlint.com/)。   
 同时配置包中文件不支持 "UTF-8 Unicode (with BOM) text" 文本格式，windows下的编辑器编辑文件默认是此格式也会报此错误，可通过 "格式-> 以utf-8无BOM格式编码" 进行转换。
