@@ -27,17 +27,17 @@ curl http://metadata/self
 ## 5. 如何查看日志？  
 
 App有以下几种日志信息需要开发者关注。
-- 集群主机里的 confd的日志     
+ - 集群主机里的 confd的日志     
     启动时的 log： /opt/qingcloud/app-agent/log/confd-onetime.log   
     其他操作修改时的 log： /opt/qingcloud/app-agent/log/confd.log  
     >其他操作是指修改了confd相关的.toml和.tmpl文件后,执行了service confd restart命令之后重新生成新的confd相关的日志。
 
-- 应用本身服务调用的日志     
+ - 应用本身服务调用的日志     
     应用本身服务的初始化、启动、停止等指令，青云 AppCenter 调度系统会发送这些命令到指定节点执行，非必填项。  
     在 [AppCenter 应用开发平台](https://appcenter.qingcloud.com/developer/) 上可以查到相关日志。
     ![faq_applog.png](../../images/faq_applog.png)
 
-- 监控日志
+ - 监控日志
     监控日志主要是指用户开发的健康检查和监控命令调用的日志。   
     在 [AppCenter 应用开发平台](https://appcenter.qingcloud.com/developer/) 上可以查到相关日志。  
     ![faq_applog.png](../../images/faq_appmonitorlog.png)
@@ -260,7 +260,7 @@ action_cmd的内容为在服务不健康的情况下需要做的动作。
             				"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
             				"type": "string",
             				"default": "qingAdmin",
-            				"pattern": "^(?!.*?[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
+            				"pattern": "^(？!.*？[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
             				"required": "yes"
             			},
 ```
@@ -358,10 +358,10 @@ backup_policy
 ![faq_backup.png](../../images/faq_backup.png)
 
 以上示例是基于device类型的备份策略，对于custom类型类似，但是需要注意如下几点：   
-- "backup_policy": "custom",  
-- "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
+ - "backup_policy": "custom",  
+ - "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
     例如：执行的时候是sh /opt/yourbackup.sh '{"snapshot_id": "s-12345678"}'  开发者可以解析后在cmd命令写成处理成 cp /opt/data.txt /data/s-12345678
-- "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
+ - "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
     例如：执行的时候是sh /opt/yourrestore.sh '{"snapshot_id": "s-12345678"}'  开发者可以解析后在cmd命令写成处理成 cp /data/s-12345678 /opt/data.txt
 
 >注意：restore 操作是在恢复的新集群上进行操作的。   
@@ -402,9 +402,9 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 
 对于应用的大版本升级的问题，例如PostgreSQL9.6和PostgreSQL10，如果直接采用上面的方法是不可用的，因为对于新版本的应用（PostgreSQL10）是无法驱动挂载盘下的旧版本（PostgreSQL9.6）格式的数据，需要对挂载盘下的数据做转换才可以以升级后的新版本的应用读取数据。    
 因此，我们建议有以下2种方式进行升级处理。
-- 新版本不直接支持从旧版本无缝升级到新版本，用户创建好新版本后，自己通过工具将数据从旧版本导入到新版本的集群中去。    
-- 新版本直接支持从旧版本无缝升级到新版本，在新版本的镜像中同时安装新旧2个版本，在upgrade的cmd编写脚本，将数据从旧版本转换成新版本可直接读取的文件格式。   
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：upgrade_policy、upgrade  
+ - 新版本不直接支持从旧版本无缝升级到新版本，用户创建好新版本后，自己通过工具将数据从旧版本导入到新版本的集群中去。    
+ - 新版本直接支持从旧版本无缝升级到新版本，在新版本的镜像中同时安装新旧2个版本，在upgrade的cmd编写脚本，将数据从旧版本转换成新版本可直接读取的文件格式。   
+ >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：upgrade_policy、upgrade  
 
 ## 16. 如何设置集群的VIP？  
 
@@ -425,10 +425,10 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 ## 17. 如何支持用户下载和查看应用的日志？
 
 对于这个需求，解决的办法可以有多种方式。
-- 应用自身提供的web页面的log查看方式。
-- 若应用本身不提供web log，可以开放ftp权限给用户去应用的日志路径下查看日志。
-- 采用第三方日志收集工具rsyslog，logstash等日志收集到日志节点，允许用户登录该节点查看日志。
-- 其他方式。
+ - 应用自身提供的web页面的log查看方式。
+ - 若应用本身不提供web log，可以开放ftp权限给用户去应用的日志路径下查看日志。
+ - 采用第三方日志收集工具rsyslog，logstash等日志收集到日志节点，允许用户登录该节点查看日志。
+ - 其他方式。
 
 ## 18. 如何语言国际化？     
 
@@ -661,16 +661,16 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 经常会在confd的日志文件中看到类似于如下错误信息，通常情况是在 toml 文件没 watch 该 key，或者该 key 不存在，可以通过 `curl http://metadata/self` 查看。
 
-```text
+ ```text
 	2016-10-11T13:54:41+08:00 i-lvn35udh confd[1531]: ERROR template: index.html.tmpl:2:7: executing "index.html.tmpl" at <getv "/self/host/sid...>: error calling getv: key does not exist: /self/host/sid
-  ```
+ ```
 
-## 28. 上传配置包时报错：配置验证失败,报 `[config.json] Not valid json` 错误？
+## 28. 上传配置包时报错：配置验证失败,报[config.json] Not valid json错误？
 
 需要检查config.json文本内容，是否有中文符号或其他不符合json格式的部分，可以通过在线工具验证合法性，比如 [jsonlint](http://jsonlint.com/)。   
 同时配置包中文件不支持 "UTF-8 Unicode (with BOM) text" 文本格式，windows下的编辑器编辑文件默认是此格式也会报此错误，可通过 "格式-> 以utf-8无BOM格式编码" 进行转换。
 
-## 29. 我在测试的时候发现设置的服务价格没起作用，原因是什么?
+## 29. 我在测试的时候发现设置的服务价格没起作用，原因是什么？
 
 自己测试自己的应用的时候是不收取服务费用的，一旦上线用户使用的时候会收取您设置的服务费用。
 
@@ -679,29 +679,29 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 当定义的应用的启动/停止/监控命令执行有问题，例如
 文件定义如下
 
-```text
+ ```text
     "start":"your_script"
-```
+ ```
 
 服务日志如下
 
-```text
+ ```text
     2017-04-13 12:14:19,318 ERROR Failed to execute the [cmd:your_script, id:JPwqtXY56Mp22t0RsqkDtQVu3hQLxxxx] in the node [cln-pwgxxxxx]
-```
+ ```
 
 请确认起停的命令要写全路径。例如
 
-```text
+ ```text
     "start":"/bin/your_script"
-```
+ ```
 
 要保证脚本在任意路径下调用都可以成功返回。   
 例如在创建好的集群中，执行如下命令返回正常。
 
-```shell
+ ```shell
     cd /tmp  
     /opt/yourscript.sh
-```
+ ```
 
 ## 31. 使用kvm作为镜像模板时，应用创建资源失败，登录创建的节点发现文件系统变成只读，该如何排查？
 
@@ -718,9 +718,9 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 - 支持标准的 [Markdown 语法](http://wowubuntu.com/markdown/)，同时你也可以直接使用 HTML 代码
 - Markdown 转换后的内容是没有样式，如果你想再添加样式，可以将下面的 HTML 代码添加到你输入的内容之前：
 
-```html
+ ```html
     <link href="https://cdn.bootcss.com/foundation/6.3.1/css/foundation.min.css" rel="stylesheet">
-```
+ ```
 
 - 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
 
