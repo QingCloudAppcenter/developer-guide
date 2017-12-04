@@ -51,27 +51,27 @@ App有以下几种日志信息需要开发者关注。
 具体参数配置如下图所示：
 
 ```text
-  #cluster.json.mustache文件
+#cluster.json.mustache文件
 
-      "nodes": [
-      {
-  		"role": "tomcat_nodes",
-  		"container": {
-            				"type": "kvm",
-            				"zone": "pek3a",
-            				"image": "img-h73eih5e"
-        },
-       "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-       "instance_class": {{cluster.tomcat_nodes.instance_class}},
-       "count": {{cluster.tomcat_nodes.count}},
-       "cpu": {{cluster.tomcat_nodes.cpu}},
-       "memory": {{cluster.tomcat_nodes.memory}},
-       "volume": {
-                   "size": {{cluster.tomcat_nodes.volume_size}},
-                   "mount_point": "/data",  ***请注意这里!!!
-                   "mount_options": "defaults,noatime",
-                   "filesystem": "ext4"
-        }
+"nodes": [
+{
+   "role": "tomcat_nodes",
+   "container": {
+            			"type": "kvm",
+            			"zone": "pek3a",
+            			"image": "img-h73eih5e"
+   },
+   "loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
+   "instance_class": {{cluster.tomcat_nodes.instance_class}},
+   "count": {{cluster.tomcat_nodes.count}},
+   "cpu": {{cluster.tomcat_nodes.cpu}},
+   "memory": {{cluster.tomcat_nodes.memory}},
+   "volume": {
+               "size": {{cluster.tomcat_nodes.volume_size}},
+               "mount_point": "/data",  ***请注意这里!!!
+               "mount_options": "defaults,noatime",
+               "filesystem": "ext4"
+   }
 ```
 
 通常如果配置了数据持久化处理，在配置文件的init脚本中需要编写脚本，将应用的默认的数据路径下的数据复制到挂载盘下。
@@ -79,10 +79,10 @@ App有以下几种日志信息需要开发者关注。
 ```text
 #cluster.json.mustache文件
 
-    "services": {
-                 "init": {
-                 	 	      "cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
-                 },    ***请注意这里!!!
+"services": {
+               "init": {
+                 	 	 "cmd": "systemctl restart rsyslog;mkdir -p /data/webapps;rsync -aqxP /opt/apache-tomcat-7.0.78/webapps/ /data/webapps"
+                },    ***请注意这里!!!
 ```
 
 如何检查数据持久化是否配置成功？  
@@ -95,18 +95,18 @@ App有以下几种日志信息需要开发者关注。
 示例如下：
 
 ```text
-	#cluster.json.mustache文件
+#cluster.json.mustache文件
 
-    "health_check": {
-                      "enable": true,
-                      "interval_sec": 60,
-                      "timeout_sec": 10,
-                      "action_timeout_sec": 30,
-                      "healthy_threshold": 3,
-                      "unhealthy_threshold": 3,
-                      "check_cmd": "/opt/myapp/bin/check.sh",
-                      "action_cmd": "/opt/myapp/bin/action.sh"
-      },
+"health_check": {
+	"enable": true,
+	"interval_sec": 60,
+	"timeout_sec": 10,
+	"action_timeout_sec": 30,
+	"healthy_threshold": 3,
+	"unhealthy_threshold": 3,
+	"check_cmd": "/opt/myapp/bin/check.sh",
+	"action_cmd": "/opt/myapp/bin/action.sh"
+},
 ```
 
 如果配置了此参数，在控制台上会展示各个节点的服务状态是否健康。
@@ -123,30 +123,30 @@ action_cmd的内容为在服务不健康的情况下需要做的动作。
 ```text
 #cluster.json.mustache文件
 
-  "monitor": {
-                "enable": true,
-                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgmonitor.py",
-                "items": {			
-                          "connCnt": {
-                                        "unit": "",
-                                        "value_type": "int",
-                                        "statistics_type": "latest",
-                                        "scale_factor_when_display": 1
-                          },
-                          "commitCnt": {
-                                        "unit": "",
-                                        "value_type": "int",
-                                        "statistics_type": "latest",
-                                        "scale_factor_when_display": 1
-                          }
-                        },
-            		"groups": {
-                    			"connCntGrp": ["connCnt"],
-                    			"commitCntGrp": ["commitCnt"]
-            		},
-            		"display": ["connCntGrp","commitCntGrp"],
-            		"alarm": ["connCnt"]
-     }
+"monitor": {
+	"enable": true,
+	"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgmonitor.py",
+	"items": {
+		"connCnt": {
+			"unit": "",
+			"value_type": "int",
+			"statistics_type": "latest",
+			"scale_factor_when_display": 1
+		},
+		"commitCnt": {
+			"unit": "",
+			"value_type": "int",
+			"statistics_type": "latest",
+			"scale_factor_when_display": 1
+		}
+	},
+	"groups": {
+		"connCntGrp": ["connCnt"],
+		"commitCntGrp": ["commitCnt"]
+	},
+	"display": ["connCntGrp","commitCntGrp"],
+	"alarm": ["connCnt"]
+}
 
 ```
 
@@ -162,22 +162,23 @@ action_cmd的内容为在服务不健康的情况下需要做的动作。
 ```text
 #cluster.json.mustache文件
 
-    "services": {
-                 "init": {  
-                            "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
-                },
-                 "start": {
-                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
-                },
-                 "restart": {
-                             "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
-                },        
-                 "RebuildStandby": {        ***请注意这里!!!
-                                     "type": "custom",
-                                     "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrebuildstandby.sh",
-                                     "timeout": 86400    
-                }
-       },  
+"services": {
+	"init": {
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+	},
+	"start": {
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgstart.sh"
+	},
+	"restart": {
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrestart.sh"
+	},
+	"RebuildStandby": {
+		"type": "custom",
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgrebuildstandby.sh",
+		"timeout": 86400
+	}
+},
+
 ```
 
 如果配置了此参数，在控制台上会展示各个节点的具体监控数据的值。   
@@ -195,49 +196,54 @@ action_cmd的内容为在服务不健康的情况下需要做的动作。
 ```text
 #config.json文件
 
-   {
-        "key": "env",
-        "description": "application configuration properties",
-        "type": "array",
-        "properties": [
-                  			{ "key": "DBname",
-                  				"label": "DBname",
-                  				"description": "DB name to create",
-                  				"type": "string",
-                  				"default": "qingcloud",
-                  				"required": "yes",
-                  				"changeable": false
-                  			},
-                  			{"key": "max_connections",
-                  				"label": "max_connections",
-                  				"description": "Sets the maximum number of concurrent connections.",
-                  				"type": "integer",
-                  				"default": 256,
-                  				"min": 0,
-                  				"max": 65536,
-                  				"required": "no"
-                  			},
+{
+	"key": "env",
+	"description": "application configuration properties",
+	"type": "array",
+	"properties": [
+		{
+			"key": "DBname",
+			"label": "DBname",
+			"description": "DB name to create",
+			"type": "string",
+			"default": "qingcloud",
+			"required": "yes",
+			"changeable": false
+		},
+		{
+			"key": "max_connections",
+			"label": "max_connections",
+			"description": "Sets the maximum number of concurrent connections.",
+			"type": "integer",
+			"default": 256,
+			"min": 0,
+			"max": 65536,
+			"required": "no"
+		}
+	]
+}
+
 ```
 
 ```text
-	#cluster.json.mustache文件
+#cluster.json.mustache文件
 
-    "env": {
-      		  "DBname": {{env.DBname}},
-       		  "max_connections": {{env.max_connections}}
-		},    
+"env": {
+      	"DBname": {{env.DBname}},
+        "max_connections": {{env.max_connections}}
+}    
 ```
 
 同时定义好应用的配置参数，在confd的.tmpl文件中可以使用这些参数。例如:
 
 ```text
-	max_connections= {{getv "/env/max_connections"}}
+max_connections= {{getv "/env/max_connections"}}
 ```
 
 也可以使用shell脚本在metadata server上获取改值。
 
 ```shell
-	curl http://metadata/self/cluster/endpoints/reserved_ips/vip/value
+curl http://metadata/self/cluster/endpoints/reserved_ips/vip/value
 ```
 
 如果配置了此参数，在控制台集群列表的`配置参数`tab页可以查看具体配置信息。
@@ -251,19 +257,23 @@ action_cmd的内容为在服务不健康的情况下需要做的动作。
 ```text
 #config.json文件
 
-    {
-		"key": "env",
-		"description": "Tomcat cluster service properties",
-		"type": "array",
-		"properties": [
-            			{ "key": "tomcat_user",
-            				"label": "User name to access Tomcat manager GUI",
-            				"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
-            				"type": "string",
-            				"default": "qingAdmin",
-            				"pattern": "^(？!.*？[tT][oO][mM][cC][aA][tT]).*$",    ***请注意这里!!!
-            				"required": "yes"
-            			},
+{
+	"key": "env",
+	"description": "Tomcat cluster service properties",
+	"type": "array",
+	"properties": [
+		{
+			"key": "tomcat_user",
+			"label": "User name to access Tomcat manager GUI",
+			"description": "User name to access Tomcat manager GUI, avoid to set it as 'tomcat' because it's already predefined with role 'manager_script'",
+			"type": "string",
+			"default": "qingAdmin",
+			"pattern": "^(？!.*？[tT][oO][mM][cC][aA][tT]).*$",
+			"required": "yes"
+		}
+	]
+}
+
 ```
 
 如果配置了此参数，输入非法数据，在提交创建应用的时候会提示错误信息。
@@ -275,15 +285,15 @@ action_cmd的内容为在服务不健康的情况下需要做的动作。
 示例如下：
 
 ```text
-	#cluster.json.mustache文件
+#cluster.json.mustache文件
 
-    "display_tabs": {
-        "node_details": {
-            "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgnodedetails.sh",
-            "timeout": 10,
-            "description": ""
-        }
-    },
+"display_tabs": {
+	"node_details": {
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pgnodedetails.sh",
+		"timeout": 10,
+		"description": ""
+	}
+}  
 ```
 
 如果配置了此参数，在控制台集群列表会多出一个tab页可以查看具体配置信息。
@@ -302,17 +312,17 @@ labels表示表格第一行的标题，是个list，最多可定义5列；     d
 ```text
 #cluster.json.mustache文件
 
-    {
-      "role": "log_node",
-      "container": {
-                   "type": "kvm",
-                   "zone": "pek3a",
-                   "image": "img-b5urfv9t"
-      },
-      "instance_class": {{cluster.log_node.instance_class}},
-  	  "user_access": true,           ***请注意这里!!!
-      "count": 1,
-      "cpu": {{cluster.log_node.cpu}},
+{
+	"role": "log_node",
+	"container": {
+		"type": "kvm",
+		"zone": "pek3a",
+		"image": "img-b5urfv9t"
+	},
+	"instance_class": {{cluster.log_node.instance_class}},
+	"user_access": true,     ***请注意这里!!!
+	"count": 1,
+	"cpu": {{cluster.log_node.cpu}},
 ```
 
 如果配置了此参数，在控制台上集群的节点列表下会有一个VNC的小图标，点击该图标可以登录该节点。
@@ -329,30 +339,31 @@ backup_policy
 示例如下：
 
 ```text
-  	#cluster.json.mustache文件
-    "name": {{cluster.name}},
-    "description": {{cluster.description}},
-    "vxnet": {{cluster.vxnet}},
-  	"backup_policy": "device",  ***请注意这里!!!
+#cluster.json.mustache文件
+"name": {{cluster.name}},
+"description": {{cluster.description}},
+"vxnet": {{cluster.vxnet}},
+"backup_policy": "device",  ***请注意这里!!!
 ```
 
 注意，如果设置了备份策略参数的话，必须将service下的backup命令写上，否则该参数不会生效。 示例如下：
 
 ```text
 #cluster.json.mustache文件
-     "services": {
-			"init": {  
-                "cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
-      },
-			"backup": {       ***请注意这里!!!
-                  "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
-                  "timeout": 86400
-      },
-      "restore": {
-                "cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:restore by Appcenter interface!>>/data/pgsql/main/pg_log/pgscripts.log",
-                "timeout": 86400
-            }
-     },
+
+"services": {
+	"init": {
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+	},
+	"backup": {  ***请注意这里!!!
+		"cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`':Info: Backup by Appcenter interface!'  >>/data/pgsql/main/pg_log/pgscripts.log",
+		"timeout": 86400
+	},
+	"restore": {
+		"cmd": "echo `date '+%Y-%m-%d %H:%M:%S'`:restore by Appcenter interface!>>/data/pgsql/main/pg_log/pgscripts.log",
+		"timeout": 86400
+	}
+}
 ```
 
 如果配置了此参数，在控制台上集群右键会出现创建备份的菜单。
@@ -376,12 +387,13 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 ```text
 #cluster.json.mustache文件
 
-    {
-      "name": {{cluster.name}},
-      "description": {{cluster.description}},
-      "vxnet": {{cluster.vxnet}},
-    	"backup_policy": "device",
-    	"upgrade_policy": ["appv-djgirq3p"],
+{
+  "name": {{cluster.name}},
+  "description": {{cluster.description}},
+  "vxnet": {{cluster.vxnet}},
+  "backup_policy": "device",
+  "upgrade_policy": ["appv-djgirq3p"]
+}
 ```
 
 同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。  
@@ -389,14 +401,16 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 请注意该脚本是在新的应用的集群上运行的，其流程是：关机 => 升级 => 开机 => 执行upgrade cmd=> 执行start cmd
 
 ```text
-	#cluster.json.mustache文件
-	 "services": {
-			"init": {"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"},
-			"upgrade": {        ***请注意这里!!!
-                 "cmd": "/opt/myapp/sbin/upgrade.sh"
-      }
-   },
+#cluster.json.mustache文件
 
+"services": {
+	"init": {
+		"cmd": "/usr/lib/postgresql/9.6/bin/scripts/pginit.sh"
+	},
+	"upgrade": {    ***请注意这里!!!
+		"cmd": "/opt/myapp/sbin/upgrade.sh"
+	}
+}
 ```
 
 如果配置了此参数，在控制台上原来旧的版本的集群列表集群右侧会出现一个向上的升级箭头，关闭旧的集群，点击该图标就可以直接升级到最新的版本。
@@ -416,9 +430,11 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 ```text
 #cluster.json.mustache文件
 
-    "reserved_ips": {
-      "vip": { "value":""	}
-	  }			
+"reserved_ips": {
+	"vip": {
+		"value": ""
+	}
+}		
 ```
 
 如果配置了此参数，在控制台上集群信息左侧会出现VIP的具体信息。   
@@ -443,12 +459,13 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 示例如下：   
 
 ```text
-	#locale/zh-cn.json文件
-    {
-      "Master": "主节点",
-      "Slave": "从节点",
-      "CPU": "CPU"
-	  }			
+#locale/zh-cn.json文件
+
+{
+  "Master": "主节点",
+  "Slave": "从节点",
+  "CPU": "CPU"
+}			
 ```
 
 config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表单。
@@ -467,35 +484,35 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 ```text
 #cluster.json.mustache文件
 
-     "links": {
-               "redis_service": {{cluster.redis_service}},
-               "mysql_service": {{cluster.mysql_service}}
-     },		
+"links": {
+            "redis_service": {{cluster.redis_service}},
+            "mysql_service": {{cluster.mysql_service}}
+ },		
 ```
 
 ```text
 #config.json文件
 
-	{
-	  "key": "redis_service",
-	  "label": "Redis",
-		"description": " ",
-		"type": "service",
-		"tag": ["Redis", "redis"],
-    "limits": {"app-zydumbxo": ["appv-q1uwklp7"]},
-		"default": "",
-		"required": "no"
-	},
-	{
-		"key": "mysql_service",
-		"label": "MySql",
-		"description": " ",
-		"type": "service",
-		"tag": ["MySql", "mysql"],
-    "limits": {"app-00r26u27": ["appv-le9cpyc6"]},
-		"default": "",
-		"required": "no"
-	}
+{
+	"key": "redis_service",
+	"label": "Redis",
+	"description": " ",
+	"type": "service",
+	"tag": ["Redis","redis"	],
+	"limits": {"app-zydumbxo": ["appv-q1uwklp7"]},
+	"default": "",
+	"required": "no"
+},
+{
+	"key": "mysql_service",
+	"label": "MySql",
+	"description": " ",
+	"type": "service",
+	"tag": ["MySql","mysql"],
+	"limits": {"app-00r26u27": ["appv-le9cpyc6"]},
+	"default": "",
+	"required": "no"
+}
 ```
 
 其中limits参数的值为app-id***: [app-version***]。  
@@ -517,21 +534,17 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 ```text
 #cluster.json.mustache文件
 
-   "nodes": [
-    {
-      "role": "tomcat_nodes",
-      "container": {
-                		"type": "kvm",
-                		"zone": "pek3a",
-                		"image": "img-h73eih5e"
-      },
-  		"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
-  		"instance_class": {{cluster.tomcat_nodes.instance_class}},
-  		"count": {{cluster.tomcat_nodes.count}},
-  		"cpu": {{cluster.tomcat_nodes.cpu}},
-  		"memory": {{cluster.tomcat_nodes.memory}},             
-  		"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
-    },
+"nodes": [
+  {
+    "role": "tomcat_nodes",
+    "container": {"type": "kvm","zone": "pek3a","image": "img-h73eih5e"},
+  	"loadbalancer": {{cluster.tomcat_nodes.loadbalancer}},
+  	"instance_class": {{cluster.tomcat_nodes.instance_class}},
+  	"count": {{cluster.tomcat_nodes.count}},
+  	"cpu": {{cluster.tomcat_nodes.cpu}},
+  	"memory": {{cluster.tomcat_nodes.memory}},             
+  	"advanced_actions": ["scale_horizontal"]   ***请注意这里!!!
+  },  
 ```
 
 同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
@@ -539,15 +552,18 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 ```text
 #cluster.json.mustache文件
 
-     "services": {
-			"scale_out": { "pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
-                      "cmd": "/opt/myapp/sbin/scale-out.sh"
-      },
-      "scale_in": {"pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
-                   "cmd": "/opt/myapp/sbin/scale-in.sh",
-                   "timeout": 86400
-      },
-    },
+"services": {
+	"scale_out": {
+		"pre_check": "/opt/myapp/sbin/scale-out-pre-check.sh",
+		"cmd": "/opt/myapp/sbin/scale-out.sh"
+	},
+	"scale_in": {
+		"pre_check": "/opt/myapp/sbin/scale-in-pre-check.sh",
+		"cmd": "/opt/myapp/sbin/scale-in.sh",
+		"timeout": 86400
+	},
+}
+
 ```
 
 如果配置了此参数，在控制台上集群节点列表上会出现新增节点的按钮。
@@ -559,13 +575,15 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 变换网络 (change_vxnet) 如果您的应用支持切换网络可以加上 change_vxnet。
 
 ```text
-   #cluster.json.mustache文件
-   {
-    "name": {{cluster.name}},
-    "description": {{cluster.description}},
-    "vxnet": {{cluster.vxnet}},
-	"backup_policy": "device",
-	"advanced_actions": ["change_vxnet"],
+#cluster.json.mustache文件
+
+{
+  "name": {{cluster.name}},
+  "description": {{cluster.description}},
+  "vxnet": {{cluster.vxnet}},
+  "backup_policy": "device",
+  "advanced_actions": ["change_vxnet"]
+}
 ```
 
 如果配置了此参数，在控制台上集群列表选中集群右键会出现切换私有网络菜单。
@@ -580,12 +598,13 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 ```text
 #cluster.json.mustache文件
 
-   {
+{
     "name": {{cluster.name}},
     "description": {{cluster.description}},
     "vxnet": {{cluster.vxnet}},
-	  "backup_policy": "device",
-	  "advanced_actions": ["associate_eip"],
+	"backup_policy": "device",
+	"advanced_actions": [	"associate_eip"	],
+
 ```
 
 >具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：advanced_actions、associate_eip
@@ -602,6 +621,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 ```text
 # 获取集群中所有节点的ip地址，range循环的用法
+
 	{{range $dir := lsdir "/hosts"}}
 		{{$sid := printf "/hosts/%s/sid" $dir}}
 		{{$ip := printf "/hosts/%s/ip" $dir}}
@@ -617,6 +637,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 ```text
 # 定义一个变量并使用这个变量
+
 	{{$tomcat_user :=getv "/env/tomcat_user"}}
     {{$tomcat_pwd :=getv "/env/tomcat_pwd"}}
 
@@ -628,6 +649,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 ```text
 # 获取一个key的值
+
 	max_connections= {{getv "/env/max_connections"}}
 ```
 
@@ -635,6 +657,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 ```text
 # 对算术的支持 div
+
 	{{$shared_buffers := div (getv "/host/memory") 4}}
 ```
 
@@ -642,6 +665,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 ```text
 # if else的用法
+
 	{{$SyncStreamRepl := getv "/env/SyncStreamRepl"}}
 
 	{{if eq $SyncStreamRepl "No" }}
@@ -654,7 +678,8 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 示例6：
 
 ```text
-	# split的用法
+# split的用法
+
 	{{ $replicaIPs := split (getv "/host/ip") "." }}
     {{index $replicaIPs 0}}.{{index $replicaIPs 1}}.{{index $replicaIPs 2}}.0/24
 ```
