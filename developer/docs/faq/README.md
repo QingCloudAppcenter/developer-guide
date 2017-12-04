@@ -72,8 +72,8 @@
     在执行 scale\_in/scale\_out 的 pre\_check 和 cmd 时，系统会捕获错误码并将 i18n 文件中的对应条目 `err_codeX` (其中 X 为错误码)作为错误消息提示给用户.
     比如 locale/zh-cn.json 文件内容为:
     ```json
-{
-    "err_code111": "无法删除主节点"
-}
-```
+    {
+        "err_code111": "无法删除主节点"
+    }
+    ```
     在执行 scale\_in 的 pre\_check 如果遇到错误码为 111, 则显示"无法删除主节点"为错误消息。
