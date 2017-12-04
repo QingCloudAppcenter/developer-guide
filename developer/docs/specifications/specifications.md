@@ -558,21 +558,21 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
         * stop　<br>
           停止服务命令，具体参数参考初始化命令 init。
         * scale\_out　<br>
-          加节点时在非新加节点上需执行的命令，具体参数参考初始化命令 init。
-            * pre\_check　<br>
-              加节点时在非新加节点上执行的预检查命令，若返回非0值表示不可新增节点。此项是 scale\_in 和 scale\_out 独有。
+          加节点时在非新加节点上需执行的命令，具体参数参考初始化命令 init，同时系统会捕获这个命令的非0返回值作为错误码, 参考[呈现错误原因](../faq/README.md#err_code)。
+          * pre\_check　<br>
+            加节点时在非新加节点上执行的预检查命令，若返回非0值表示不可新增节点。此项是 scale\_in 和 scale\_out 独有。
         * scale\_in <br>
-          删除节点时在非删除节点上需执行的命令，具体参数参考初始化命令 init。
-            * pre\_check　<br>
-              删除节点时在非删除节点上执行的预检查命令，若返回非0值表示不可删除节点。此项是 scale\_in 和 scale\_out 独有。
+          删除节点时在非删除节点上需执行的命令，具体参数参考初始化命令 init，同时系统会捕获这个命令的非0返回值作为错误码, 参考[呈现错误原因](../faq/README.md#err_code)。
+          * pre\_check　<br>
+            删除节点时在非删除节点上执行的预检查命令，若返回非0值表示不可删除节点。此项是 scale\_in 和 scale\_out 独有。
         * restart <br>
           服务重启动命令，具体参数参考初始化命令 init。
         * destroy <br>
           销毁命令，在删除集群或者节点时会触发该命令的执行，通常用作删除资源之前检查安全性，具体参数参考初始化命令 init。
-            * allow\_force <br>
-              是否允许强制删除, 默认值为 true 表示允许强制删除该节点, 强制删除时即使 destroy 的 cmd 返回非 0 值也会继续将节点删除。
-            * post\_stop\_service　<br>
-              控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
+          * allow\_force <br>
+            是否允许强制删除, 默认值为 true 表示允许强制删除该节点, 强制删除时即使 destroy 的 cmd 返回非 0 值也会继续将节点删除。
+          * post\_stop\_service　<br>
+            控制销毁命令是在 [stop](#stop) 命令执行完毕后执行还是之前执行，如果 post\_stop\_service 为 true 则表示 destroy 在 stop 后执行；默认 (即不加此项) 是之前执行。此项是 destroy 独有。
         * upgrade <br>
           升级集群后执行的命令，具体参数参考初始化命令 init。
           > 注：必须先关机集群后才能升级，升级后再开启集群将会以<strong>新版本的镜像</strong>启动并执行升级命令。如果升级命令执行失败，用户可以关闭集群后降级回老版本。<br> 对于 user\_access 为 true 的节点也会使用新的镜像启动，请在使用说明中提醒用户自行备份 user\_access 为 true 节点上的数据。
