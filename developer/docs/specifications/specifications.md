@@ -610,9 +610,9 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     应用参数配置，比如 ZooKeeper的 zoo.cfg 里的参数配置等。
 *   advanced\_actions <br>
     集群支持高级操作，分别为:
-    - 横向伸缩 (scale\_horizontal) 即增加节点或删除节点，如果支持横向伸缩可以加上 scale\_horizontal。
-    - 变换网络 (change\_vxnet) 如果您的应用支持切换网络可以加上 change\_vxnet。
-    - 绑定公网IP (associate\_eip) 如果该角色的节点需要直接绑定公网IP可以加上 associate\_eip，**注意**: 绑定公网IP会给这个集群绑定默认集群防火墙, 其他集群如果需要访问这个集群请在集群防火墙中添加对应放行规则。
+    * 横向伸缩 (scale\_horizontal) 即增加节点或删除节点，如果支持横向伸缩可以加上 scale\_horizontal。
+    * 变换网络 (change\_vxnet) 如果您的应用支持切换网络可以加上 change\_vxnet。
+    * 绑定公网IP (associate\_eip) 如果该角色的节点需要直接绑定公网IP可以加上 associate\_eip，**注意**: 绑定公网IP会给这个集群绑定默认集群防火墙, 其他集群如果需要访问这个集群请在集群防火墙中添加对应放行规则。
 
     如果只有某一类角色支持高级操作，其它类型节点不支持，则可以只写到这个角色节点里。如果不支持此类操作则需去掉相应的定义，否则用户在界面看见有此功能而实际上是不支持的。**请仔细测试您在advanced\_actions中定义的功能**
 *   advanced\_services <br>
