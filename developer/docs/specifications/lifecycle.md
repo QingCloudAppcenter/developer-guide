@@ -66,4 +66,5 @@
 5. 执行非扩容节点的 stop cmd；然后扩容节点；最后执行非扩容节点 start cmd；<br>
 6. 更新扩容节点的信息到 metadata service 中，并删除 vertical-scaling-roles；　<br>
 7. 由于 metadata service 中集群信息发生改变，因此所有节点可能会同时更新配置。如果 toml 文件里定义 reload_cmd 且配置确实发生变更则执行该命令。
-注： 如果扩容过程中发生异常， vertical-scaling-roles 也会被删除
+
+> 注： 如果扩容过程中发生异常， vertical-scaling-roles 也会被删除
