@@ -59,9 +59,12 @@
 
 ![纵向扩容](../../images/scale-vertical.png)
 
-1. 如果只扩容硬盘则直接并行执行在线扩容，然后执行最后两步；<br>
-2. 如果待扩容节点定义了 stop service，则执行第 3 步和最后两步；否则执行第 4 步和最后两步；<br>
-3. 按照 vertical_scaling_policy 的定义顺序执行 (sequential) 或 并行执行 (parallel) 以下操作：执行待扩容节点 stop cmd；扩容节点；执行扩容节点 start cmd；<br>
-4. 执行非扩容节点的 stop cmd；然后扩容节点；最后执行非扩容节点 start cmd；<br>
-5. 更新扩容节点的信息到 metadata service 中；　<br>
-6. 由于 metadata service 中集群信息发生改变，因此所有节点可能会同时更新配置。如果 toml 文件里定义 reload_cmd 且配置确实发生变更则执行该命令。
+1. 注册扩容角色到 vertical-scaling-roles
+2. 如果只扩容硬盘则直接并行执行在线扩容，然后执行最后两步；<br>
+4. 如果待扩容节点定义了 stop service，则执行第 3 步和最后两步；否则执行第 4 步和最后两步；<br>
+4. 按照 vertical_scaling_policy 的定义顺序执行 (sequential) 或 并行执行 (parallel) 以下操作：执行待扩容节点 stop cmd；扩容节点；执行扩容节点 start cmd；<br>
+5. 执行非扩容节点的 stop cmd；然后扩容节点；最后执行非扩容节点 start cmd；<br>
+6. 更新扩容节点的信息到 metadata service 中，并删除 vertical-scaling-roles；　<br>
+7. 由于 metadata service 中集群信息发生改变，因此所有节点可能会同时更新配置。如果 toml 文件里定义 reload_cmd 且配置确实发生变更则执行该命令。
+
+> 注： 如果扩容过程中发生异常， vertical-scaling-roles 也会被删除
