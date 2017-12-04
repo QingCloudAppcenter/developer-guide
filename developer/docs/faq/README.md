@@ -65,3 +65,8 @@
     <link href="https://cdn.bootcss.com/foundation/6.3.1/css/foundation.min.css" rel="stylesheet">
     ```
     * 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
+
+
+* 如果只想用 AppCenter 管理纯主机集群应该怎么办
+
+    参考 [管理纯主机集群样例](./agent-no-install.md)
