@@ -744,37 +744,22 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 ## 32. 使用说明和服务条款的 Markdown 语法说明
 
-- 支持标准的 [Markdown 语法](http://wowubuntu.com/markdown/)，同时你也可以直接使用 HTML 代码
-- Markdown 转换后的内容是没有样式，如果你想再添加样式，可以将下面的 HTML 代码添加到你输入的内容之前：
+* 支持标准的 [Markdown 语法](http://wowubuntu.com/markdown/)，同时你也可以直接使用 HTML 代码
+* Markdown 转换后的内容是没有样式，如果你想再添加样式，可以将下面的 HTML 代码添加到你输入的内容之前：
 
  ```html
     <link href="https://cdn.bootcss.com/foundation/6.3.1/css/foundation.min.css" rel="stylesheet">
  ```
 
-- 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
+* 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
 
+## 33. 如何把任务执行的错误原因更友好的呈现给用户<i id="err_code"></i>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
----
+    在执行 scale\_in/scale\_out 的 pre\_check 和 cmd 时，系统会捕获错误码并将 i18n 文件中的对应条目 `err_codeX` (其中 X 为错误码)作为错误消息提示给用户.
+    比如 locale/zh-cn.json 文件内容为:
+    ```json
+    {
+        "err_code111": "无法删除主节点"
+    }
+    ```
+    在执行 scale\_in 的 pre\_check 如果遇到错误码为 111, 则显示"无法删除主节点"为错误消息。
