@@ -425,7 +425,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 	"env": {
 		"common.param"***: {{env.common_param}}
 	},
-	"advanced_actions": ["change_vxnet", "scale_horizontal"],
+	"advanced_actions": ["change_vxnet", "scale_horizontal", "associate_eip"],
 	"endpoints": {
 		"client": {
 			"port": 2181,
@@ -490,7 +490,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 *   incremental_backup_supported <br>
     定义应用是否支持增量备份。备份分为全量备份和增量备份，全量备份每次创建新的备份链，而增量备份会在原有备份链上基于上一个备份点创建新的备份点，删除备份链上某一备份点后，其后的所有备份点都会被相应删除。默认值为 false 表示只支持全量备份，非必填项。
 *   upgrade\_policy <br>
-    定义当前应用的哪些版本可以升级到当前版本，新老版本之间 role 必须相同，数据盘挂载位置必须一致。由于升级后会替换集群的镜像，所以在开发阶段**请仔细测试升级功能**。
+    定义当前应用的哪些版本可以升级到当前版本，新老版本之间 role 必须相同，数据盘挂载位置必须一致。由于升级后会替换集群的镜像，所以在开发阶段**请仔细测试升级功能**。
 *   nodes <br>
     新建应用节点信息，必填项。一个应用的节点可能是无角色区分的，这个时候 nodes 只有一种角色的信息；也可能是多角色组成的复杂应用，这个时候 nodes 就是这些角色节点信息组成的一个数组。
     *   role <br>
@@ -609,7 +609,12 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
 *   env <br>
     应用参数配置，比如 ZooKeeper的 zoo.cfg 里的参数配置等。
 *   advanced\_actions <br>
-    集群支持高级操作，目前支持两类：变换网络 (change\_vxnet) 和横向伸缩 (scale\_horizontal) 即增加节点或删除节点，这是因为有些应用尤其传统应用并不适合云的弹性要求，因此如果您的应用支持切换网络则加上 change_vxnet，如果支持横向伸缩则加上 scale\_horizontal。如果只有某一类角色需要切换网络或添加/删除节点，其它类型节点不支持，则可以只写到这个角色节点里。如果不支持此类操作则需去掉相应的定义，否则用户在界面看见有此功能而实际上是不支持的。
+    集群支持高级操作，分别为:
+    * 横向伸缩 (scale\_horizontal) 即增加节点或删除节点，如果支持横向伸缩可以加上 scale\_horizontal。
+    * 变换网络 (change\_vxnet) 如果您的应用支持切换网络可以加上 change\_vxnet。
+    * 绑定公网IP (associate\_eip) 如果该角色的节点需要直接绑定公网IP可以加上 associate\_eip，**注意**: 绑定公网IP会给这个集群绑定默认集群防火墙, 其他集群如果需要访问这个集群请在集群防火墙中添加对应放行规则。
+
+    如果只有某一类角色支持高级操作，其它类型节点不支持，则可以只写到这个角色节点里。如果不支持此类操作则需去掉相应的定义，否则用户在界面看见有此功能而实际上是不支持的。**请仔细测试您在advanced\_actions中定义的功能**
 *   advanced\_services <br>
     应用服务高级指令，青云 AppCenter 调度系统会随机选取一个节点执行这些命令，非必填项。
     * update_nodes_names　<br>
