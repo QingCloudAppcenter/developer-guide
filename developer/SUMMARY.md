@@ -35,4 +35,5 @@
 * [财务管理](docs/finance/README.md)
 * [调试指南](docs/debug.md)
 * [常见问题](docs/faq/README.md)
+    * [管理纯主机集群样例](docs/faq/agent-no-install.md)
 * [版本变更记录](docs/changelogs.md)

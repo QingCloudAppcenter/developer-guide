@@ -601,7 +601,7 @@ json 配置项中的每一项，都是一个含有 key、label、description、t
     *   env <br>
         特定角色节点的应用参数配置，每类应用有自身特有的可配置应用参数，每类节点也会有不同于应用全局级别的可配置参数。注意：节点之间或节点与集群全局之间的参数没有任何关系，都是独立的。
     *   agent\_installed <br>
-    	如果用户想利用这套框架管理纯主机集群，则可以不用装青云提供的 App agent，同时需要指定这个参数为 false，否则系统会提示错误，该参数默认为 true。
+    	如果用户想利用这套框架管理纯主机集群，则可以不用装青云提供的 App agent，同时需要指定这个参数为 false，否则系统会提示错误，该参数默认为 true。[纯主机集群样例](../faq/agent-no-install.md)
     *   custom\_metadata <br>
         节点通过脚本生成的 token (string 类型或返回 json 格式的 string) 需要注册到 metadata service 里供其它节点使用，例如开源容器集群管理系统 (Docker Swarm, Kuburnetes) 会用到此类信息。它是在 start service 之前执行，如果 start 之前有 init 则在 init 之后 start 之前执行。
     *   health\_check <br>

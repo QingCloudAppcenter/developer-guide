@@ -822,3 +822,9 @@ cd /tmp
 ```
 
 在执行 scale\_in 的 pre\_check 如果遇到错误码为 111, 则显示"无法删除主节点"为错误消息。
+
+
+## 34. 如果只想用 AppCenter 管理纯主机集群
+
+    参考 [管理纯主机集群样例](./agent-no-install.md)
+
