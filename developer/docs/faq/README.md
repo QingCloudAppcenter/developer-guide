@@ -825,3 +825,4 @@ cd /tmp
 ## 34. 如果只想用 AppCenter 管理纯主机集群
 
     参考 [管理纯主机集群样例](./agent-no-install.md)
+
