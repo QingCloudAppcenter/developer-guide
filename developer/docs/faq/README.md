@@ -1,5 +1,7 @@
 # 常见问题
 
+<extoc></extoc>
+
 ## 1. 作为新手，如何从一个最简单的例子入手？    
 
 我们在  [GitHub](https://github.com/QingCloudAppcenter/)上提供了大量的基于AppCenter开发的实例代码和配置文件，作为新手我们建议从[Zookeeper](https://github.com/QingCloudAppcenter/Zookeeper)或者[Redis](https://github.com/QingCloudAppcenter/Redis-standalone)入手。
