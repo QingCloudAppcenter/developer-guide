@@ -824,7 +824,11 @@ cd /tmp
 在执行 scale\_in 的 pre\_check 如果遇到错误码为 111, 则显示"无法删除主节点"为错误消息。
 
 
-## 34. 如果只想用 AppCenter 管理纯主机集群
+## 34. 如果只想用 AppCenter 管理纯主机集群<i id="agent_no_install"></i>
 
-    参考 [管理纯主机集群样例](./agent-no-install.md)
+如果只想用 AppCenter 管理纯主机集群，则可以不用装青云提供的 App agent，点击下面的链接下载样例。
 
+* <a download="config.json" target="_blank" href="./config.json">config.json</a>
+* <a download="cluster.json.mustache" target="_blank" href="./cluster.json.mustache">cluster.json.mustache</a>
+
+其中`img-hlhql5ea`是没有安装 app agent 的镜像，`agent_installed`用来标识此role没有安装agent

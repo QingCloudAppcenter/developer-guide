@@ -1,0 +1,25 @@
+{
+  "name": {{cluster.name}},
+  "description": {{cluster.description}},
+  "vxnet": {{cluster.vxnet}},
+  "nodes": [
+      {
+        "role": "role_name1",
+        "container": {
+            "type": "kvm",
+            "zone": "pek3a",
+            "image": "img-hlhql5ea"
+         },
+         "agent_installed": false,
+         "instance_class": {{cluster.role_name1.instance_class}},
+         "count": {{cluster.role_name1.count}},
+         "cpu": {{cluster.role_name1.cpu}},
+         "memory": {{cluster.role_name1.memory}},
+         "volume": {
+             "size": {{cluster.role_name1.volume_size}},
+             "mount_point": "/test_data",
+             "filesystem": "ext4"
+         }
+      }
+  ]
+}
