@@ -10,12 +10,11 @@
 
 下载青云提供的 app agent[Linux 版本](http://appcenter-docs.qingcloud.com/developer-guide/scripts/app-agent-linux-amd64.tar.gz), [Windows 版本](http://appcenter-docs.qingcloud.com/developer-guide/scripts/app-agent-windows-386.zip)， 解压后运行 ./install.sh (Windows 下双击 install.bat)。    
 此 agent 中包含了自动配置文件程序 confd，该程序是在开源 confd 的基础上修改了一些 bug 并且增加了一些算术功能，详情见 [QingCloud confd](https://github.com/yunify/confd/)。  
-> 具体配置请参考文档 [制作 KVM 镜像](https://appcenter-docs.qingcloud.com/developer-guide/docs/app-version-mgmt/images/kvm.html)  
+具体配置请参考文档 [制作 KVM 镜像](https://appcenter-docs.qingcloud.com/developer-guide/docs/app-version-mgmt/images/kvm.html)  
 
 ## 3. 如何创建toml和tmpl的模板文件？  
 
-具体配置请参考文档 [制作 KVM 镜像](https://appcenter-docs.qingcloud.com/developer-guide/docs/app-version-mgmt/images/kvm.html)
-
+具体配置请参考文档 [制作 KVM 镜像](https://appcenter-docs.qingcloud.com/developer-guide/docs/app-version-mgmt/images/kvm.html)  
 **关键字**： 创建模版文件
 
 ## 4. 什么是Metadata 服务，如何查询Metadata上的值？  
@@ -34,7 +33,7 @@ curl http://[IP]/self
 curl http://metadata/self
 ```
 
->具体配置请参考文档 [Metadata 服务](https://appcenter-docs.qingcloud.com/developer-guide/docs/metadata-service.html)
+具体配置请参考文档 [Metadata 服务](https://appcenter-docs.qingcloud.com/developer-guide/docs/metadata-service.html)
 
 ## 5. 如何查看日志？  
 
@@ -103,7 +102,8 @@ App有以下几种日志信息需要开发者关注。
 如何检查数据持久化是否配置成功？  
 关闭集群，再启动集群，打开应用查看数据是否还在。
 
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  关键字：init
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)    
+**关键字**：init
 
 ## 7. 如何写健康检查的配置和脚本？  
 
@@ -129,8 +129,7 @@ App有以下几种日志信息需要开发者关注。
 
 >check_cmd的内容为根据你的应用自己编写的脚本，appcenter会根据exit code判断是否健康，exit code为0则健康，非0则不健康。action_cmd的内容为在服务不健康的情况下需要做的动作。
 
-具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：health_check
 
 ## 8. 如何写监控数据的配置和脚本？  
@@ -170,8 +169,7 @@ App有以下几种日志信息需要开发者关注。
 ![faq_monitor.png](../../images/faq_monitor.png)
 >cmd的内容为根据你的应用自己编写的脚本，其返回结果是特定格式的json。
 
-具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)   
 **关键字**：monitor
 
 ## 9. 如何写自定义服务的脚本？  
@@ -204,8 +202,7 @@ App有以下几种日志信息需要开发者关注。
 ![faq_customservice.png](../../images/faq_customservice.png)
 >cmd的内容为根据你的应用自己编写的脚本，自定义服务的内容。
 
-具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**："type": "custom"
 
 ## 10. 如何设置应用自身的配置参数？
@@ -269,8 +266,7 @@ curl http://metadata/self/cluster/endpoints/reserved_ips/vip/value
 
 如果配置了此参数，在控制台集群列表的`配置参数`tab页可以查看具体配置信息。
 ![faq_params.png](../../images/faq_params.png)
->角色节点级别的示例和具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+角色节点级别的示例和具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)   
 **关键字**：env
 
 ## 11. 用户输入参数如何做校验,如何支持正则表达式？  
@@ -301,8 +297,7 @@ curl http://metadata/self/cluster/endpoints/reserved_ips/vip/value
 
 如果配置了此参数，输入非法数据，在提交创建应用的时候会提示错误信息。
 ![faq_pattern.png](../../images/faq_pattern.png)
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：pattern
 
 ## 12. 如何展示节点的其他信息？  
@@ -338,8 +333,7 @@ cmd内容为采集的数据需执行的命令，必填项。
 
 返回结果会以表格的形式展示在集群详情页自定义标题的tab页下，其中 "labels" 和 "data" 是固定key。    
 labels表示表格第一行的标题，是个list，最多可定义5列；     data标示表格里面每行数据，要求data是个list，list下是多个子list，最多255个。    其中每个子list标示一行数据，元素个数需和labels中一致。  
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：display_tabs
 
 ## 13. 如何开放VNC给用户，允许用户访问节点？  
@@ -367,8 +361,7 @@ labels表示表格第一行的标题，是个list，最多可定义5列；     d
 ![faq_vnc.png](../../images/faq_vnc.png)    
 同时，在[AppCenter应用开发](https://appcenter.qingcloud.com/apps/)搜索找到你需要的应用，打开`资源`tab页，右侧有一个VNC小图标。    
 ![faq_vnc2.png](../../images/faq_vnc2.png)   
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：user_access
 
 ## 14. 如何备份？  
@@ -410,15 +403,16 @@ backup_policy
 ![faq_backup.png](../../images/faq_backup.png)
 以上示例是基于device类型的备份策略，对于custom类型类似，但是需要注意如下几点：
 
-- "backup_policy": "custom",  
+- 设置为custom的备份策略在恢复数据的时候不会创建新的集群来恢复数据，只会在当前集群中运行restore中定义的cmd。因此，如果设置好custom backup，必须要在restore cmd中写好自己的恢复数据的逻辑。
+- "backup_policy": "custom",   
 - "backup": cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
     例如：执行的时候是 `sh /opt/yourbackup.sh '{"snapshot_id": "s-12345678"}`'  开发者可以解析后在cmd命令写成处理成 `cp /opt/data.txt /data/s-12345678`
 - "restore": restore操作的时候类似。cmd参数会默认传入一个snapshot id作为参数，在cmd脚本可以获取到这个参数。  
     例如：执行的时候是 `sh /opt/yourrestore.sh '{"snapshot_id": "s-12345678"}'`  开发者可以解析后在cmd命令写成处理成 `cp /data/s-12345678 /opt/data.txt`
 
 >注意：restore 操作是在恢复的新集群上进行操作的。   
-    具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-    
+
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)      
 **关键字**：backup_policy、backup
 
 ## 15. 如何升级，如何支持应用的大版本升级？
@@ -439,7 +433,7 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 ```
 
 同时，如果在升级的同时要做一些其他的任务，可以在service的upgrade脚本里编写自己的内容。示例如下：
-> 请注意该脚本是在新的应用的集群上运行的，其流程是：关机 => 升级 => 开机 => 执行upgrade cmd=> 执行start cmd
+> 请注意该脚本是在新的应用的集群上运行的，其流程是：旧版本集群关机 => 升级（页面上点升级操作） => 新版本集群以新的image开机 => 新版本集群上执行upgrade cmd=> 新版本集群上执行start cmd
 
 ```json
 #cluster.json.mustache文件
@@ -462,8 +456,7 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 - 新版本不直接支持从旧版本无缝升级到新版本，用户创建好新版本后，自己通过工具将数据从旧版本导入到新版本的集群中去。    
 - 新版本直接支持从旧版本无缝升级到新版本，在新版本的镜像中同时安装新旧2个版本，在upgrade的cmd编写脚本，将数据从旧版本转换成新版本可直接读取的文件格式。   
 
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：upgrade_policy、upgrade  
 
 ## 16. 如何设置集群的VIP？  
@@ -482,8 +475,7 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 
 如果配置了此参数，在控制台上集群信息左侧会出现VIP的具体信息。   
 ![faq_vip.png](../../images/faq_vip.png)
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：reserved_ips		
 
 ## 17. 如何支持用户下载和查看应用的日志？
@@ -515,8 +507,7 @@ AppCenter支持的升级的原理是，用新的版本的镜像去驱动挂载�
 ```
 
 config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表单。
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：国际化		
 
 ## 19. 应用实例调用的脚本中环境变量不可用的问题？  
@@ -566,8 +557,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 其中limits参数的值为 app-id***: [app-version***]。  
 如果配置了此参数，在控制台上新建集群的时候会出现当前实例所在的私网下存在的所依赖的服务。   
 ![faq_depend.png](../../images/faq_depend.png)
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：links、limits
 
 ## 21. 如何把任务执行的错误原因更友好的呈现给用户？  
@@ -620,8 +610,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 如果配置了此参数，在控制台上集群节点列表上会出现新增节点的按钮。
 ![faq_scale.png](../../images/faq_scale.png)
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)   
 **关键字**：advanced_actions、scale_horizontal、scale_out、scale_in
 
 ## 23. 如何支持集群切换私网网络？  
@@ -642,8 +631,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 
 如果配置了此参数，在控制台上集群列表选中集群右键会出现切换私有网络菜单。
 ![faq_vxnet.png](../../images/faq_vxnet.png)
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)   
 **关键字**：advanced_actions、change_vxnet
 
 ## 24. 如何将角色的某个节点直接绑定公网IP？
@@ -663,8 +651,7 @@ config.json 定义用户在 QingCloud 控制台部署应用时需要填写的表
 }
 ```
 
->具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)
-
+具体配置请参考文档 [应用开发模版规范 - 完整版](https://appcenter-docs.qingcloud.com/developer-guide/docs/specifications/specifications.html)  
 **关键字**：advanced_actions、associate_eip
 
 ## 25. 如何获取依赖其他集群的服务的AppID和AppVersionID？
@@ -811,20 +798,7 @@ cd /tmp
 
 > 在使用说明中，如果只输入一个网址，用户在查看使用说明时会直接跳转到该网址
 
-## 33. 如何把任务执行的错误原因更友好的呈现给用户<i id="err_code"></i>
-
-在执行 scale\_in/scale\_out 的 pre\_check 和 cmd 时，系统会捕获错误码并将 i18n 文件中的对应条目 `err_codeX` (其中 X 为错误码)作为错误消息提示给用户.
-
-比如 locale/zh-cn.json 文件内容为:
-
-```json
-{ "err_code111": "无法删除主节点" }
-```
-
-在执行 scale\_in 的 pre\_check 如果遇到错误码为 111, 则显示"无法删除主节点"为错误消息。
-
-
-## 34. 如果只想用 AppCenter 管理纯主机集群
+## 33. 如果只想用 AppCenter 管理纯主机集群
 
     参考 [管理纯主机集群样例](./agent-no-install.md)
 
