@@ -10,6 +10,9 @@ install:
 - npm install -g markdownlint-cli
 - sudo pip install -U requests
 - sudo pip install -U qsctl
+- sudo add-apt-repository ppa:n-muench/calibre2
+- sudo apt-get update
+- sudo apt-get install calibre
 before_script:
 - export FILENAME="_book/qingcloud-appcenter-developer-guide"
 script:
