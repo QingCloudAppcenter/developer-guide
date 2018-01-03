@@ -15,7 +15,7 @@ install:
 - sudo apt-get install -y imagemagick
 - sudo apt-get install -y calibre
 - sudo apt-get install -y language-pack-zh-hans  language-pack-zh-hans-base 
-- sudo apt-get install -y fonts-cns11643-kai fonts-cns11643-sung fonts-moe-standard-kai fonts-moe-standard-song
+- sudo apt-get install -y fonts-cns11643-kai fonts-cns11643-sung fonts-moe-standard-kai fonts-moe-standard-song ttf-wqy-zenhei
 before_script:
 - export FILENAME="_book/qingcloud-appcenter-developer-guide"
 script:
